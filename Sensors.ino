@@ -42,16 +42,16 @@ int getAltitude() {
 
 }
 
-int getOxidising() {
-
+float getOxidising() {
+  return mics6814_readOx();
 }
 
-int getReducing() {
-
+float getReducing() {
+  return mics6814_readRed();
 }
 
-int getNh3() {
-
+float getNh3() {
+  return mics6814_readNH3();
 }
 
 float getLight() {

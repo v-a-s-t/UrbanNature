@@ -1,15 +1,15 @@
 #define LED 13
 #define BUTTON 2
 #define LTR_INT 4 // pin conflict
-#define LCD_DC 35
+#define LCD_DC 0
 #define LCD_EN 32
 #define PMS_EN 33
 #define PMS_RST 2
 #define SENSOR_EN 25
 #define MIC_SENSE 34
-#define OX_SENSE 27 // Pin conflict
+#define OX_SENSE 35
 #define RED_SENSE 14
-#define NH3 12
+#define NH3_SENSE 12
 
 #define MODEM_RST             5
 #define MODEM_PWRKEY          4
