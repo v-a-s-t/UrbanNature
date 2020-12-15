@@ -43,6 +43,6 @@ int getNh3() {
   
 }
 
-int getLight() {
-  
+float getLight() {
+  return(getLux());
 }

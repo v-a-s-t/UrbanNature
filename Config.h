@@ -20,8 +20,8 @@
 #define I2C_SDA              21
 #define I2C_SCL              22
 
-#define LTR-559_ADDR         0x76
-#define BME280_ADDR          0x23
+#define LTR559_ADDR         0x23
+#define BME280_ADDR          0x76
 #define IP5306_ADDR          0x75
 #define IP5306_REG_SYS_CTL0  0x00
 
