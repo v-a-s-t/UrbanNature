@@ -1,4 +1,7 @@
-//TODO Fix Lux Calculation
+/*TODO 
+- Fix Lux Calculation
+- Convert Sound level to Decibel
+*/
 
 #include "Config.h"
 #include <Wire.h>

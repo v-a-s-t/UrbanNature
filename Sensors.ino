@@ -3,7 +3,6 @@ void setupSensors() {
   digitalWrite(SENSOR_EN, LOW);
   //LTR559 requires atleast 100ms before initialising
   delay(300);
-
   LTR559_begin();
 }
 
@@ -27,8 +26,14 @@ int getPressure() {
 
 }
 
+#define MIC_SAMPLE 20
+
 int getNoise() {
-  return analogRead(MIC_SENSE);
+double micAverage = 0;
+  for(byte i = 0; i < MIC_SAMPLE; i++){
+    micAverage = micAverage + analogRead(MIC_SENSE);
+  }
+  micAverage = micAverage / MIC_SAMPLE;
 }
 
 int getAltitude() {
