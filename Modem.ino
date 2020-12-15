@@ -1,5 +1,4 @@
 #include <TinyGsmClient.h>
-#include "Config.h"
 
 #ifdef DUMP_AT_COMMANDS
 #include <StreamDebugger.h>
@@ -38,7 +37,7 @@ void setupModem() {
   SerialAT.begin(115200, SERIAL_8N1, MODEM_RX, MODEM_TX);
 }
 
-void connect() {
+void modemConnect() {
   Serial.println("Initializing modem...");
   modem.restart();
 
@@ -86,14 +85,22 @@ void connect() {
   Serial.println(" OK");
 }
 
-void turnOffNetlight()
-{
+void modemDisconnect() {
+  modem.gprsDisconnect();
+  Serial.println(F("GPRS disconnected"));
+}
+
+void modemPoweroff() {
+  modem.poweroff();
+  Serial.println(F("Modem power off"));
+}
+
+void turnOffNetlight() {
   Serial.println("Turning off SIM800 Red LED...");
   modem.sendAT("+CNETLIGHT=0");
 }
 
-void turnOnNetlight()
-{
+void turnOnNetlight() {
   Serial.println("Turning on SIM800 Red LED...");
   modem.sendAT("+CNETLIGHT=1");
 }

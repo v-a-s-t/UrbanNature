@@ -9,9 +9,20 @@ void setup() {
 //  enableSensors();
 
   setupModem();
-  connect();
+  modemConnect();
+  postIntToFeed(2, "test");
+  modemDisconnect();
+  modemPoweroff();
+
+  for (int i=0; i<3; i++) {
+    digitalWrite(LED, HIGH);
+    delay(100);
+    digitalWrite(LED, LOW);
+    delay(100);
+  }
 }
 
 void loop() {
-  delay(100);
+  Serial.println("Idle");
+  delay(1000);
 }
