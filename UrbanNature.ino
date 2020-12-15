@@ -1,6 +1,7 @@
 /*TODO
   - Fix Lux Calculation
   - Convert Sound level to Decibel
+  - Test Gas Sensor Calculation
 */
 
 #include "Config.h"
@@ -14,11 +15,11 @@ void setup() {
   setupSensors();
   enableSensors();
 
-  // setupModem();
-  // modemConnect();
-  // postIntToFeed(2, "test");
-  // modemDisconnect();
-  // modemPoweroff();
+  //setupModem();
+  //modemConnect();
+  //postIntToFeed(2, "test");
+ // modemDisconnect();
+ // modemPoweroff();
 
   for (int i = 0; i < 3; i++) {
     digitalWrite(LED, HIGH);
@@ -31,5 +32,4 @@ void setup() {
 void loop() {
   printAllSensors();
   delay(1000);
-  Serial.println(getNoise());
 }
