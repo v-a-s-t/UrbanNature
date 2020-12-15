@@ -34,4 +34,3 @@ const char server[] = "io.adafruit.com";
 const int port = 80;
 String aio_key = "aio_lHir30Eave978qCbBwnYaZndJMQf";
 String user = "vastltd";
-String feed = "multiple-value-test";
