@@ -155,6 +155,9 @@ void printPmsData() {
     Serial.print("Particles > 10.0 um / 0.1L air:"); Serial.println(getParticle(p100um));
     Serial.println("---------------------------------------");
   }
+  else {
+    Serial.println("No PMS data read.");
+  }
 }
 
 void printAllSensors() {
@@ -169,7 +172,7 @@ void printAllSensors() {
 
   Serial.print("Altitude: ");
   Serial.println(getAltitude());
-  
+
   Serial.print("Lux: ");
   Serial.println(getLight());
 
@@ -184,8 +187,7 @@ void printAllSensors() {
 
   Serial.print("Nitrous Oxide: ");
   Serial.println(getNh3());
-  
+
   readPMS5003();
   printPmsData();
-
 }
