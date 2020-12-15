@@ -29,7 +29,8 @@ void setup() {
 }
 
 void loop() {
-  printAllSensors();
+  //printAllSensors();
+  printPmsData();
   delay(1000);
   Serial.println(getNoise());
 }
