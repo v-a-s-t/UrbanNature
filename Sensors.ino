@@ -11,36 +11,36 @@ void disableSensors() {
   digitalWrite(SENSOR_EN, LOW);
 }
 
-int getTemp() {
-  
+float getTemp() {
+  return BME280_getTemp();
 }
 
-int getHumidity() {
-  
+float getHumidity() {
+  return BME280_getHumidity();
 }
 
-int getPressure() {
-  
+float getPressure() {
+  return BME280_getPressure();
+}
+
+float getAltitude() {
+  return bme.readAltitude(SEALEVELPRESSURE_HPA);
 }
 
 int getNoise() {
   return analogRead(MIC_SENSE);
 }
 
-int getAltitude() {
-  
-}
-
 int getOxidising() {
-  
+
 }
 
 int getReducing() {
-  
+
 }
 
 int getNh3() {
-  
+
 }
 
 float getLight() {

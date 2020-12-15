@@ -8,8 +8,9 @@ void setup() {
   Serial.begin(115200);
   pinMode(LED, OUTPUT);
 
-  //  setupSensors();
-  //  enableSensors();
+  setupSensors();
+  enableSensors();
+
   LTR559_begin();
   setupModem();
   modemConnect();
