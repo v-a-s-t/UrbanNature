@@ -30,4 +30,5 @@ void setup() {
 void loop() {
   Serial.println("Idle");
   delay(1000);
+  Serial.println(getNoise());
 }

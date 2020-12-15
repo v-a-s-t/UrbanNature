@@ -32,6 +32,7 @@ int getNoise() {
   double micAverage = 0;
   for (byte i = 0; i < MIC_SAMPLE; i++) {
     micAverage = micAverage + analogRead(MIC_SENSE);
+    delay(1);
   }
   micAverage = micAverage / MIC_SAMPLE;
   return (int)micAverage;

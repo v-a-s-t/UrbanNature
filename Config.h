@@ -4,9 +4,9 @@
 #define LCD_DC 35
 #define LCD_EN 32
 #define PMS_EN 33
-#define PMS_RST 34
+#define PMS_RST 2
 #define SENSOR_EN 25
-#define MIC_SENSE 26 // Pin conflict
+#define MIC_SENSE 34
 #define OX_SENSE 27 // Pin conflict
 #define RED_SENSE 14
 #define NH3 12
