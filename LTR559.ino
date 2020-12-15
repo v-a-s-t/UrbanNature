@@ -103,7 +103,7 @@ int16_t LTR559_READ_ALS_DATA_CH0() {
 }
 
 double getLux() {
-  
+
   LTR559_getSensorStatus();
   while (LTR559_isALSReady == false) {
     LTR559_getSensorStatus();
@@ -308,5 +308,4 @@ void LTR559_begin() {
   LTR559_setInterrupts();
   LTR559_setALSMeasurementRate();
   LTR559_setControlRegs();
-}
 }

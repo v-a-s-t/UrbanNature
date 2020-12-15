@@ -1,3 +1,5 @@
+#define MIC_SAMPLE 20
+
 void setupSensors() {
   pinMode(SENSOR_EN, OUTPUT);
   digitalWrite(SENSOR_EN, LOW);
@@ -26,14 +28,13 @@ int getPressure() {
 
 }
 
-#define MIC_SAMPLE 20
-
 int getNoise() {
-double micAverage = 0;
-  for(byte i = 0; i < MIC_SAMPLE; i++){
+  double micAverage = 0;
+  for (byte i = 0; i < MIC_SAMPLE; i++) {
     micAverage = micAverage + analogRead(MIC_SENSE);
   }
   micAverage = micAverage / MIC_SAMPLE;
+  return (int)micAverage;
 }
 
 int getAltitude() {

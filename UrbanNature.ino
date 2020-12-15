@@ -1,6 +1,6 @@
-/*TODO 
-- Fix Lux Calculation
-- Convert Sound level to Decibel
+/*TODO
+  - Fix Lux Calculation
+  - Convert Sound level to Decibel
 */
 
 #include "Config.h"
@@ -11,7 +11,7 @@ void setup() {
   Serial.begin(115200);
   pinMode(LED, OUTPUT);
 
-  //  setupSensors();
+  setupSensors();
   enableSensors();
   setupModem();
   modemConnect();
@@ -19,7 +19,7 @@ void setup() {
   modemDisconnect();
   modemPoweroff();
 
-  for (int i=0; i<3; i++) {
+  for (int i = 0; i < 3; i++) {
     digitalWrite(LED, HIGH);
     delay(100);
     digitalWrite(LED, LOW);
