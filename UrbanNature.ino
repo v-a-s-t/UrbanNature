@@ -9,8 +9,7 @@ void setup() {
   pinMode(LED, OUTPUT);
 
   //  setupSensors();
-  //  enableSensors();
-  LTR559_begin();
+  enableSensors();
   setupModem();
   modemConnect();
   postIntToFeed(2, "test");
