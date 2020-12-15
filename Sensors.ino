@@ -73,4 +73,21 @@ void printAllSensors() {
 
   Serial.print("Altitude: ");
   Serial.println(getAltitude());
+
+  Serial.print("Lux: ");
+  Serial.println(getLight());
+
+  Serial.print("Noise Level: ");
+  Serial.println(getNoise());
+
+  Serial.print("Oxidising: ");
+  Serial.println(getOxidising());
+
+
+  Serial.print("Reducing: ");
+  Serial.println(getReducing());
+
+  Serial.print("Nitrous Oxide: ");
+  Serial.println(getNh3());
+
 }

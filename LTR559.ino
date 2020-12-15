@@ -147,21 +147,21 @@ void LTR559_getSensorStatus() {
   switch (interruptData) {
     case 8:
       //ALS interrupt
-      Serial.println("ALS interrupt");
+      //  Serial.println("ALS interrupt");
       LTR559_isALSReady = true;
       break;
     case 2:
       //PS interrupt
-      Serial.println("PS interrupt");
+      // Serial.println("PS interrupt");
       LTR559_isPSReady = true;
     case 10:
       //Both interrupt
-      Serial.println("Both interrupt");
+      //  Serial.println("Both interrupt");
       LTR559_isALSReady = true;
       LTR559_isPSReady = true;
     default:
       //error
-      Serial.println("Interrupt error!");
+      // Serial.println("Interrupt error!");
       break;
   }
   interruptData = LTR559_int_status & 0x05;
@@ -169,16 +169,16 @@ void LTR559_getSensorStatus() {
   switch (interruptData) {
     case 4:
       //ALS interrupt
-      Serial.println("ALS interrupt");
+      //  Serial.println("ALS interrupt");
       LTR559_isALSReady = true;
       break;
     case 1:
       //PS interrupt
-      Serial.println("PS interrupt");
+      // Serial.println("PS interrupt");
       LTR559_isPSReady = true;
     case 5:
       //Both interrupt
-      Serial.println("Both interrupt");
+      //  Serial.println("Both interrupt");
       LTR559_isALSReady = true;
       LTR559_isPSReady = true;
     default:
@@ -190,11 +190,11 @@ void LTR559_getSensorStatus() {
   switch (interruptData) {
     case 0x00:
       //data valid
-      Serial.println("ALS New data valid!");
+      // Serial.println("ALS New data valid!");
       break;
     case 0x80:
       //data invalid
-      Serial.println("Data invalid!");
+      //  Serial.println("Data invalid!");
       if (LTR559_isALSReady) {
         LTR559_isALSReady = false;
       }
