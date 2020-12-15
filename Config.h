@@ -29,3 +29,8 @@
 // Configure TinyGSM library
 #define TINY_GSM_MODEM_SIM800          // Modem is SIM800
 #define TINY_GSM_RX_BUFFER      1024   // Set RX buffer to 1Kb
+
+const char server[] = "io.adafruit.com";
+const int port = 80;
+String aio_key = "aio_lHir30Eave978qCbBwnYaZndJMQf";
+String user = "vastltd";

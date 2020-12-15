@@ -1,13 +1,18 @@
 #include <TinyGsmClient.h>
-#include "Config.h"
 
 #ifdef DUMP_AT_COMMANDS
 #include <StreamDebugger.h>
-StreamDebugger debugger(SerialAT, SerialMon);
+StreamDebugger debugger(SerialAT, Serial);
 TinyGsm modem(debugger);
 #else
 TinyGsm modem(SerialAT);
 #endif
+
+// GPRS credentials (leave empty, if missing)
+const char apn[]      = ""; // APN
+const char gprsUser[] = ""; // User
+const char gprsPass[] = ""; // Password
+const char simPIN[]   = ""; // SIM card PIN code, if any
 
 void setupModem() {
 #ifdef MODEM_RST
@@ -28,9 +33,11 @@ void setupModem() {
   digitalWrite(MODEM_PWRKEY, LOW);
   delay(1000);
   digitalWrite(MODEM_PWRKEY, HIGH);
+
+  SerialAT.begin(115200, SERIAL_8N1, MODEM_RX, MODEM_TX);
 }
 
-void connect() {
+void modemConnect() {
   Serial.println("Initializing modem...");
   modem.restart();
 
@@ -45,19 +52,55 @@ void connect() {
   Serial.print("Modem: ");
   Serial.println(modemInfo);
 
-  // Unlock your SIM card with a PIN if needed
+  // Unlock SIM card with a PIN if needed
+  if (strlen(simPIN) && modem.getSimStatus() != 3 ) {
+      modem.simUnlock(simPIN);
+  }
+
   Serial.print("Sim status: ");
   Serial.println(modem.getSimStatus());
+
+  Serial.print("Waiting for network...");
+  if (!modem.waitForNetwork(240000L)) {
+      Serial.println(" fail");
+      delay(10000);
+      return;
+  }
+  Serial.println(" OK");
+
+  // When the network connection is successful, turn on the indicator
+  digitalWrite(LED, HIGH);
+
+  if (modem.isNetworkConnected()) {
+      Serial.println("Network connected");
+  }
+
+  Serial.print(F("Connecting to APN... "));
+  Serial.print(apn);
+  if (!modem.gprsConnect(apn, gprsUser, gprsPass)) {
+      Serial.println(" fail");
+      delay(10000);
+      return;
+  }
+  Serial.println(" OK");
 }
 
-void turnOffNetlight()
-{
+void modemDisconnect() {
+  modem.gprsDisconnect();
+  Serial.println(F("GPRS disconnected"));
+}
+
+void modemPoweroff() {
+  modem.poweroff();
+  Serial.println(F("Modem power off"));
+}
+
+void turnOffNetlight() {
   Serial.println("Turning off SIM800 Red LED...");
   modem.sendAT("+CNETLIGHT=0");
 }
 
-void turnOnNetlight()
-{
+void turnOnNetlight() {
   Serial.println("Turning on SIM800 Red LED...");
   modem.sendAT("+CNETLIGHT=1");
 }
