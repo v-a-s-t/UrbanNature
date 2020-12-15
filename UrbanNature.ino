@@ -1,4 +1,7 @@
-//TODO Fix Lux Calculation
+/*TODO
+  - Fix Lux Calculation
+  - Convert Sound level to Decibel
+*/
 
 #include "Config.h"
 #include <Wire.h>
@@ -17,7 +20,7 @@ void setup() {
   // modemDisconnect();
   // modemPoweroff();
 
-  for (int i=0; i<3; i++) {
+  for (int i = 0; i < 3; i++) {
     digitalWrite(LED, HIGH);
     delay(100);
     digitalWrite(LED, LOW);
@@ -28,4 +31,5 @@ void setup() {
 void loop() {
   printAllSensors();
   delay(1000);
+  Serial.println(getNoise());
 }

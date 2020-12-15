@@ -1,10 +1,11 @@
+#define MIC_SAMPLE 20
+
 void setupSensors() {
   pinMode(SENSOR_EN, OUTPUT);
   digitalWrite(SENSOR_EN, LOW);
 
   // LTR559 requires at least 100ms before initialising
   delay(300);
-
   LTR559_begin();
   BME280_begin();
 }
@@ -34,7 +35,13 @@ float getAltitude() {
 }
 
 int getNoise() {
-  return analogRead(MIC_SENSE);
+  double micAverage = 0;
+  for (byte i = 0; i < MIC_SAMPLE; i++) {
+    micAverage = micAverage + analogRead(MIC_SENSE);
+    delay(1);
+  }
+  micAverage = micAverage / MIC_SAMPLE;
+  return (int)micAverage;
 }
 
 int getOxidising() {
