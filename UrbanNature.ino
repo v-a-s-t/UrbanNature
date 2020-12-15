@@ -1,13 +1,16 @@
+//TODO Fix Lux Calculation
+
 #include "Config.h"
 #include <Wire.h>
 
 void setup() {
+  Wire.begin();
   Serial.begin(115200);
   pinMode(LED, OUTPUT);
 
-//  setupSensors();
-//  enableSensors();
-
+  //  setupSensors();
+  //  enableSensors();
+  LTR559_begin();
   setupModem();
   modemConnect();
   postIntToFeed(2, "test");
