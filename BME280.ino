@@ -1,9 +1,10 @@
+#include <Adafruit_BME280.h>
 #define SEALEVELPRESSURE_HPA (1013.25)
 
 Adafruit_BME280 bme; // I2C
 
-void BME280_setup() {
-  status = bme.begin();
+void BME280_begin() {
+  byte status = bme.begin(0x76, &Wire);
   if (!status) {
     Serial.println("Could not find a valid BME280 sensor, check wiring, address, sensor ID!");
     Serial.print("SensorID was: 0x"); Serial.println(bme.sensorID(),16);
