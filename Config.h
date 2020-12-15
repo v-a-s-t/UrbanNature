@@ -5,6 +5,8 @@
 #define LCD_EN 32
 #define PMS_EN 33
 #define PMS_RST 2
+#define PMS_RX 19
+#define PMS_TX 18
 #define SENSOR_EN 25
 #define MIC_SENSE 34
 #define OX_SENSE 35

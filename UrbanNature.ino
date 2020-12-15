@@ -30,7 +30,7 @@ void setup() {
 }
 
 void loop() {
-   digitalWrite(LED, HIGH);
+  digitalWrite(LED, HIGH);
   printAllSensors();
   delay(1000);
   goToSleep(10);
