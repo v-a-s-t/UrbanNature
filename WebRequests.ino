@@ -42,3 +42,10 @@ void postIntToFeed(int data, String feed) {
   String url = "/api/v2/" + user + "/feeds/" + feed + "/data";
   post(payload, url);
 }
+
+// Posts an integer to an adafruit.io feed
+void postFloatToFeed(float data, String feed) {
+  String payload = "{\"value\": " + String(data) + "}";
+  String url = "/api/v2/" + user + "/feeds/" + feed + "/data";
+  post(payload, url);
+}

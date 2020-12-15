@@ -3,9 +3,11 @@
 void setupSensors() {
   pinMode(SENSOR_EN, OUTPUT);
   digitalWrite(SENSOR_EN, LOW);
-  //LTR559 requires atleast 100ms before initialising
+
+  // LTR559 requires at least 100ms before initialising
   delay(300);
   LTR559_begin();
+  BME280_begin();
 }
 
 void enableSensors() {
@@ -16,16 +18,20 @@ void disableSensors() {
   digitalWrite(SENSOR_EN, LOW);
 }
 
-int getTemp() {
-
+float getTemp() {
+  return BME280_getTemp();
 }
 
-int getHumidity() {
-
+float getHumidity() {
+  return BME280_getHumidity();
 }
 
-int getPressure() {
+float getPressure() {
+  return BME280_getPressure();
+}
 
+float getAltitude() {
+  return BME280_getAltitude();
 }
 
 int getNoise() {
@@ -36,10 +42,6 @@ int getNoise() {
   }
   micAverage = micAverage / MIC_SAMPLE;
   return (int)micAverage;
-}
-
-int getAltitude() {
-
 }
 
 int getOxidising() {
@@ -56,4 +58,18 @@ int getNh3() {
 
 float getLight() {
   return (getLux());
+}
+
+void printAllSensors() {
+  Serial.print("Temp: ");
+  Serial.println(getTemp());
+
+  Serial.print("Humidity: ");
+  Serial.println(getHumidity());
+
+  Serial.print("Pressure: ");
+  Serial.println(getPressure());
+
+  Serial.print("Altitude: ");
+  Serial.println(getAltitude());
 }
