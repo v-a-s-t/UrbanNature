@@ -26,7 +26,7 @@ bool LTR559_isPSReady = false;
 bool LTR559_dataInvalid = false;
 int ch_idx = 0;
 int ratio = 100;
-int gain = 4;
+int gain = 2;
 int integration_time = 50;
 double lux;
 int ch0_c[4] = {17743, 42785, 5926, 0};
