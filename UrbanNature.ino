@@ -13,6 +13,29 @@ String ssid, pass;
 bool isSimPresent = false;
 String aio_key = "";
 String user = "";
+String sensorFeeds[NUM_OF_SENSORS];
+bool enabledSensors[NUM_OF_SENSORS];
+
+enum sensors {
+  p03um,
+  p05um,
+  p10um,
+  p25um,
+  p50um,
+  p100um
+  pm10,
+  pm25,
+  pm100,
+  temp,
+  humidity,
+  pressure,
+  altitude,
+  noise,
+  oxidising,
+  reducing,
+  nh3,
+  light
+};
 
 void setup() {
   Wire.begin();
@@ -48,4 +71,5 @@ void loop() {
   // modemPoweroff();
   //
   // goToSleep(10);
+  scheduleHandler();
 }

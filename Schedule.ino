@@ -69,3 +69,7 @@ void printTime() {
   Serial.print("Second: ");
   Serial.println(&timeData, "%S");
 }
+
+void scheduleHandler() {
+  // TODO Read sensors and post to aio here
+}
