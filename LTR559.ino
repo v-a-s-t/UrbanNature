@@ -23,13 +23,14 @@
 
 bool LTR559_isALSReady = false;
 bool LTR559_isPSReady = false;
+bool LTR559_dataInvalid = false;
 int ch_idx = 0;
 int ratio = 100;
-int gain = 4;
-int integration_time = 100;
+int gain = 2;
+int integration_time = 50;
 double lux;
 int ch0_c[4] = {17743, 42785, 5926, 0};
-int ch1_c[4] = { -11059, 19548, -1195, 0};
+int ch1_c[4] = { -11059, 19548, -1185, 0};
 
 
 void LTR559_setControlRegs() {
@@ -46,6 +47,7 @@ void LTR559_setControlRegs() {
 
   //Enable PS
   LTR559_write8(PS_CONTR_REG, 0x03);
+  delay(100);
 
 }
 
@@ -80,26 +82,34 @@ void LTR559_setALSMeasurementRate() {
   //Set ALS integration Time 200ms, Repeat rate 200ms 0x12
   //Set ALS integration Time 400ms, Repeat rate 500ms 0x1B
   //Set ALS integration Time 50ms, Repeat rate 500ms 0x1B
+  //Set ALS integration Time 50ms, Repeat rate 100ms 0x09
 
-  LTR559_write8(ALS_MEAS_RATE_REG, 0x03);
+  LTR559_write8(ALS_MEAS_RATE_REG, 0x09);
 }
 
-int16_t LTR559_READ_ALS_DATA_CH1() {
-  int8_t ch1_l, ch1_h;
-  int16_t ch1_out;
+uint16_t LTR559_READ_ALS_DATA_CH1() {
+  uint8_t ch1_l, ch1_h;
+  uint16_t ch1_out;
   ch1_l = LTR559_read8(ALS_DATA_CH1_L);
   ch1_h = LTR559_read8(ALS_DATA_CH1_H);
   ch1_out = (ch1_h << 8) | ch1_l;
   return ch1_out;
 }
 
-int16_t LTR559_READ_ALS_DATA_CH0() {
-  int8_t ch0_l, ch0_h;
-  int16_t ch0_out;
+uint16_t LTR559_READ_ALS_DATA_CH0() {
+  uint8_t ch0_l, ch0_h;
+  uint16_t ch0_out;
   ch0_l = LTR559_read8(ALS_DATA_CH0_L);
   ch0_h = LTR559_read8(ALS_DATA_CH0_H);
   ch0_out = (ch0_h << 8) | ch0_l;
   return ch0_out;
+}
+
+void LTR559_SW_reset() {
+  LTR559_write8(PS_CONTR_REG, 0x00);
+  delay(50);
+  LTR559_write8(PS_CONTR_REG, 0x02);
+  delay(50);
 }
 
 double getLux() {
@@ -107,14 +117,14 @@ double getLux() {
   LTR559_getSensorStatus();
   while (LTR559_isALSReady == false) {
     LTR559_getSensorStatus();
-    delay(100);
+    delay(1000);
   }
   if (LTR559_isALSReady) {
     LTR559_isALSReady = false;
-    int16_t als0 = LTR559_READ_ALS_DATA_CH0();
-    int16_t als1 = LTR559_READ_ALS_DATA_CH1();
+    uint16_t als0 = LTR559_READ_ALS_DATA_CH0();
+    uint16_t als1 = LTR559_READ_ALS_DATA_CH1();
     ratio = als1 * 100 / (als1 + als0);
-    if (als0 + als1 <= 0) {
+    if (als0 + als1 > 0) {} else {
       ratio = 101;
     }
     if (ratio < 45) {
@@ -131,9 +141,18 @@ double getLux() {
     lux /= (integration_time / 100.0);
     lux /= gain;
     lux /= 10000.0;
-
     return lux;
   }
+}
+
+int getRawALS() {
+  LTR559_getSensorStatus();
+  while (LTR559_isALSReady == false) {
+    LTR559_getSensorStatus();
+    delay(10);
+  }
+  LTR559_isALSReady = false;
+  return LTR559_READ_ALS_DATA_CH0();
 }
 
 void LTR559_getSensorStatus() {
@@ -147,21 +166,19 @@ void LTR559_getSensorStatus() {
   switch (interruptData) {
     case 8:
       //ALS interrupt
-      //  Serial.println("ALS interrupt");
+       Serial.println("ALS interrupt");
       LTR559_isALSReady = true;
       break;
     case 2:
       //PS interrupt
-      // Serial.println("PS interrupt");
+       Serial.println("PS interrupt");
       LTR559_isPSReady = true;
+      break;
     case 10:
       //Both interrupt
-      //  Serial.println("Both interrupt");
+       Serial.println("Both interrupt");
       LTR559_isALSReady = true;
       LTR559_isPSReady = true;
-    default:
-      //error
-      // Serial.println("Interrupt error!");
       break;
   }
   interruptData = LTR559_int_status & 0x05;
@@ -169,19 +186,19 @@ void LTR559_getSensorStatus() {
   switch (interruptData) {
     case 4:
       //ALS interrupt
-      //  Serial.println("ALS interrupt");
+       Serial.println("ALS new data");
       LTR559_isALSReady = true;
       break;
     case 1:
       //PS interrupt
-      // Serial.println("PS interrupt");
+       Serial.println("PS new data");
       LTR559_isPSReady = true;
+      break;
     case 5:
       //Both interrupt
-      //  Serial.println("Both interrupt");
+       Serial.println("Both new data");
       LTR559_isALSReady = true;
       LTR559_isPSReady = true;
-    default:
       break;
   }
 
@@ -190,14 +207,18 @@ void LTR559_getSensorStatus() {
   switch (interruptData) {
     case 0x00:
       //data valid
-      // Serial.println("ALS New data valid!");
+         Serial.println("ALS New data valid!");
+      LTR559_isALSReady = true;
       break;
     case 0x80:
       //data invalid
-      //  Serial.println("Data invalid!");
+        Serial.println("Data invalid!");
       if (LTR559_isALSReady) {
         LTR559_isALSReady = false;
       }
+      LTR559_READ_PS_DATA();
+      LTR559_READ_ALS_DATA_CH0();
+      LTR559_READ_ALS_DATA_CH1();
       break;
   }
 }
@@ -304,8 +325,11 @@ uint8_t LTR559_read8(byte reg) {
 }
 
 void LTR559_begin() {
+  LTR559_SW_reset();
   LTR559_whoami();
   LTR559_setInterrupts();
   LTR559_setALSMeasurementRate();
+  LTR559_ALS_setThreshold();
+  LTR559_PS_setThreshold();
   LTR559_setControlRegs();
 }
