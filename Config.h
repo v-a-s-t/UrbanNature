@@ -36,5 +36,10 @@
 
 const char server[] = "io.adafruit.com";
 const int port = 80;
-String aio_key = "aio_lHir30Eave978qCbBwnYaZndJMQf";
-String user = "vastltd";
+
+#define WIFI_CONNECTION_TIMEOUT 30000
+
+// time
+const char* ntpServer = "pool.ntp.org";
+const long  gmtOffset_sec = 0;
+const int   daylightOffset_sec = 3600;

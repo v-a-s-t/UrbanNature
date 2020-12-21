@@ -37,7 +37,7 @@ void setupModem() {
   SerialAT.begin(115200, SERIAL_8N1, MODEM_RX, MODEM_TX);
 }
 
-void modemConnect() {
+bool modemConnect() {
   Serial.println("Initializing modem...");
   modem.restart();
 
@@ -60,11 +60,19 @@ void modemConnect() {
   Serial.print("Sim status: ");
   Serial.println(modem.getSimStatus());
 
+  if (modem.getSimStatus() == SIM_ERROR) {
+    Serial.println("WARN - Sim error.");
+    isSimPresent = false;
+    return false;
+  }
+
+  isSimPresent = true;
+
   Serial.print("Waiting for network...");
   if (!modem.waitForNetwork(240000L)) {
       Serial.println(" fail");
       delay(10000);
-      return;
+      return false;
   }
   Serial.println(" OK");
 
@@ -76,13 +84,13 @@ void modemConnect() {
   }
 
   Serial.print(F("Connecting to APN... "));
-  Serial.print(apn);
+  Serial.println(apn);
   if (!modem.gprsConnect(apn, gprsUser, gprsPass)) {
-      Serial.println(" fail");
-      delay(10000);
-      return;
+      Serial.println("ERROR - APN connection fail");
+      return false;
   }
   Serial.println(" OK");
+  return true;
 }
 
 void modemDisconnect() {

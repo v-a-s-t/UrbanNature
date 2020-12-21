@@ -1,7 +1,7 @@
 TinyGsmClient client(modem);
 
 // Posts a payload to a url on adafruit.io
-void post(String requestData, String url) {
+void modemPost(String requestData, String url) {
   Serial.print("Connecting to ");
   Serial.print(server);
   if (!client.connect(server, port)) {
@@ -40,12 +40,12 @@ void post(String requestData, String url) {
 void postIntToFeed(int data, String feed) {
   String payload = "{\"value\": " + String(data) + "}";
   String url = "/api/v2/" + user + "/feeds/" + feed + "/data";
-  post(payload, url);
+  modemPost(payload, url);
 }
 
 // Posts an integer to an adafruit.io feed
 void postFloatToFeed(float data, String feed) {
   String payload = "{\"value\": " + String(data) + "}";
   String url = "/api/v2/" + user + "/feeds/" + feed + "/data";
-  post(payload, url);
+  modemPost(payload, url);
 }
