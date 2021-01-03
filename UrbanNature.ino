@@ -8,6 +8,10 @@
 #include <Wire.h>
 #include <WiFi.h>
 #include "time.h"
+#include <AsyncTCP.h>
+#include <ESPAsyncWebServer.h>
+#include "SPIFFS.h"
+#include <ArduinoJson.h>
 
 String ssid, pass;
 bool isSimPresent = false;
@@ -15,26 +19,27 @@ String aio_key = "";
 String user = "";
 String sensorFeeds[NUM_OF_SENSORS];
 bool enabledSensors[NUM_OF_SENSORS];
+int numOfFeeds;
 
-enum sensors {
-  p03um,
-  p05um,
-  p10um,
-  p25um,
-  p50um,
-  p100um
-  pm10,
-  pm25,
-  pm100,
-  temp,
-  humidity,
-  pressure,
-  altitude,
-  noise,
-  oxidising,
-  reducing,
-  nh3,
-  light
+enum Sensor {
+  sensor_p03um,
+  sensor_p05um,
+  sensor_p10um,
+  sensor_p25um,
+  sensor_p50um,
+  sensor_p100um,
+  sensor_pm10,
+  sensor_pm25,
+  sensor_pm100,
+  sensor_temp,
+  sensor_humidity,
+  sensor_pressure,
+  sensor_altitude,
+  sensor_noise,
+  sensor_oxidising,
+  sensor_reducing,
+  sensor_nh3,
+  sensor_light
 };
 
 void setup() {
