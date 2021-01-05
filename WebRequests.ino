@@ -53,8 +53,6 @@ void postFloatToFeed(float data, String feed) {
 // Posts a float to an adafruit.io feed with the location
 void postFloatToFeed(float data, float lat, float lon, String feed) {
   String payload = "{\"value\": " + String(data)  +  ",\"lat\": " + String(lat) + ",\"lon\": " + String(lon) + "}";
-
- "{\"value\":\"1\",\"lat\":1351824120,\"lon\":1351824120}";
   String url = "/api/v2/" + user + "/feeds/" + feed + "/data";
   modemPost(payload, url);
 }
