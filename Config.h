@@ -1,7 +1,5 @@
 #define LED 13
 #define BUTTON 2
-#define LCD_DC 0
-#define LCD_EN 32
 #define PMS_EN 33
 #define PMS_RST 2
 #define PMS_RX 19
