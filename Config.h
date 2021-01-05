@@ -1,6 +1,5 @@
 #define LED 13
 #define BUTTON 2
-#define LTR_INT 39 // To be tested
 #define LCD_DC 0
 #define LCD_EN 32
 #define PMS_EN 33
