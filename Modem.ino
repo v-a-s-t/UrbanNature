@@ -137,12 +137,29 @@ void getGSMLocation() {
   int   _min      = 0;
   int _sec = 0;
 
-  if (modem.getGsmLocation(&_lon,&_lat, &_accuracy, &_year, &_month, &_day, &_hour, &_min, &_sec)) {
+  if (modem.getGsmLocation(&_lon, &_lat, &_accuracy, &_year, &_month, &_day, &_hour, &_min, &_sec)) {
     setLatLong(_lat, _lon);
     Serial.println("Got GSM Location");
     Serial.print("Lat: ");
     Serial.println(getGSMLat());
     Serial.print("Lon: ");
     Serial.println(getGSMLon());
+    Serial.println();
+    /* TO DO
+        Serial.println("Got time");
+        Serial.print(_year);
+        Serial.print(":");
+        Serial.print(_month);
+        Serial.print(":");
+        Serial.print(_day);
+        Serial.println();
+        Serial.print(_hour);
+        Serial.print(":");
+        Serial.print(_min);
+        Serial.print(":");
+        Serial.print(_sec);
+        Serial.println();
+    */
+
   }
 }
