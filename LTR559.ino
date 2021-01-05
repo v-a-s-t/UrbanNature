@@ -87,18 +87,18 @@ void LTR559_setALSMeasurementRate() {
   LTR559_write8(ALS_MEAS_RATE_REG, 0x09);
 }
 
-int16_t LTR559_READ_ALS_DATA_CH1() {
-  int8_t ch1_l, ch1_h;
-  int16_t ch1_out;
+uint16_t LTR559_READ_ALS_DATA_CH1() {
+  uint8_t ch1_l, ch1_h;
+  uint16_t ch1_out;
   ch1_l = LTR559_read8(ALS_DATA_CH1_L);
   ch1_h = LTR559_read8(ALS_DATA_CH1_H);
   ch1_out = (ch1_h << 8) | ch1_l;
   return ch1_out;
 }
 
-int16_t LTR559_READ_ALS_DATA_CH0() {
-  int8_t ch0_l, ch0_h;
-  int16_t ch0_out;
+uint16_t LTR559_READ_ALS_DATA_CH0() {
+  uint8_t ch0_l, ch0_h;
+  uint16_t ch0_out;
   ch0_l = LTR559_read8(ALS_DATA_CH0_L);
   ch0_h = LTR559_read8(ALS_DATA_CH0_H);
   ch0_out = (ch0_h << 8) | ch0_l;
@@ -145,7 +145,7 @@ double getLux() {
   }
 }
 
-int getRawALS() {
+int getRawALS0() {
   LTR559_getSensorStatus();
   while (LTR559_isALSReady == false) {
     LTR559_getSensorStatus();
@@ -153,6 +153,15 @@ int getRawALS() {
   }
   LTR559_isALSReady = false;
   return LTR559_READ_ALS_DATA_CH0();
+}
+int getRawALS1() {
+  LTR559_getSensorStatus();
+  while (LTR559_isALSReady == false) {
+    LTR559_getSensorStatus();
+    delay(10);
+  }
+  LTR559_isALSReady = false;
+  return LTR559_READ_ALS_DATA_CH1();
 }
 
 void LTR559_getSensorStatus() {
