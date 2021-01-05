@@ -40,3 +40,7 @@ const int port = 80;
 const char* ntpServer = "pool.ntp.org";
 const long  gmtOffset_sec = 0;
 const int   daylightOffset_sec = 3600;
+
+// GSM location 
+float latGSM = 0;
+float lonGSM = 0;

@@ -54,7 +54,7 @@ bool modemConnect() {
 
   // Unlock SIM card with a PIN if needed
   if (strlen(simPIN) && modem.getSimStatus() != 3 ) {
-      modem.simUnlock(simPIN);
+    modem.simUnlock(simPIN);
   }
 
   Serial.print("Sim status: ");
@@ -70,9 +70,9 @@ bool modemConnect() {
 
   Serial.print("Waiting for network...");
   if (!modem.waitForNetwork(240000L)) {
-      Serial.println(" fail");
-      delay(10000);
-      return false;
+    Serial.println(" fail");
+    delay(10000);
+    return false;
   }
   Serial.println(" OK");
 
@@ -80,14 +80,14 @@ bool modemConnect() {
   digitalWrite(LED, HIGH);
 
   if (modem.isNetworkConnected()) {
-      Serial.println("Network connected");
+    Serial.println("Network connected");
   }
 
   Serial.print(F("Connecting to APN... "));
   Serial.println(apn);
   if (!modem.gprsConnect(apn, gprsUser, gprsPass)) {
-      Serial.println("ERROR - APN connection fail");
-      return false;
+    Serial.println("ERROR - APN connection fail");
+    return false;
   }
   Serial.println(" OK");
   return true;
@@ -111,4 +111,38 @@ void turnOffNetlight() {
 void turnOnNetlight() {
   Serial.println("Turning on SIM800 Red LED...");
   modem.sendAT("+CNETLIGHT=1");
+}
+
+void setLatLong(float latitude, float longitude) {
+  latGSM = latitude;
+  lonGSM = longitude;
+}
+
+float getGSMLat() {
+  return latGSM;
+}
+
+float getGSMLon() {
+  return lonGSM;
+}
+
+void getGSMLocation() {
+  float _lat      = 0;
+  float _lon      = 0;
+  float _accuracy = 0;
+  int   _year     = 0;
+  int   _month    = 0;
+  int   _day      = 0;
+  int   _hour     = 0;
+  int   _min      = 0;
+  int _sec = 0;
+
+  if (modem.getGsmLocation(&_lon,&_lat, &_accuracy, &_year, &_month, &_day, &_hour, &_min, &_sec)) {
+    setLatLong(_lat, _lon);
+    Serial.println("Got GSM Location");
+    Serial.print("Lat: ");
+    Serial.println(getGSMLat());
+    Serial.print("Lon: ");
+    Serial.println(getGSMLon());
+  }
 }
