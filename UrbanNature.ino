@@ -1,7 +1,15 @@
-/*TODO
-  - Fix Lux Calculation
-  - Convert Sound level to Decibel
-  - Test Gas Sensor Calculation
+/*Sensor order
+
+Cycle 1
+BME280 (30 seconds sample)
+LTR559 (30 seconds sample)
+Microphone (30 seconds sample)
+
+Cycle 2
+(Turn on MICS6814 heater and PMS5003 fan 30 seconds)
+MICS6814 (30 seconds sample)
+PMS5003 (30 seconds sample)
+
 */
 
 #include "Config.h"
@@ -31,13 +39,14 @@ void setup() {
     delay(100);
   }
 
-  wifiConnect();
-  setupWifiTime();
-  getWifiTime();
-  printTime();
+  //wifiConnect();
+  //setupWifiTime();
+  //getWifiTime();
+  //printTime();
 }
 
 void loop() {
+  
   // setupModem();
   // modemConnect();
   //
