@@ -9,6 +9,7 @@
 #define OX_SENSE 32 
 #define RED_SENSE 14
 #define NH3_SENSE 12
+#define BATTERY_READ 35
 
 #define MODEM_RST             5
 #define MODEM_PWRKEY          4

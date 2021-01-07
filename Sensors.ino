@@ -202,6 +202,7 @@ bool noiseSampleReady = false;
 #define NOISE_THRESHOLD 100
 
 //Return arbituary number 0 (completely silent) to 1 (extremely noisy)
+//TODO: UPDATE TO MIN MAX PEAK DETECTION
 void sampleMic(int noiseLevel) {
   if (noiseLevel > NOISE_THRESHOLD) {
     noiseTick++;
