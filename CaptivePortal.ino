@@ -35,18 +35,10 @@ class CaptiveRequestHandler : public AsyncWebHandler {
       Serial.println(request->url());
 
       if (request->method() == HTTP_POST) {
-        if (request->url() == "/wifi") {
+        if (request->url() == "/settings") {
           String json = "";
-          for (int i = 0; i < len; i++)  json += char(data[i]);
-
-          StaticJsonDocument<1024> credentialsJsonDoc;
-          if (!deserializeJson(credentialsJsonDoc, json)) {
-            // TODO save credentials
-            request->send(200);
-          }
-        }
-        else if (request->url() =="/feeds") {
-          // TODO save feed
+          for (int i = 0; i < len; i++) json += char(data[i]);
+          // TODO save settings
           request->send(200);
         }
         else {
@@ -63,6 +55,7 @@ class CaptiveRequestHandler : public AsyncWebHandler {
       }
       else {
         request->send(404);
+        Serial.println("File requested not found.");
       }
     }
 
@@ -92,5 +85,27 @@ class CaptiveRequestHandler : public AsyncWebHandler {
 };
 
 void setupCaptivePortal() {
+  createAP();
   dnsServer.start(DNS_PORT, "*", apIP);
+  apServer.addHandler(new CaptiveRequestHandler()).setFilter(ON_AP_FILTER);//only when requested from AP
+  apServer.begin();
+}
+
+void captivePortalHandler() {
+  dnsServer.processNextRequest();
+}
+
+void createAP() {
+  ap_ssid = "UNP-" + generateID();
+  Serial.print("Wifi name:");
+  Serial.println(ap_ssid);
+
+  WiFi.mode(WIFI_AP);
+  delay(2000);
+
+  WiFi.persistent(false);
+  WiFi.softAPConfig(apIP, apIP, IPAddress(255, 255, 255, 0));
+  WiFi.softAP(ap_ssid.c_str(), ap_pass.c_str());
+  IPAddress myIP = WiFi.softAPIP();
+  Serial.println(myIP);
 }

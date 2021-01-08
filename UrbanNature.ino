@@ -7,6 +7,8 @@
 #include "Config.h"
 #include <Wire.h>
 #include <WiFi.h>
+#include <WiFiAP.h>
+#include <DNSServer.h>
 #include "time.h"
 #include <AsyncTCP.h>
 #include <ESPAsyncWebServer.h>
@@ -20,6 +22,14 @@ String user = "";
 String sensorFeeds[NUM_OF_SENSORS];
 bool enabledSensors[NUM_OF_SENSORS];
 int numOfFeeds;
+
+// Captive portal
+const byte DNS_PORT = 53;
+DNSServer dnsServer;
+IPAddress apIP(192, 168, 4, 1);
+AsyncWebServer apServer(80);
+String ap_ssid = "";
+String ap_pass = "oak-ash-poplar";
 
 enum Sensor {
   sensor_p03um,
@@ -47,9 +57,11 @@ void setup() {
   Serial.begin(115200);
   pinMode(LED, OUTPUT);
 
+  SPIFFS.begin();
+
   loadPreferences();
 
-  setupSensors();
+  //setupSensors();
   //enableSensors();
 
   for (int i = 0; i < 3; i++) {
@@ -59,10 +71,11 @@ void setup() {
     delay(100);
   }
 
-  wifiConnect();
-  setupWifiTime();
-  getWifiTime();
-  printTime();
+//  wifiConnect();
+//  setupWifiTime();
+//  getWifiTime();
+//  printTime();
+  setupCaptivePortal();
 }
 
 void loop() {
@@ -77,4 +90,5 @@ void loop() {
   //
   // goToSleep(10);
   scheduleHandler();
+  captivePortalHandler();
 }
