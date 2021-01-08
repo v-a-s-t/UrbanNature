@@ -13,3 +13,11 @@ float readBatteryVoltage() {
 
   return voltageIn;
 }
+
+bool batteryDetected = false;
+
+void batteryCheck(){
+  if(readBatteryVoltage() < 3.65 && batteryDetected){
+    Serial.println("Battery Low");
+  }
+}

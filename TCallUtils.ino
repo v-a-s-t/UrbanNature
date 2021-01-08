@@ -19,3 +19,12 @@ void goToSleep(int seconds) {
   esp_sleep_enable_timer_wakeup(seconds * uS_TO_S_FACTOR);
   esp_deep_sleep_start();
 }
+
+void turnOffPMU()
+{
+  Wire.begin(I2C_SDA, I2C_SCL);
+  Wire.beginTransmission(IP5306_ADDR);
+  Wire.write(IP5306_REG_SYS_CTL0);
+    Wire.write(0x36); // Set bit1: 1 enable 0 disable boost keep on
+    Wire.endTransmission();
+}

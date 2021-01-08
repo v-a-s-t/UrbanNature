@@ -1,16 +1,36 @@
 /*Sensor order
 
-Cycle 1
-BME280 (30 seconds sample)
-LTR559 (30 seconds sample)
-Microphone (30 seconds sample)
+  Cycle 1
+  BME280 (30 seconds sample)
+  LTR559 (30 seconds sample)
+  Microphone (30 seconds sample)
+  
+  -Turn on gas heater
+  -Turn on PMS Fan
+  -PMS5003 (30 seconds sample)
+  -Wait 2 minutes for heater to fan up
 
-Cycle 2
-(Turn on MICS6814 heater and PMS5003 fan 30 seconds)
-MICS6814 (30 seconds sample)
-PMS5003 (30 seconds sample)
+  Cycle 2
+  MICS6814 (30 seconds sample)
+
 
 */
+
+#include <Preferences.h>
+
+/*
+  Things stored here:
+  - WiFi station
+  - WiFi Password
+  - active sensor with key
+  - aio key
+  - aio user
+  - interval
+  - on time
+  - off time
+*/
+
+Preferences prefs;
 
 #include "Config.h"
 #include <Wire.h>
@@ -27,10 +47,10 @@ void setup() {
   Serial.begin(115200);
   pinMode(LED, OUTPUT);
 
-  loadPreferences();
+  //loadPreferences();
 
   setupSensors();
-  //enableSensors();
+  enableSensors();
 
   for (int i = 0; i < 3; i++) {
     digitalWrite(LED, HIGH);
@@ -39,6 +59,7 @@ void setup() {
     delay(100);
   }
 
+
   //wifiConnect();
   //setupWifiTime();
   //getWifiTime();
@@ -46,15 +67,18 @@ void setup() {
 }
 
 void loop() {
-  
-  // setupModem();
-  // modemConnect();
+
+   setupModem();
+   modemConnect();
   //
   // printAllSensors();
   //
-  // postFloatToFeed(getTemp(), "test");
-  // modemDisconnect();
-  // modemPoweroff();
+   postFloatToFeed(getTemp(), "test");
+   modemDisconnect();
+  modemPoweroff();
   //
-  // goToSleep(10);
+  turnOffPMU();
+  disableSensors();
+  Serial.println("SLEEP");
+  goToSleep(10);
 }

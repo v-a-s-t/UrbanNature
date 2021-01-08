@@ -32,6 +32,7 @@ void enableSensors() {
 
 void disableSensors() {
   digitalWrite(SENSOR_EN, LOW);
+  delay(2000);
 }
 
 float getTemp() {
