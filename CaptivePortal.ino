@@ -13,7 +13,8 @@ class CaptiveRequestHandler : public AsyncWebHandler {
       Serial.println(request->url());
 
       if (request->method() == HTTP_GET) {
-        if (request->url() == "/scan")   getScan(request);
+        if (request->url() == "/scan") getScan(request);
+        if (request->url() == "/settings") getSettings(request);
         else if (SPIFFS.exists(request->url())) sendFile(request, request->url());
         else if (request->url().endsWith(".html") || request->url().endsWith("/") || request->url().endsWith("generate_204") || request->url().endsWith("redirect"))  {
           sendFile(request, "/index.html");
@@ -39,6 +40,20 @@ class CaptiveRequestHandler : public AsyncWebHandler {
           String json = "";
           for (int i = 0; i < len; i++) json += char(data[i]);
           // TODO save settings
+          DynamicJsonDocument settings(1536);
+          deserializeJson(settings, json);
+          serializeJson(settings, Serial);
+          ssid = settings["ssid"].as<String>();
+          pass = settings["pass"].as<String>();
+          user = settings["user"].as<String>();
+          aio_key = settings["aio_key"].as<String>();
+          startMinute = settings["startMinute"];
+          interval = settings["interval"];
+          lat = settings["lat"].as<String>();
+          lon = settings["lon"].as<String>();
+          sensorFeeds.clear();
+          sensorFeeds = settings["sensorFeeds"]; // TODO this isnt working
+          savePreferences();
           request->send(200);
         }
         else {
@@ -78,8 +93,24 @@ class CaptiveRequestHandler : public AsyncWebHandler {
 
     void getScan(AsyncWebServerRequest * request) {
       AsyncResponseStream *response = request->beginResponseStream("application/json");
+      response->print(getScanAsJsonString());
+      request->send(response);
+    }
 
-      // TODO response->print(getScanAsJsonString());
+    void getSettings(AsyncWebServerRequest * request) {
+      AsyncResponseStream *response = request->beginResponseStream("application/json");
+
+      DynamicJsonDocument settings(1024);
+      settings["user"] = user;
+      settings["aio_key"] = aio_key;
+      settings["startMinute"] = startMinute;
+      settings["interval"] = interval;
+      settings["lat"] = lat;
+      settings["lon"] = lon;
+      settings["sensorFeeds"] = sensorFeeds;
+      String settingsString;
+      serializeJson(settings, settingsString);
+      response->print(settingsString);
       request->send(response);
     }
 };

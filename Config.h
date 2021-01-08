@@ -39,6 +39,7 @@ const int port = 80;
 
 #define WIFI_CONNECTION_TIMEOUT 30000
 #define NUM_OF_SENSORS 18
+#define SSID_MAX_LENGTH 31
 
 // time
 const char* ntpServer = "pool.ntp.org";

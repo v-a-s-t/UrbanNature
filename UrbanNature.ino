@@ -19,9 +19,10 @@ String ssid, pass;
 bool isSimPresent = false;
 String aio_key = "";
 String user = "";
-String sensorFeeds[NUM_OF_SENSORS];
-bool enabledSensors[NUM_OF_SENSORS];
-int numOfFeeds;
+StaticJsonDocument<768> sensorFeeds;
+int startMinute;
+String lat, lon;
+int interval; // In minutes!
 
 // Captive portal
 const byte DNS_PORT = 53;
