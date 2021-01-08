@@ -35,6 +35,7 @@ const char server[] = "io.adafruit.com";
 const int port = 80;
 
 #define WIFI_CONNECTION_TIMEOUT 30000
+#define NUM_OF_SENSORS 18
 
 // time
 const char* ntpServer = "pool.ntp.org";

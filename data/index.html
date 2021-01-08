@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Configuration</title>
+    <link rel="stylesheet" href="bootstrap-reboot.min.css">
+    <link rel="stylesheet" href="bootstrap.min.css">
+  </head>
+  <body>
+    <div class="container">
+
+      <div class="alert" id="alert-text"></div>
+
+      <h1>Settings</h1>
+      <p>With this page you can change your device's settings, such as which sensors are used, how often the device should post to the internet, and if it should use a WiFi connection.</p>
+      <br/>
+
+      <form class="un-form" method="post">
+
+        <h2>WiFi</h2>
+        <p>If you would like your device to use a WiFi connection, please select which WiFi it should connect to.</p>
+        <div class="form-group">
+          <label for="wifi-ssid">WiFi Name</label>
+          <select class="form-control" id="wifi-ssid">
+            <option>Wifi 1</option>
+            <option>Wifi 2</option>
+            <option>Wifi 3</option>
+            <option>Wifi 4</option>
+            <option>Wifi 5</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="wifi-password">Password</label>
+          <input type="password" class="form-control" id="wifi-password" placeholder="Password">
+        </div>
+
+        <br/>
+
+        <h2>Adafruit IO</h2>
+        <p>Provide your Adafruit IO username and key. These can be found in your Adafruit IO account.</p>
+        <div class="form-group">
+          <label for="aio-user">Adafruit IO User</label>
+          <input type="text" class="form-control" id="aio-user" placeholder="Adafruit IO user">
+        </div>
+        <div class="form-group">
+          <label for="aio-key">Adafruit IO Key</label>
+          <input type="text" class="form-control" id="aio-key" placeholder="Adafruit IO key">
+        </div>
+
+        <br/>
+
+        <h2>Sensors</h2>
+        <p>Please select which sensors you'd like to record. You'll need to create and provide an Adafruit IO feed name for each sensor.</p>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="" id="sensor_p03um">
+          <label class="form-check-label" for="sensor_p03um">
+            Particulate Matter 0.3um
+          </label>
+        </div>
+        <div class="form-group aio_feed">
+          <input type="text" class="form-control" id="sensor_p03um_feed" placeholder="Adafruit IO Feed">
+        </div>
+
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="" id="sensor_p05um">
+          <label class="form-check-label" for="sensor_p05um">
+            Particulate Matter 0.5um
+          </label>
+        </div>
+        <div class="form-group aio_feed">
+          <input type="text" class="form-control" id="sensor_p05um_feed" placeholder="Adafruit IO Feed">
+        </div>
+
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="" id="sensor_p10um">
+          <label class="form-check-label" for="sensor_p10um">
+            Particulate Matter 1um
+          </label>
+        </div>
+        <div class="form-group aio_feed">
+          <input type="text" class="form-control" id="sensor_p10um_feed" placeholder="Adafruit IO Feed">
+        </div>
+
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="" id="sensor_p25um">
+          <label class="form-check-label" for="sensor_p25um">
+            Particulate Matter 2.5um
+          </label>
+        </div>
+        <div class="form-group aio_feed">
+          <input type="text" class="form-control" id="sensor_p25um_feed" placeholder="Adafruit IO Feed">
+        </div>
+
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="" id="sensor_p50um">
+          <label class="form-check-label" for="sensor_p50um">
+            Particulate Matter 5um
+          </label>
+        </div>
+        <div class="form-group aio_feed">
+          <input type="text" class="form-control" id="sensor_p50um_feed" placeholder="Adafruit IO Feed">
+        </div>
+
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="" id="sensor_p100um">
+          <label class="form-check-label" for="sensor_p100um">
+            Particulate Matter 10um
+          </label>
+        </div>
+        <div class="form-group aio_feed">
+          <input type="text" class="form-control" id="sensor_p100um_feed" placeholder="Adafruit IO Feed">
+        </div>
+
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="" id="sensor_temp">
+          <label class="form-check-label" for="sensor_temp">
+            Temperature
+          </label>
+        </div>
+        <div class="form-group aio_feed">
+          <input type="text" class="form-control" id="sensor_temp_feed" placeholder="Adafruit IO Feed">
+        </div>
+
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="" id="sensor_humidity">
+          <label class="form-check-label" for="sensor_humidity">
+            Humidity
+          </label>
+        </div>
+        <div class="form-group aio_feed">
+          <input type="text" class="form-control" id="sensor_humidity_feed" placeholder="Adafruit IO Feed">
+        </div>
+
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="" id="sensor_pressure">
+          <label class="form-check-label" for="sensor_pressure">
+            Pressure
+          </label>
+        </div>
+        <div class="form-group aio_feed">
+          <input type="text" class="form-control" id="sensor_pressure_feed" placeholder="Adafruit IO Feed">
+        </div>
+
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="" id="sensor_altitude">
+          <label class="form-check-label" for="sensor_altitude">
+            Altitude
+          </label>
+        </div>
+        <div class="form-group aio_feed">
+          <input type="text" class="form-control" id="sensor_altitude_feed" placeholder="Adafruit IO Feed">
+        </div>
+
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="" id="sensor_noise">
+          <label class="form-check-label" for="sensor_noise">
+            Noise
+          </label>
+        </div>
+        <div class="form-group aio_feed">
+          <input type="text" class="form-control" id="sensor_noise_feed" placeholder="Adafruit IO Feed">
+        </div>
+
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="" id="sensor_oxidising">
+          <label class="form-check-label" for="sensor_oxidising">
+            Oxidising
+          </label>
+        </div>
+        <div class="form-group aio_feed">
+          <input type="text" class="form-control" id="sensor_oxidising_feed" placeholder="Adafruit IO Feed">
+        </div>
+
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="" id="sensor_reducing">
+          <label class="form-check-label" for="sensor_reducing">
+            Reducing
+          </label>
+        </div>
+        <div class="form-group aio_feed">
+          <input type="text" class="form-control" id="sensor_reducing_feed" placeholder="Adafruit IO Feed">
+        </div>
+
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="" id="sensor_nh3">
+          <label class="form-check-label" for="sensor_nh3">
+            NH3
+          </label>
+        </div>
+        <div class="form-group aio_feed">
+          <input type="text" class="form-control" id="sensor_nh3_feed" placeholder="Adafruit IO Feed">
+        </div>
+
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="" id="sensor_light">
+          <label class="form-check-label" for="sensor_light">
+            Light
+          </label>
+        </div>
+        <div class="form-group aio_feed">
+          <input type="text" class="form-control" id="sensor_light_feed" placeholder="Adafruit IO Feed">
+        </div>
+
+        <br/>
+
+        <h2>Schedule</h2>
+        <div class="form-group">
+          <label for="interval">How often should data be collected?</label>
+          <select class="form-control" id="interval">
+            <option interval="1140">Every 24 hours</option>
+            <option interval="720">Every 12 hours</option>
+            <option interval="360">Every 6 hours</option>
+            <option interval="180">Every 3 hours</option>
+            <option interval="120">Every 2 hours</option>
+            <option interval="60">Every hour</option>
+            <option interval="30">Every half hour</option>
+          </select>
+        </div>
+
+        <br/>
+
+        <button type="submit" class="btn btn-primary" id="btn-submit">Save</button>
+
+      </form>
+
+    </div>
+
+    <script src="jquery-3.5.1.min.js" charset="utf-8"></script>
+    <script src="scripts.js" charset="utf-8"></script>
+  </body>
+</html>
