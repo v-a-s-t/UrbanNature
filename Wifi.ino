@@ -26,3 +26,30 @@ void wifiDisconnect() {
   WiFi.disconnect(true);
   WiFi.mode(WIFI_OFF);
 }
+
+String getScanAsJsonString() {
+  String jsonString;
+
+  StaticJsonDocument<1000> jsonDoc;
+  getScanAsJson(jsonDoc);
+  serializeJson(jsonDoc[0], jsonString);
+
+  return (jsonString);
+}
+
+void getScanAsJson(JsonDocument& jsonDoc) {
+  JsonArray networks = jsonDoc.createNestedArray();
+
+  int n = WiFi.scanNetworks();
+
+  //Array is ordered by signal strength - strongest first
+  for (int i = 0; i < n; ++i) {
+    String networkSSID = WiFi.SSID(i);
+    if (networkSSID.length() <= SSID_MAX_LENGTH) {
+      JsonObject network  = networks.createNestedObject();
+      network["SSID"] = WiFi.SSID(i);
+      network["BSSID"] = WiFi.BSSIDstr(i);
+      network["RSSI"] = WiFi.RSSI(i);
+    }
+  }
+}

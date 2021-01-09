@@ -8,6 +8,11 @@
     <link rel="stylesheet" href="bootstrap.min.css">
   </head>
   <body>
+    <style>
+    .container {
+      margin-bottom: 20px;
+    }
+    </style>
     <div class="container">
 
       <div class="alert" id="alert-text"></div>
@@ -21,18 +26,14 @@
         <h2>WiFi</h2>
         <p>If you would like your device to use a WiFi connection, please select which WiFi it should connect to.</p>
         <div class="form-group">
-          <label for="wifi-ssid">WiFi Name</label>
-          <select class="form-control" id="wifi-ssid">
-            <option>Wifi 1</option>
-            <option>Wifi 2</option>
-            <option>Wifi 3</option>
-            <option>Wifi 4</option>
-            <option>Wifi 5</option>
+          <label for="ssid">WiFi Name</label>
+          <select class="form-control" id="ssid">
+            <option>Do Not Use WiFi</option>
           </select>
         </div>
         <div class="form-group">
-          <label for="wifi-password">Password</label>
-          <input type="password" class="form-control" id="wifi-password" placeholder="Password">
+          <label for="pass">Password</label>
+          <input type="password" class="form-control" id="pass" placeholder="Password">
         </div>
 
         <br/>
@@ -40,12 +41,23 @@
         <h2>Adafruit IO</h2>
         <p>Provide your Adafruit IO username and key. These can be found in your Adafruit IO account.</p>
         <div class="form-group">
-          <label for="aio-user">Adafruit IO User</label>
-          <input type="text" class="form-control" id="aio-user" placeholder="Adafruit IO user">
+          <label for="user">Adafruit IO User</label>
+          <input type="text" class="form-control" id="user" placeholder="Adafruit IO user">
         </div>
         <div class="form-group">
-          <label for="aio-key">Adafruit IO Key</label>
-          <input type="text" class="form-control" id="aio-key" placeholder="Adafruit IO key">
+          <label for="aio_key">Adafruit IO Key</label>
+          <input type="text" class="form-control" id="aio_key" placeholder="Adafruit IO key">
+        </div>
+
+        <h2>Location</h2>
+        <p>Optionally provide your device's latitude and longitude.</p>
+        <div class="form-group">
+          <label for="lat">Latitude</label>
+          <input type="text" class="form-control" id="lat" placeholder="51.4934">
+        </div>
+        <div class="form-group">
+          <label for="lon">Longitude</label>
+          <input type="text" class="form-control" id="lon" placeholder="0.0000">
         </div>
 
         <br/>
@@ -208,14 +220,18 @@
         <div class="form-group">
           <label for="interval">How often should data be collected?</label>
           <select class="form-control" id="interval">
-            <option interval="1140">Every 24 hours</option>
-            <option interval="720">Every 12 hours</option>
-            <option interval="360">Every 6 hours</option>
-            <option interval="180">Every 3 hours</option>
-            <option interval="120">Every 2 hours</option>
-            <option interval="60">Every hour</option>
-            <option interval="30">Every half hour</option>
+            <option value="1140">Every 24 hours</option>
+            <option value="720">Every 12 hours</option>
+            <option value="360">Every 6 hours</option>
+            <option value="180">Every 3 hours</option>
+            <option value="120">Every 2 hours</option>
+            <option value="60">Every hour</option>
+            <option value="30">Every half hour</option>
           </select>
+        </div>
+        <div class="form-group">
+          <label for="startMinute">At which minute past the hour should the collection start?</label>
+          <input type="number" class="form-control" id="startMinute" placeholder="0" min="0", max="59">
         </div>
 
         <br/>
