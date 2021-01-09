@@ -19,7 +19,7 @@ String ssid, pass;
 bool isSimPresent = false;
 String aio_key = "";
 String user = "";
-StaticJsonDocument<768> sensorFeeds;
+StaticJsonDocument<1024> sensorFeeds;
 int startMinute;
 String lat, lon;
 int interval; // In minutes!

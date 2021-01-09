@@ -40,6 +40,7 @@ void loadPreferences() {
   lat = prefs.getString("lat", "");
   lon = prefs.getString("lon", "");
   String sensorFeedsBuffer = prefs.getString("sensorFeeds", "");
+  sensorFeeds.clear();
   deserializeJson(sensorFeeds, sensorFeedsBuffer);
   prefs.end();
 
@@ -58,6 +59,7 @@ void loadPreferences() {
   Serial.println(lon);
   Serial.print("Sensor feeds: ");
   serializeJson(sensorFeeds, Serial);
+  Serial.println();
 }
 
 void savePreferences() {
@@ -67,6 +69,7 @@ void savePreferences() {
   prefs.putString("user", user);
   prefs.putString("aio_key", aio_key);
   prefs.putInt("startMinute", startMinute);
+  prefs.putInt("interval", interval);
   prefs.putString("lat", lat);
   prefs.putString("lon", lon);
   String sensorFeedsBuffer;

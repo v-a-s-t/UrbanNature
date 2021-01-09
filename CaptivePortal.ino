@@ -43,16 +43,23 @@ class CaptiveRequestHandler : public AsyncWebHandler {
           DynamicJsonDocument settings(1536);
           deserializeJson(settings, json);
           serializeJson(settings, Serial);
-          ssid = settings["ssid"].as<String>();
-          pass = settings["pass"].as<String>();
+          Serial.println();
+          if (settings.containsKey("ssid"))
+            ssid = settings["ssid"].as<String>();
+          if (settings.containsKey("pass"))
+            pass = settings["pass"].as<String>();
           user = settings["user"].as<String>();
           aio_key = settings["aio_key"].as<String>();
           startMinute = settings["startMinute"];
           interval = settings["interval"];
-          lat = settings["lat"].as<String>();
-          lon = settings["lon"].as<String>();
+          if (settings.containsKey("lat"))
+            lat = settings["lat"].as<String>();
+          if (settings.containsKey("lon"))
+            lon = settings["lon"].as<String>();
           sensorFeeds.clear();
-          sensorFeeds = settings["sensorFeeds"]; // TODO this isnt working
+          sensorFeeds = settings["sensorFeeds"];
+          serializeJson(sensorFeeds, Serial);
+          Serial.println();
           savePreferences();
           request->send(200);
         }

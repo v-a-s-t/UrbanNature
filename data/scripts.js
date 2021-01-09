@@ -25,7 +25,6 @@ function configureEvents() {
 function populateNetworks() {
   let networks = $('#ssid');
   $.getJSON('/scan', function (json) {
-      networks.empty();
       $.each(json, function (key, entry) {
           let network = $('<option></option>');
 
@@ -43,11 +42,18 @@ function populateForm() {
     console.log(json);
     $('#user').val(json.user);
     $('#aio_key').val(json.aio_key);
-    $('#interval').each(function() {
-      if ($(this).attr('interval') == json.interval) {
-        $(this).attr('selected', true);
+    $('#startMinute').val(json.startMinute);
+    $('#lat').val(json.lat);
+    $('#lon').val(json.lon);
+
+    $('#interval').children().each(function() {
+      console.log("Interval: " + $(this).val());
+      if (parseInt($(this).val()) === json.interval) {
+        console.log("Device interval: " + $(this).val());
+        $('#interval').val($(this).val());
       }
     });
+
     if (json.sensorFeeds) {
       $('.form-check-input').each(function() {
         let feedId = $(this).attr('id');
@@ -55,10 +61,11 @@ function populateForm() {
           // sensor exists in feeds. Let's tick the box and get the feed name.
           this.checked = true;
           $('#' + feedId + '_feed').val(json.sensorFeeds[feedId]);
-          $('#' + feedId + '_feed').show();
+          $('#' + feedId + '_feed').parent().show();
         }
       });
     }
+
   });
 }
 
@@ -103,9 +110,24 @@ function onSubmit(event) {
     pass: $('#pass').val(),
     user: $('#user').val(),
     aio_key: $('#aio_key').val(),
-    interval: parseInt($('#interval').children('option:selected').attr('interval')),
-    sensors: sensors,
+    interval: parseInt($('#interval').val()),
+    startMinute: $('#startMinute').val(),
+    lat: $('#lat').val(),
+    lon: $('#lon').val(),
+    sensorFeeds: sensors,
   };
+
+  if (data.ssid === "Do Not Use WiFi") {
+    data.ssid = "";
+  }
+
+  if (parseInt(data.startMinute) > 59 || parseInt(data.startMinute) < 0) {
+    formValid = false;
+    $('#alert-text').show();
+    $('#alert-text').addClass('alert-danger');
+    $('#alert-text').append('Please make sure your data collection start time is between 0 and 59 minutes.<br/>');
+    window.scrollTo(0, 0);
+  }
 
   if (!data.user || !data.aio_key) {
     formValid = false;
