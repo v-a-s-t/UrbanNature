@@ -48,6 +48,7 @@ void getTime() {
   if (usingWifi) {
     setupWifiTime();
     getWifiTime();
+    printTime();
   } else {
     getModemTime();
   }
@@ -90,13 +91,20 @@ int getHour() {
 }
 
 // Calculate how long we should wait until we record data.
-int calculateWaitTime(int currentHour, int currentMinute, int startHour, int interval) {
-  int waitHours = abs(currentHour - startHour) % (interval / 60);
-  int waitMinutes = (interval % 60) - (currentMinute % (interval % 60));
+int calculateWaitTime(int h, int m, int _startHour, int _interval) {
+  int waitHours = 0;
+  if (_interval >= 60)
+    waitHours = (h - _startHour) % (_interval / 60);
+  else
+    waitHours = 0;
+    
+  int waitMinutes = _interval - (m % _interval);
+  
   waitMinutes += waitHours * 60;
   return waitMinutes;
 }
 
 void scheduleHandler() {
   // TODO Read sensors and post to aio here
+  
 }

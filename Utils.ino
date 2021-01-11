@@ -44,6 +44,7 @@ void reset(){
   resetMillis = millis();
 
   while(millis() - resetMillis < RESET_TIMEOUT){
+    yield();
   }
   ESP.restart();
 
