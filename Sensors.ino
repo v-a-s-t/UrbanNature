@@ -304,6 +304,7 @@ void testSampleAllSensors() {
   if (sensorFeeds.containsKey("sensor_light")) {
     sampleLux();
   }
+    enableSensors();
   if (sensorFeeds.containsKey("sensor_noise")) {
     sampleMicPP();
   }

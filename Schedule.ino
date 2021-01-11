@@ -120,7 +120,6 @@ int calculateWaitTime(int h, int m, int _startHour, int _interval) {
 }
 
 void scheduleHandler() {
-  enableSensors();
   delay(1000);
   testSampleAllSensors();
   postSensorsToAIO();
