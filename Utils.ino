@@ -32,3 +32,15 @@ void checkButtonOnStarUp(){
     Serial.println("Opening Captive portal");
   }
 }
+
+
+unsigned long resetMillis;
+#define RESET_TIMEOUT 2000
+void reset(){
+  resetMillis = millis();
+
+  while(millis() - resetMillis < RESET_TIMEOUT){
+  }
+  ESP.restart();
+
+}
