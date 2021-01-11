@@ -42,7 +42,7 @@ function populateForm() {
     console.log(json);
     $('#user').val(json.user);
     $('#aio_key').val(json.aio_key);
-    $('#startMinute').val(json.startMinute);
+    $('#startHour').val(json.startHour);
     $('#lat').val(json.lat);
     $('#lon').val(json.lon);
 
@@ -111,7 +111,7 @@ function onSubmit(event) {
     user: $('#user').val(),
     aio_key: $('#aio_key').val(),
     interval: parseInt($('#interval').val()),
-    startMinute: $('#startMinute').val(),
+    startHour: $('#startHour').val(),
     lat: $('#lat').val(),
     lon: $('#lon').val(),
     sensorFeeds: sensors,
@@ -121,7 +121,7 @@ function onSubmit(event) {
     data.ssid = "";
   }
 
-  if (parseInt(data.startMinute) > 59 || parseInt(data.startMinute) < 0) {
+  if (parseInt(data.startHour) > 59 || parseInt(data.startHour) < 0) {
     formValid = false;
     $('#alert-text').show();
     $('#alert-text').addClass('alert-danger');

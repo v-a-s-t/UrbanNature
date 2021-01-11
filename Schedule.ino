@@ -36,7 +36,7 @@ void connectAndCheckTime() {
     Serial.println("Using wifi.");
   }
   getTime();
-  int waitTime = calculateWaitTime(getMinute(), startMinute);
+  int waitTime = calculateWaitTime(getHour(), getMinute(), startHour, interval);
   Serial.print("Wait time until data collection: ");
   Serial.println(waitTime);
   if (waitTime > 0) {
@@ -90,14 +90,11 @@ int getHour() {
 }
 
 // Calculate how long we should wait until we record data.
-int calculateWaitTime(int currentMinute, int startMinute) {
-  int offset = startMinute - currentMinute;
-  if (offset < 0) {
-    return 60 - offset;
-  }
-  else {
-    return offset;
-  }
+int calculateWaitTime(int currentHour, int currentMinute, int startHour, int interval) {
+  int waitHours = abs(currentHour - startHour) % (interval / 60);
+  int waitMinutes = (interval % 60) - (currentMinute % (interval % 60));
+  waitMinutes += waitHours * 60;
+  return waitMinutes;
 }
 
 void scheduleHandler() {

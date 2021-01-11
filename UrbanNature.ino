@@ -20,7 +20,7 @@ bool usingWifi = false;
 String aio_key = "";
 String user = "";
 StaticJsonDocument<1024> sensorFeeds;
-int startMinute;
+int startHour;
 String lat, lon;
 int interval; // In minutes!
 
@@ -70,8 +70,6 @@ void setup() {
     digitalWrite(LED, LOW);
     delay(100);
   }
-
-  
 
   //setupCaptivePortal();
   //enableSensors();

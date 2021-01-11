@@ -50,7 +50,7 @@ class CaptiveRequestHandler : public AsyncWebHandler {
             pass = settings["pass"].as<String>();
           user = settings["user"].as<String>();
           aio_key = settings["aio_key"].as<String>();
-          startMinute = settings["startMinute"];
+          startHour = settings["startHour"];
           interval = settings["interval"];
           if (settings.containsKey("lat"))
             lat = settings["lat"].as<String>();
@@ -110,7 +110,7 @@ class CaptiveRequestHandler : public AsyncWebHandler {
       DynamicJsonDocument settings(1024);
       settings["user"] = user;
       settings["aio_key"] = aio_key;
-      settings["startMinute"] = startMinute;
+      settings["startHour"] = startHour;
       settings["interval"] = interval;
       settings["lat"] = lat;
       settings["lon"] = lon;
