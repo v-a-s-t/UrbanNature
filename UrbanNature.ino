@@ -17,6 +17,7 @@
 
 String ssid, pass;
 bool usingWifi = false;
+bool usingCaptivePortal = false;
 String aio_key = "";
 String user = "";
 StaticJsonDocument<1024> sensorFeeds;
@@ -71,8 +72,11 @@ void setup() {
     delay(100);
   }
 
-  setupCaptivePortal();
-  //enableSensors();
+  checkButtonOnStartUp();
+  if (usingCaptivePortal)
+    setupCaptivePortal();
+  else
+    connectAndCheckTime();
 }
 
 void loop() {
@@ -86,6 +90,8 @@ void loop() {
   // modemPoweroff();
   //
   // goToSleep(10);
-  scheduleHandler();
-  captivePortalHandler();
+  if (usingCaptivePortal)
+    captivePortalHandler();
+  else
+    scheduleHandler();
 }

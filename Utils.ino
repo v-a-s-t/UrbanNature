@@ -27,12 +27,12 @@ void setupPins() {
   pinMode(BUTTON, INPUT_PULLUP);
 }
 
-void checkButtonOnStartUp(){
+bool checkButtonOnStartUp(){
   if(digitalRead(BUTTON) == 0){
     Serial.println("Opening Captive portal");
-    useCaptivePortal =  true;
+    usingCaptivePortal =  true;
   } else {
-    useCaptivePortal = false;
+    usingCaptivePortal = false;
   }
 }
 
