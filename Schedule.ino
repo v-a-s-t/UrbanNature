@@ -93,12 +93,16 @@ int getHour() {
 // Calculate how long we should wait until we record data.
 int calculateWaitTime(int h, int m, int _startHour, int _interval) {
   int waitHours = 0;
+  int waitMinutes = 0;
   if (_interval >= 60)
     waitHours = (h - _startHour) % (_interval / 60);
   else
     waitHours = 0;
-    
-  int waitMinutes = _interval - (m % _interval);
+
+  if (m % _interval > 0)
+    waitMinutes = _interval - (m % _interval);
+  else
+    waitMinutes = 0;
   
   waitMinutes += waitHours * 60;
   return waitMinutes;
