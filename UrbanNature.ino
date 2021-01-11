@@ -4,7 +4,7 @@
   BME280 (30 seconds sample)
   LTR559 (30 seconds sample)
   Microphone (30 seconds sample)
-  
+
   -Turn on gas heater
   -Turn on PMS Fan
   -PMS5003 (30 seconds sample)
@@ -65,11 +65,13 @@ enum Sensor {
   sensor_light
 };
 
+
+bool useCaptivePortal = false;
+
 void setup() {
   Wire.begin();
   Serial.begin(115200);
   setupPins();
-  checkButtonOnStarUp();
 
   SPIFFS.begin();
 
@@ -85,27 +87,33 @@ void setup() {
     delay(100);
   }
 
-//  wifiConnect();
-//  setupWifiTime();
-//  getWifiTime();
-//  printTime();
-  setupCaptivePortal();
+  //  wifiConnect();
+  //  setupWifiTime();
+  //  getWifiTime();
+  //  printTime();
+  checkButtonOnStartUp();
+  if (useCaptivePortal) {
+    setupCaptivePortal();
+  }
 }
 
 void loop() {
 
- //  setupModem();
- //  modemConnect();
-  //
-  // printAllSensors();
-  //
-  // postFloatToFeed(getTemp(), "test");
-  // modemDisconnect();
- // modemPoweroff();
-  //
-
-  // goToSleep(10);
   scheduleHandler();
-  captivePortalHandler();
+  if (useCaptivePortal) {
+    captivePortalHandler();
+  } else {
+    //  setupModem();
+    //  modemConnect();
+    //
+    // printAllSensors();
+    //
+    // postFloatToFeed(getTemp(), "test");
+    // modemDisconnect();
+    // modemPoweroff();
+    //
+
+    // goToSleep(10);
+  }
 
 }

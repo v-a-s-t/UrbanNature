@@ -27,15 +27,19 @@ void setupPins() {
   pinMode(BUTTON, INPUT_PULLUP);
 }
 
-void checkButtonOnStarUp(){
+void checkButtonOnStartUp(){
   if(digitalRead(BUTTON) == 0){
     Serial.println("Opening Captive portal");
+    useCaptivePortal =  true;
+  } else {
+    useCaptivePortal = false;
   }
 }
 
 
 unsigned long resetMillis;
 #define RESET_TIMEOUT 2000
+
 void reset(){
   resetMillis = millis();
 
@@ -43,4 +47,13 @@ void reset(){
   }
   ESP.restart();
 
+}
+
+String generateID() {
+  //https://github.com/espressif/arduino-esp32/issues/3859#issuecomment-689171490
+  uint64_t chipID = ESP.getEfuseMac();
+  uint32_t low = chipID % 0xFFFFFFFF;
+  uint32_t high = (chipID >> 32) % 0xFFFFFFFF;
+  String out = String(low);
+  return  out;
 }
