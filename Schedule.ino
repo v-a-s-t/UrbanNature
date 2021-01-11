@@ -44,6 +44,13 @@ void connectAndCheckTime() {
   }
 }
 
+int getSleepMinutes() {
+  getTime();
+  int waitTime = calculateWaitTime(getHour(), getMinute(), startHour, interval);
+  if (waitTime == 0) waitTime = interval;
+  return waitTime;
+}
+
 void getTime() {
   if (usingWifi) {
     setupWifiTime();
@@ -114,7 +121,5 @@ void scheduleHandler() {
   postSensorsToAIO();
   disableSensors();
   turnOffPMU();
-  connectAndCheckTime();
-  
-  
+  goToSleep(getSleepMinutes());
 }
