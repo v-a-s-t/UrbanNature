@@ -1,14 +1,15 @@
 #define LED 13
-#define BUTTON 2
+#define BUTTON 15
 #define PMS_EN 33
 #define PMS_RST 2
 #define PMS_RX 19
 #define PMS_TX 18
 #define SENSOR_EN 25
 #define MIC_SENSE 34
-#define OX_SENSE 35
+#define OX_SENSE 32 
 #define RED_SENSE 14
 #define NH3_SENSE 12
+#define BATTERY_READ 35
 
 #define MODEM_RST             5
 #define MODEM_PWRKEY          4
@@ -43,6 +44,9 @@ const char* ntpServer = "pool.ntp.org";
 const long  gmtOffset_sec = 0;
 const int   daylightOffset_sec = 3600;
 
-// GSM location 
+// location 
 float latGSM = 0;
 float lonGSM = 0;
+float latUser = 0;
+float lonUser = 0;
+bool hasInputtedLatLon = false;

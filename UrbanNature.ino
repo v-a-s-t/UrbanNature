@@ -71,7 +71,7 @@ void setup() {
     delay(100);
   }
 
-  //setupCaptivePortal();
+  setupCaptivePortal();
   //enableSensors();
 }
 

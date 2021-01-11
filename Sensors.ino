@@ -32,6 +32,7 @@ void enableSensors() {
 
 void disableSensors() {
   digitalWrite(SENSOR_EN, LOW);
+  delay(2000);
 }
 
 float getTemp() {
@@ -53,7 +54,7 @@ float getAltitude() {
 int getNoise() {
   double micAverage = 0;
   for (byte i = 0; i < MIC_SAMPLE; i++) {
-    micAverage = micAverage + analogRead(MIC_SENSE);
+    micAverage = micAverage + abs(analogRead(MIC_SENSE) - 2048);
     delay(1);
   }
   micAverage = micAverage / MIC_SAMPLE;
@@ -78,7 +79,7 @@ float getLight() {
 }
 
 int getParticle(byte type) {
-  switch(type) {
+  switch (type) {
     case p03um:
       return particulateData.particles_03um;
       break;
@@ -101,7 +102,7 @@ int getParticle(byte type) {
 }
 
 int getConcentrationStandard(byte type) {
-  switch(type) {
+  switch (type) {
     case pm10:
       return particulateData.pm10_standard;
       break;
@@ -115,7 +116,7 @@ int getConcentrationStandard(byte type) {
 }
 
 int getConcentrationEnviro(byte type) {
-  switch(type) {
+  switch (type) {
     case pm10:
       return particulateData.pm10_env;
       break;
@@ -190,4 +191,113 @@ void printAllSensors() {
 
   readPMS5003();
   printPmsData();
+}
+
+float noiseSample = 0;
+int noiseTick = 0;
+int noiseSampleCount = 0;
+bool isSamplingNoise = false;
+bool noiseSampleReady = false;
+
+#define SAMPLE_TIME 30
+#define NOISE_THRESHOLD 100
+
+//Return arbituary number 0 (completely silent) to 1 (extremely noisy)
+//TODO: UPDATE TO MIN MAX PEAK DETECTION
+void sampleMic(int noiseLevel) {
+  if (noiseLevel > NOISE_THRESHOLD) {
+    noiseTick++;
+  }
+  noiseSampleCount++;
+  if (noiseSampleCount == SAMPLE_TIME) {
+    noiseSample = (float)noiseTick / SAMPLE_TIME;
+    noiseSampleReady = true;
+  }
+}
+
+int lightSample = 0;
+int lightSampleCount = 0;
+int _lightLevel = 0;
+int prevLightLevel = 0;
+int sampleTime = SAMPLE_TIME;
+bool lightSampleReady = false;
+
+void sampleLight(int lightLevel) {
+  _lightLevel = lightLevel;
+  if (_lightLevel == 0) {
+    _lightLevel = prevLightLevel;
+    if (_lightLevel == 0) {
+      if (sampleTime > 0) {
+        sampleTime --;
+      }
+    }
+  }
+  lightSample = _lightLevel + lightSample;
+  prevLightLevel = _lightLevel;
+  lightSampleCount++;
+  if (lightSampleCount == SAMPLE_TIME) {
+    lightSample = (int)lightSample / sampleTime;
+    lightSampleReady = true;
+  }
+}
+
+int bmeSampleCount = 0;
+float tempSample;
+float presSample;
+float altSample;
+float humSample;
+float _temp, _pres, _alt, _hum;
+float prevTemp, prevPres, prevAlt, prevHum;
+bool BME280Ready = false;
+
+void sampleBME280(float temp, float pres, float alt, float hum) {
+  _temp = temp;
+  _pres = pres;
+  _alt = alt;
+  _hum = hum;
+  if (_temp == 0) {
+    _temp = prevTemp;
+  }
+  if (_pres == 0) {
+    _pres = prevPres;
+  }
+  if (_alt == 0) {
+    _alt = prevAlt;
+  }
+  if (_hum == 0) {
+    _hum = prevHum;
+  }
+  tempSample = _temp + tempSample;
+  presSample = _pres + presSample;
+  altSample = _alt + altSample;
+  humSample = _hum + humSample;
+  prevTemp = _temp;
+  prevPres = _pres;
+  prevAlt = _alt;
+  prevHum = _hum;
+  bmeSampleCount++;
+  if (bmeSampleCount == SAMPLE_TIME) {
+    tempSample = tempSample / SAMPLE_TIME;
+    presSample = presSample / SAMPLE_TIME;
+    altSample = altSample / SAMPLE_TIME;
+    humSample = humSample / SAMPLE_TIME;
+    BME280Ready = true;
+  }
+}
+
+void SampleCycle1() {
+  if (BME280Ready && lightSampleReady && noiseSampleReady) {
+    Serial.print("Temperature Sampling: ");
+    Serial.println(tempSample);
+    Serial.print("Pressure Sampling: ");
+    Serial.println(presSample);
+    Serial.print("Altitude Sampling: ");
+    Serial.println(altSample);
+    Serial.print("Humidity Sampling: ");
+    Serial.println(humSample);
+    Serial.print("Light Sampling: ");
+    Serial.println(lightSample);
+    Serial.print("Microphone Sampling: ");
+    Serial.println(noiseSample);
+  }
 }

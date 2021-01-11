@@ -62,6 +62,7 @@ class CaptiveRequestHandler : public AsyncWebHandler {
           Serial.println();
           savePreferences();
           request->send(200);
+          reset();
         }
         else {
           request->send(404);
