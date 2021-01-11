@@ -18,15 +18,38 @@ Routine:
 */
 
 struct tm timeData;
+float timezone = 0.0;
 
 // Must be called after wifi connect!
 void setupWifiTime() {
   configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);
 }
 
+void connectAndCheckTime() {
+  usingWifi = wifiConnect();
+  if (!usingWifi) {
+    setupModem();
+    if (!modemConnect()) {
+      Serial.println("ERROR: Modem could not connect.");
+    }
+  } else {
+    Serial.println("Using wifi.");
+  }
+  getTime();
+  int waitTime = calculateWaitTime(getMinute(), startMinute);
+  Serial.print("Wait time until data collection: ");
+  Serial.println(waitTime);
+  if (waitTime > 0) {
+    goToSleepMinutes(waitTime);
+  }
+}
+
 void getTime() {
-  if (isSimPresent) {
+  if (usingWifi) {
+    setupWifiTime();
     getWifiTime();
+  } else {
+    getModemTime();
   }
 }
 
@@ -35,19 +58,7 @@ void getWifiTime() {
 }
 
 void getModemTime() {
-  // TODO modem.getNetworkTime(&year3, &month3, &day3, &hour3, &min3, &sec3, &timezone);
-  // TODO after getting time from modem, set esp32 time.
-}
-
-void setTime() {
-  /* TODO
-  struct timeval tv;
-  tv.tv_sec =   1601216683;  // enter UTC UNIX time (get it from https://www.unixtimestamp.com )
-  settimeofday(&tv, NULL);
-  // Set timezone to France (Europe/Paris) obvs change this to GB
-  setenv("TZ", "CET-1CEST,M3.5.0/2,M10.5.0/ 3", 1); // https://www.gnu.org/software/libc/manual/html_node/TZ-Variable.html
-  tzset();
-  */
+  modem.getNetworkTime(&timeData.tm_year, &timeData.tm_mon, &timeData.tm_mday, &timeData.tm_hour, &timeData.tm_min, &timeData.tm_sec, &timezone);
 }
 
 void printTime() {
@@ -68,6 +79,25 @@ void printTime() {
   Serial.println(&timeData, "%M");
   Serial.print("Second: ");
   Serial.println(&timeData, "%S");
+}
+
+int getMinute() {
+  return timeData.tm_min;
+}
+
+int getHour() {
+  return timeData.tm_hour;
+}
+
+// Calculate how long we should wait until we record data.
+int calculateWaitTime(int currentMinute, int startMinute) {
+  int offset = startMinute - currentMinute;
+  if (offset < 0) {
+    return 60 - offset;
+  }
+  else {
+    return offset;
+  }
 }
 
 void scheduleHandler() {

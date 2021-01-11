@@ -16,6 +16,13 @@ bool setupPMU()
 }
 
 void goToSleep(int seconds) {
+  Serial.print("Going to sleep for ");
+  Serial.print(seconds);
+  Serial.println(" seconds.");
   esp_sleep_enable_timer_wakeup(seconds * uS_TO_S_FACTOR);
   esp_deep_sleep_start();
+}
+
+void goToSleepMinutes(int minutes) {
+  goToSleep(minutes * 60);
 }

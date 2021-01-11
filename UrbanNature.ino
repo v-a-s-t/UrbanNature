@@ -16,7 +16,7 @@
 #include <ArduinoJson.h>
 
 String ssid, pass;
-bool isSimPresent = false;
+bool usingWifi = false;
 String aio_key = "";
 String user = "";
 StaticJsonDocument<1024> sensorFeeds;
@@ -62,8 +62,7 @@ void setup() {
 
   loadPreferences();
 
-  //setupSensors();
-  //enableSensors();
+  setupSensors();
 
   for (int i = 0; i < 3; i++) {
     digitalWrite(LED, HIGH);
@@ -72,11 +71,10 @@ void setup() {
     delay(100);
   }
 
-//  wifiConnect();
-//  setupWifiTime();
-//  getWifiTime();
-//  printTime();
-  setupCaptivePortal();
+  
+
+  //setupCaptivePortal();
+  //enableSensors();
 }
 
 void loop() {

@@ -62,11 +62,8 @@ bool modemConnect() {
 
   if (modem.getSimStatus() == SIM_ERROR) {
     Serial.println("WARN - Sim error.");
-    isSimPresent = false;
     return false;
   }
-
-  isSimPresent = true;
 
   Serial.print("Waiting for network...");
   if (!modem.waitForNetwork(240000L)) {
