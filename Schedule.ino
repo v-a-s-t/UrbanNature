@@ -37,7 +37,7 @@ void connectAndCheckTime() {
   }
   getTime();
   int waitTime = calculateWaitTime(getHour(), getMinute(), startHour, interval);
-  Serial.print("Wait time until data collection: ");
+  Serial.print("Minutes until data collection: ");
   Serial.println(waitTime);
   if (waitTime > 0) {
     goToSleepMinutes(waitTime);
