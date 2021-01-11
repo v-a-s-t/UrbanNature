@@ -110,5 +110,11 @@ int calculateWaitTime(int h, int m, int _startHour, int _interval) {
 
 void scheduleHandler() {
   // TODO Read sensors and post to aio here
+  testSampleAllSensors();
+  postSensorsToAIO();
+  disableSensors();
+  turnOffPMU();
+  connectAndCheckTime();
+  
   
 }

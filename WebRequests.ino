@@ -51,15 +51,45 @@ void postFloatToFeed(float data, String feed) {
 }
 
 // Posts a float to an adafruit.io feed with the location
-void postFloatToFeed(float data, float lat, float lon, String feed) {
-  String payload = "{\"value\": " + String(data)  +  ",\"lat\": " + String(lat) + ",\"lon\": " + String(lon) + "}";
+void postFloatToFeed(float data, String lat, String lon, String feed) {
+  String payload = "{\"value\": " + String(data)  +  ",\"lat\": " + lat + ",\"lon\": " + lon + "}";
   String url = "/api/v2/" + user + "/feeds/" + feed + "/data";
   modemPost(payload, url);
 }
 
 // Posts an integer to an adafruit.io feed with the location
-void postIntToFeed(int data, float lat, float lon, String feed) {
-  String payload = "{\"value\": " + String(data)  + ",\"lat\": " + String(lat) + ",\"lon\": " + String(lon) + "}";
+void postIntToFeed(int data, String lat, String lon, String feed) {
+  String payload = "{\"value\": " + String(data)  + ",\"lat\": " + lat + ",\"lon\": " + lon + "}";
   String url = "/api/v2/" + user + "/feeds/" + feed + "/data";
   modemPost(payload, url);
+}
+
+void postSensorsToAIO() {
+  setupModem();
+  modemConnect();
+  
+  if (sensorFeeds.containsKey("sensor_temp")) {
+    if (lat != "" && lon != "") {
+      postFloatToFeed(temperatureSample, lat, lon, sensorFeeds["sensor_temp"]);
+    } else {
+      postFloatToFeed(temperatureSample, sensorFeeds["sensor_temp"]);
+    }
+  }
+  if (sensorFeeds.containsKey("sensor_humidity")) {
+    if (lat != "" && lon != "") {
+      postFloatToFeed(humiditySample, lat, lon, sensorFeeds["sensor_humidity"]);
+    } else {
+      postFloatToFeed(humiditySample, sensorFeeds["sensor_humidity"]);
+    }
+  }
+  if (sensorFeeds.containsKey("sensor_pressure")) {
+    if (lat != "" && lon != "") {
+      postFloatToFeed(pressureSample, lat, lon, sensorFeeds["sensor_pressure"]);
+    } else {
+      postFloatToFeed(pressureSample, sensorFeeds["sensor_pressure"]);
+    }
+  }
+
+  modemDisconnect();
+  modemPoweroff();
 }

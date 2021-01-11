@@ -297,17 +297,26 @@ void SampleCycle1() {
   }
 }
 
-
 void testSampleAllSensors() {
-  sampleBME280();
-  sampleLux();
-  SampleMicPP();
-  if (readPMS5003()) {
-
-  } else {
-    Serial.println("PMS FAILED");
+  if ((sensorFeeds.containsKey("sensor_temp")) || (sensorFeeds.containsKey("sensor_humidity")) || (sensorFeeds.containsKey("sensor_pressure")) || (sensorFeeds.containsKey("sensor_altitude"))) {
+    sampleBME280();
   }
-  sampleMICS6814();
+  if (sensorFeeds.containsKey("sensor_light")) {
+    sampleLux();
+  }
+  if (sensorFeeds.containsKey("sensor_noise")) {
+    sampleMicPP();
+  }
+  if ((sensorFeeds.containsKey("sensor_p03um")) || (sensorFeeds.containsKey("sensor_p05um")) || (sensorFeeds.containsKey("sensor_p10um")) || (sensorFeeds.containsKey("sensor_p25um")) || (sensorFeeds.containsKey("sensor_p50um")) || (sensorFeeds.containsKey("sensor_p100um")) || (sensorFeeds.containsKey("sensor_pm10")) || (sensorFeeds.containsKey("sensor_pm25")) || (sensorFeeds.containsKey("sensor_pm100"))) {
+    if (readPMS5003()) {
+
+    } else {
+      Serial.println("PMS FAILED");
+    }
+  }
+  if ((sensorFeeds.containsKey("sensor_oxidising")) || (sensorFeeds.containsKey("sensor_reducing")) || (sensorFeeds.containsKey("sensor_nh3"))) {
+    sampleMICS6814();
+  }
 
   Serial.println("Sensor Sampling Complete!");
   Serial.print("Temp: ");
@@ -340,7 +349,4 @@ void testSampleAllSensors() {
   Serial.print("Particles > 5.0um / 0.1L air:"); Serial.println(getParticle(p50um));
   Serial.print("Particles > 10.0 um / 0.1L air:"); Serial.println(getParticle(p100um));
   Serial.println("---------------------------------------");
-
-  Serial.println("Posting to Adafruit IO");
-  //TODO//
 }
