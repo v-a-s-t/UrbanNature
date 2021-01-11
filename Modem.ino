@@ -15,6 +15,7 @@ const char gprsPass[] = ""; // Password
 const char simPIN[]   = ""; // SIM card PIN code, if any
 
 void setupModem() {
+  setupPMU();
 #ifdef MODEM_RST
   // Keep reset high
   pinMode(MODEM_RST, OUTPUT);

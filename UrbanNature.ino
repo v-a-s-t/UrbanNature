@@ -100,8 +100,9 @@ void loop() {
   // modemPoweroff();
   //
   // goToSleep(10);
-  if (usingCaptivePortal)
+  if (usingCaptivePortal) {
     captivePortalHandler();
-  else
+  } else {
     scheduleHandler();
+  }
 }

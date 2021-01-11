@@ -1,6 +1,6 @@
 /*
-Routine:
-1. Connect to internet
+  Routine:
+  1. Connect to internet
   if collecting sensor data,
     if sim is present,
       choose modem.
@@ -9,12 +9,12 @@ Routine:
         proceed.
       else,
         captive portal
-2. Get time
-3. Take measurement from each sensor
-4. Send sensor measurement to each feed
-5. Turn off peripherals
-6. Schedule sleep
-7. Sleep!
+  2. Get time
+  3. Take measurement from each sensor
+  4. Send sensor measurement to each feed
+  5. Turn off peripherals
+  6. Schedule sleep
+  7. Sleep!
 */
 
 struct tm timeData;
@@ -40,6 +40,10 @@ void connectAndCheckTime() {
   Serial.print("Minutes until data collection: ");
   Serial.println(waitTime);
   if (waitTime > 0) {
+    if (!usingWifi) {
+      modemDisconnect();
+      modemPoweroff();
+    }
     goToSleepMinutes(waitTime);
   }
 }
@@ -110,13 +114,14 @@ int calculateWaitTime(int h, int m, int _startHour, int _interval) {
     waitMinutes = _interval - (m % _interval);
   else
     waitMinutes = 0;
-  
+
   waitMinutes += waitHours * 60;
   return waitMinutes;
 }
 
 void scheduleHandler() {
-  // TODO Read sensors and post to aio here
+  enableSensors();
+  delay(1000);
   testSampleAllSensors();
   postSensorsToAIO();
   disableSensors();
