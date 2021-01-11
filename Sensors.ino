@@ -301,7 +301,7 @@ void SampleCycle1() {
 void testSampleAllSensors() {
   sampleBME280();
   sampleLux();
-  SampleMicPP();
+  sampleMicPP();
   if (readPMS5003()) {
 
   } else {
