@@ -48,14 +48,14 @@ void setR0() {
   gas_press = gas_press / R0_SAMPLE_AMOUNT;
   gas_hum = gas_hum / R0_SAMPLE_AMOUNT;
 
-  prefs.begin("urban-nature");
-  float red_r0_av = prefs.getFloat("redR0", 0);
-  float oxi_r0_av = prefs.getFloat("oxiR0", 0);
-  float nh3_r0_av = prefs.getFloat("nh3R0", 0);
-  float gas_temp_av = prefs.getFloat("tempR0", 0);
-  float gas_press_av = prefs.getFloat("pressR0", 0);
-  float gas_hum_av = prefs.getFloat("humR0", 0);
-  unsigned int counter = prefs.getUInt("R0Counter", 0);
+
+  float red_r0_av = prefsGetFloat("redR0");
+  float oxi_r0_av = prefsGetFloat("oxiR0");
+  float nh3_r0_av = prefsGetFloat("nh3R0");
+  float gas_temp_av = prefsGetFloat("tempR0");
+  float gas_press_av = prefsGetFloat("pressR0");
+  float gas_hum_av = prefsGetFloat("humR0");
+  unsigned int counter = prefsGetInt("R0Counter");
   counter++;
 
   red_r0_av = (red_r0_av + red_r0) / counter;
@@ -64,14 +64,13 @@ void setR0() {
   gas_temp_av = ( gas_temp_av + gas_temp) / counter;
   gas_press_av = ( gas_press_av + gas_press) / counter;
   gas_hum_av = ( gas_hum_av + gas_hum) / counter;
-  prefs.putUInt("R0Counter", counter);
-  prefs.putFloat("redR0", red_r0_av);
-  prefs.putFloat("oxiR0", oxi_r0_av);
-  prefs.putFloat("nh3R0", nh3_r0_av);
-  prefs.putFloat("tempR0", gas_temp_av);
-  prefs.putFloat("pressR0", gas_press_av);
-  prefs.putFloat("humR0", gas_hum_av);
-  prefs.end();
+  prefsSetInt("R0Counter", counter);
+  prefsSetFloat("redR0", red_r0_av);
+  prefsSetFloat("oxiR0", oxi_r0_av);
+  prefsSetFloat("nh3R0", nh3_r0_av);
+  prefsSetFloat("tempR0", gas_temp_av);
+  prefsSetFloat("pressR0", gas_press_av);
+  prefsSetFloat("humR0", gas_hum_av);
 
   Serial.println("R0 values set!");
   Serial.print("RED: ");
@@ -98,35 +97,27 @@ float getRatio(float RS, float R0) {
 
 
 float getOxR0() {
-  prefs.begin("urban-nature");
-  float ox = prefs.getFloat("oxiR0", 0);
-  prefs.end();
+  float ox = prefsGetFloat("oxiR0");
   return ox;
 }
 
 float getRedR0() {
-  prefs.begin("urban-nature");
-  float red = prefs.getFloat("redR0", 0);
-  prefs.end();
+  float red = prefsGetFloat("redR0");
   return red;
 }
 
 float getNH3R0() {
-  prefs.begin("urban-nature");
-  float nh3 = prefs.getFloat("nh3R0", 0);
-  prefs.end();
+  float nh3 = prefsGetFloat("nh3R0");
   return nh3;
 }
 
 void compensateGasReadings() {
-  prefs.begin("urban-nature");
   float ox = mics6814_readOx();
   float red = mics6814_readRed();
   float nh3 = mics6814_readNH3();
-  float gas_temp_av = prefs.getFloat("tempR0", 0);
-  float gas_press_av = prefs.getFloat("pressR0", 0);
-  float gas_hum_av = prefs.getFloat("humR0", 0);
-  prefs.end();
+  float gas_temp_av = prefsGetFloat("tempR0");
+  float gas_press_av = prefsGetFloat("pressR0");
+  float gas_hum_av = prefsGetFloat("humR0");
   float gas_temp_diff, gas_press_diff, gas_hum_diff;
   gas_temp_diff = BME280_getTemp();
   gas_temp_diff = gas_temp_diff - gas_temp_av;
