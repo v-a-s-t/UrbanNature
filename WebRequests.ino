@@ -67,7 +67,7 @@ void postIntToFeed(int data, String lat, String lon, String feed) {
 void postSensorsToAIO() {
   setupModem();
   modemConnect();
-  
+
   if (sensorFeeds.containsKey("sensor_temp")) {
     if (lat != "" && lon != "") {
       postFloatToFeed(temperatureSample, lat, lon, sensorFeeds["sensor_temp"]);
@@ -87,6 +87,111 @@ void postSensorsToAIO() {
       postFloatToFeed(pressureSample, lat, lon, sensorFeeds["sensor_pressure"]);
     } else {
       postFloatToFeed(pressureSample, sensorFeeds["sensor_pressure"]);
+    }
+  }
+  if (sensorFeeds.containsKey("sensor_altitude")) {
+    if (lat != "" && lon != "") {
+      postFloatToFeed(altitudeSample, lat, lon, sensorFeeds["sensor_altitude"]);
+    } else {
+      postFloatToFeed(altitudeSample, sensorFeeds["sensor_pressure"]);
+    }
+  }
+  if (sensorFeeds.containsKey("sensor_noise")) {
+    if (lat != "" && lon != "") {
+      postFloatToFeed(micPPSample, lat, lon, sensorFeeds["sensor_noise"]);
+    } else {
+      postFloatToFeed(micPPSample, sensorFeeds["sensor_noise"]);
+    }
+  }
+  if (sensorFeeds.containsKey("sensor_light")) {
+    if (lat != "" && lon != "") {
+      postIntToFeed(luxSample, lat, lon, sensorFeeds["sensor_light"]);
+    } else {
+      postIntToFeed(luxSample, sensorFeeds["sensor_light"]);
+    }
+  }
+  if (sensorFeeds.containsKey("sensor_oxidising")) {
+    if (lat != "" && lon != "") {
+      postFloatToFeed((float)oxSample, lat, lon, sensorFeeds["sensor_oxidising"]);
+    } else {
+      postFloatToFeed((float)oxSample, sensorFeeds["sensor_oxidising"]);
+    }
+  }
+  if (sensorFeeds.containsKey("sensor_reducing")) {
+    if (lat != "" && lon != "") {
+      postFloatToFeed((float)redSample, lat, lon, sensorFeeds["sensor_reducing"]);
+    } else {
+      postFloatToFeed((float)redSample, sensorFeeds["sensor_reducing"]);
+    }
+  }
+  if (sensorFeeds.containsKey("sensor_nh3")) {
+    if (lat != "" && lon != "") {
+      postFloatToFeed((float)nh3Sample, lat, lon, sensorFeeds["sensor_nh3"]);
+    } else {
+      postFloatToFeed((float)nh3Sample, sensorFeeds["sensor_nh3"]);
+    }
+  }
+  if (sensorFeeds.containsKey("sensor_p03um")) {
+    if (lat != "" && lon != "") {
+      postFloatToFeed(getParticle(p03um), lat, lon, sensorFeeds["sensor_p03um"]);
+    } else {
+      postFloatToFeed(getParticle(p03um), sensorFeeds["sensor_p03um"]);
+    }
+  }
+  if (sensorFeeds.containsKey("sensor_p05um")) {
+    if (lat != "" && lon != "") {
+      postFloatToFeed(getParticle(p05um), lat, lon, sensorFeeds["sensor_p05um"]);
+    } else {
+      postFloatToFeed(getParticle(p05um), sensorFeeds["sensor_p05um"]);
+    }
+  }
+  if (sensorFeeds.containsKey("sensor_p10um")) {
+    if (lat != "" && lon != "") {
+      postFloatToFeed(getParticle(p10um), lat, lon, sensorFeeds["sensor_p10um"]);
+    } else {
+      postFloatToFeed(getParticle(p10um), sensorFeeds["sensor_p10um"]);
+    }
+  }
+  if (sensorFeeds.containsKey("sensor_p25um")) {
+    if (lat != "" && lon != "") {
+      postFloatToFeed(getParticle(p25um), lat, lon, sensorFeeds["sensor_p25um"]);
+    } else {
+      postFloatToFeed(getParticle(p25um), sensorFeeds["sensor_p25um"]);
+    }
+  }
+  if (sensorFeeds.containsKey("sensor_p50um")) {
+    if (lat != "" && lon != "") {
+      postFloatToFeed(getParticle(p50um), lat, lon, sensorFeeds["sensor_p50um"]);
+    } else {
+      postFloatToFeed(getParticle(p50um), sensorFeeds["sensor_p50um"]);
+    }
+  }
+  if (sensorFeeds.containsKey("sensor_p100um")) {
+    if (lat != "" && lon != "") {
+      postFloatToFeed(getParticle(p100um), lat, lon, sensorFeeds["sensor_p100um"]);
+    } else {
+      postFloatToFeed(getParticle(p100um), sensorFeeds["sensor_p100um"]);
+    }
+  }
+  if (sensorFeeds.containsKey("sensor_pm10")) {
+    if (lat != "" && lon != "") {
+      postFloatToFeed(getParticle(pm10), lat, lon, sensorFeeds["sensor_pm10"]);
+    } else {
+      postFloatToFeed(getParticle(pm10), sensorFeeds["sensor_pm10"]);
+    }
+  }
+  if (sensorFeeds.containsKey("sensor_pm25")) {
+    if (lat != "" && lon != "") {
+      postFloatToFeed(getParticle(pm25), lat, lon, sensorFeeds["sensor_pm25"]);
+    } else {
+      postFloatToFeed(getParticle(pm25), sensorFeeds["sensor_pm25"]);
+    }
+  }
+  if (sensorFeeds.containsKey("sensor_pm100")) {
+    if (lat != "" && lon != "") {
+      postFloatToFeed(getParticle(pm100), lat, lon, sensorFeeds["sensor_pm100"]);
+    } else {
+      postFloatToFeed(getParticle(pm100), sensorFeeds["sensor_pm100"]);
     }
   }
 
