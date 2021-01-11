@@ -16,22 +16,6 @@
 
 */
 
-#include <Preferences.h>
-
-/*
-  Things stored here:
-  - WiFi station
-  - WiFi Password
-  - active sensor with key
-  - aio key
-  - aio user
-  - interval
-  - on time
-  - off time
-*/
-
-Preferences prefs;
-
 #include "Config.h"
 #include <Wire.h>
 #include <WiFi.h>
@@ -45,7 +29,8 @@ String user = "";
 void setup() {
   Wire.begin();
   Serial.begin(115200);
-  pinMode(LED, OUTPUT);
+  setupPins();
+  checkButtonOnStarUp();
 
   //loadPreferences();
 
@@ -59,7 +44,6 @@ void setup() {
     delay(100);
   }
 
-
   //wifiConnect();
   //setupWifiTime();
   //getWifiTime();
@@ -68,17 +52,17 @@ void setup() {
 
 void loop() {
 
-   setupModem();
-   modemConnect();
+ //  setupModem();
+ //  modemConnect();
   //
   // printAllSensors();
   //
-   postFloatToFeed(getTemp(), "test");
-   modemDisconnect();
-  modemPoweroff();
+  // postFloatToFeed(getTemp(), "test");
+  // modemDisconnect();
+ // modemPoweroff();
   //
   turnOffPMU();
   disableSensors();
   Serial.println("SLEEP");
-  goToSleep(10);
+  goToSleep(100);
 }

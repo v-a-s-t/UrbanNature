@@ -1,5 +1,5 @@
 #define LED 13
-#define BUTTON 15 //TBC
+#define BUTTON 15
 #define PMS_EN 33
 #define PMS_RST 2
 #define PMS_RX 19

@@ -16,8 +16,19 @@ float readBatteryVoltage() {
 
 bool batteryDetected = false;
 
-void batteryCheck(){
-  if(readBatteryVoltage() < 3.65 && batteryDetected){
+void batteryCheck() {
+  if (readBatteryVoltage() < 3.65 && batteryDetected) {
     Serial.println("Battery Low");
+  }
+}
+
+void setupPins() {
+  pinMode(LED, OUTPUT);
+  pinMode(BUTTON, INPUT_PULLUP);
+}
+
+void checkButtonOnStarUp(){
+  if(digitalRead(BUTTON) == 0){
+    Serial.println("Opening Captive portal");
   }
 }
