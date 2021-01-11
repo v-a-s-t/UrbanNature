@@ -68,6 +68,12 @@ enum Sensor {
 
 bool useCaptivePortal = false;
 
+//global sensor average variables
+double redSample, oxSample, nh3Sample;
+float temperatureSample, humiditySample, pressureSample, altitudeSample;
+int luxSample;
+float micPPSample;
+
 void setup() {
   Wire.begin();
   Serial.begin(115200);

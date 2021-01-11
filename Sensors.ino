@@ -52,13 +52,8 @@ float getAltitude() {
 }
 
 int getNoise() {
-  double micAverage = 0;
-  for (byte i = 0; i < MIC_SAMPLE; i++) {
-    micAverage = micAverage + abs(analogRead(MIC_SENSE) - 2048);
-    delay(1);
-  }
-  micAverage = micAverage / MIC_SAMPLE;
-  return (int)micAverage;
+
+  return (int)analogRead(MIC_SENSE);
 }
 
 
@@ -300,4 +295,52 @@ void SampleCycle1() {
     Serial.print("Microphone Sampling: ");
     Serial.println(noiseSample);
   }
+}
+
+
+void testSampleAllSensors() {
+  sampleBME280();
+  sampleLux();
+  SampleMicPP();
+  if (readPMS5003()) {
+
+  } else {
+    Serial.println("PMS FAILED");
+  }
+  sampleMICS6814();
+
+  Serial.println("Sensor Sampling Complete!");
+  Serial.print("Temp: ");
+  Serial.println(temperatureSample);
+  Serial.print("Hum: ");
+  Serial.println(humiditySample);
+  Serial.print("Pressure: ");
+  Serial.println(pressureSample);
+  Serial.print("Altitude: ");
+  Serial.println(altitudeSample);
+  Serial.print("Mic Level: ");
+  Serial.println(micPPSample);
+  Serial.print("Lux: ");
+  Serial.println(luxSample);
+  Serial.print("Reducing Gases: ");
+  Serial.println(redSample);
+  Serial.print("Oxidising Gases: ");
+  Serial.println(oxSample);
+  Serial.print("NH3: ");
+  Serial.println(nh3Sample);
+  Serial.println("Concentration Units (standard)");
+  Serial.print("PM 1.0: "); Serial.print(getConcentrationStandard(pm10));
+  Serial.print("\t\tPM 2.5: "); Serial.print(getConcentrationStandard(pm25));
+  Serial.print("\t\tPM 10: "); Serial.println(getConcentrationStandard(pm100));
+  Serial.println("---------------------------------------");
+  Serial.print("Particles > 0.3um / 0.1L air:"); Serial.println(getParticle(p03um));
+  Serial.print("Particles > 0.5um / 0.1L air:"); Serial.println(getParticle(p05um));
+  Serial.print("Particles > 1.0um / 0.1L air:"); Serial.println(getParticle(p10um));
+  Serial.print("Particles > 2.5um / 0.1L air:"); Serial.println(getParticle(p25um));
+  Serial.print("Particles > 5.0um / 0.1L air:"); Serial.println(getParticle(p50um));
+  Serial.print("Particles > 10.0 um / 0.1L air:"); Serial.println(getParticle(p100um));
+  Serial.println("---------------------------------------");
+
+  Serial.println("Posting to Adafruit IO");
+  //TODO//
 }

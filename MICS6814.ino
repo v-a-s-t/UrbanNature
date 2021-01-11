@@ -159,3 +159,16 @@ void mics6814_setup() {
   Serial.print("NH3 Ratio: ");
   Serial.println(getRatio(comp_nh3_RS, getNH3R0()));
 }
+
+void sampleMICS6814() {
+  double redOut, oxOut, nh3Out;
+  for (int i = 0; i < 30; i ++) {
+    redOut = redOut + mics6814_readRed();
+    oxOut = oxOut + mics6814_readOx();
+    nh3Out =  nh3Out + mics6814_readNH3();
+    delay(1000);
+  }
+  redSample = redOut / 30;
+  oxSample = oxOut / 30;
+  nh3Sample = nh3Out / 30;
+}
