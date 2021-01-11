@@ -342,3 +342,14 @@ void LTR559_begin() {
   LTR559_PS_setThreshold();
   LTR559_setControlRegs();
 }
+
+
+void sampleLux(){
+  double luxOut;
+  for (int i = 0; i < 30; i ++) {
+    luxOut = luxOut + getLux();
+    delay(1000);
+  }
+  luxOut = luxOut / 30;
+  luxSample = (int)luxOut;
+}
