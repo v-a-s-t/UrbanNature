@@ -18,6 +18,7 @@ bool wifiConnect() {
     return true;
   }
   else {
+    Serial.println("No WiFi credentials in preferences.");
     return false;
   }
 }

@@ -45,7 +45,7 @@ void loadPreferences() {
   pass = prefs.getString("pass", "");
   user = prefs.getString("user", "");
   aio_key = prefs.getString("aio_key", "");
-  startMinute = prefs.getInt("startMinute", 0);
+  startHour = prefs.getInt("startHour", 0);
   interval = prefs.getInt("interval", 60);
   lat = prefs.getString("lat", "");
   lon = prefs.getString("lon", "");
@@ -59,8 +59,8 @@ void loadPreferences() {
   Serial.println(ssid);
   Serial.print("AIO user: ");
   Serial.println(user);
-  Serial.print("Start minute: ");
-  Serial.println(startMinute);
+  Serial.print("Start hour: ");
+  Serial.println(startHour);
   Serial.print("Interval: ");
   Serial.println(interval);
   Serial.print("Lat: ");
@@ -78,7 +78,7 @@ void savePreferences() {
   prefs.putString("pass", pass);
   prefs.putString("user", user);
   prefs.putString("aio_key", aio_key);
-  prefs.putInt("startMinute", startMinute);
+  prefs.putInt("startHour", startHour);
   prefs.putInt("interval", interval);
   prefs.putString("lat", lat);
   prefs.putString("lon", lon);

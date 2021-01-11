@@ -1,19 +1,7 @@
-/*Sensor order
-
-  Cycle 1
-  BME280 (30 seconds sample)
-  LTR559 (30 seconds sample)
-  Microphone (30 seconds sample)
-
-  -Turn on gas heater
-  -Turn on PMS Fan
-  -PMS5003 (30 seconds sample)
-  -Wait 2 minutes for heater to fan up
-
-  Cycle 2
-  MICS6814 (30 seconds sample)
-
-
+/*TODO
+  - Fix Lux Calculation
+  - Convert Sound level to Decibel
+  - Test Gas Sensor Calculation
 */
 
 #include "Config.h"
@@ -28,11 +16,12 @@
 #include <ArduinoJson.h>
 
 String ssid, pass;
-bool isSimPresent = false;
+bool usingWifi = false;
+bool usingCaptivePortal = false;
 String aio_key = "";
 String user = "";
 StaticJsonDocument<1024> sensorFeeds;
-int startMinute;
+int startHour;
 String lat, lon;
 int interval; // In minutes!
 
@@ -74,17 +63,17 @@ float temperatureSample, humiditySample, pressureSample, altitudeSample;
 int luxSample;
 float micPPSample;
 
+
 void setup() {
   Wire.begin();
   Serial.begin(115200);
-  setupPins();
+  pinMode(LED, OUTPUT);
 
   SPIFFS.begin();
 
   loadPreferences();
 
-  //setupSensors();
-  //enableSensors();
+  setupSensors();
 
   for (int i = 0; i < 3; i++) {
     digitalWrite(LED, HIGH);
@@ -93,33 +82,26 @@ void setup() {
     delay(100);
   }
 
-  //  wifiConnect();
-  //  setupWifiTime();
-  //  getWifiTime();
-  //  printTime();
   checkButtonOnStartUp();
-  if (useCaptivePortal) {
+  if (usingCaptivePortal)
     setupCaptivePortal();
-  }
+  else
+    connectAndCheckTime();
 }
 
 void loop() {
-
-  scheduleHandler();
-  if (useCaptivePortal) {
+  // setupModem();
+  // modemConnect();
+  //
+  // printAllSensors();
+  //
+  // postFloatToFeed(getTemp(), "test");
+  // modemDisconnect();
+  // modemPoweroff();
+  //
+  // goToSleep(10);
+  if (usingCaptivePortal)
     captivePortalHandler();
-  } else {
-    //  setupModem();
-    //  modemConnect();
-    //
-    // printAllSensors();
-    //
-    // postFloatToFeed(getTemp(), "test");
-    // modemDisconnect();
-    // modemPoweroff();
-    //
-
-    // goToSleep(10);
-  }
-
+  else
+    scheduleHandler();
 }
