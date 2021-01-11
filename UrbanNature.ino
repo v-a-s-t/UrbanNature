@@ -1,7 +1,19 @@
-/*TODO
-  - Fix Lux Calculation
-  - Convert Sound level to Decibel
-  - Test Gas Sensor Calculation
+/*Sensor order
+
+  Cycle 1
+  BME280 (30 seconds sample)
+  LTR559 (30 seconds sample)
+  Microphone (30 seconds sample)
+  
+  -Turn on gas heater
+  -Turn on PMS Fan
+  -PMS5003 (30 seconds sample)
+  -Wait 2 minutes for heater to fan up
+
+  Cycle 2
+  MICS6814 (30 seconds sample)
+
+
 */
 
 #include "Config.h"
@@ -56,7 +68,8 @@ enum Sensor {
 void setup() {
   Wire.begin();
   Serial.begin(115200);
-  pinMode(LED, OUTPUT);
+  setupPins();
+  checkButtonOnStarUp();
 
   SPIFFS.begin();
 
@@ -80,16 +93,19 @@ void setup() {
 }
 
 void loop() {
-  // setupModem();
-  // modemConnect();
+
+ //  setupModem();
+ //  modemConnect();
   //
   // printAllSensors();
   //
   // postFloatToFeed(getTemp(), "test");
   // modemDisconnect();
-  // modemPoweroff();
+ // modemPoweroff();
   //
+
   // goToSleep(10);
   scheduleHandler();
   captivePortalHandler();
+
 }
