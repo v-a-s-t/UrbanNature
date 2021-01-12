@@ -15,7 +15,7 @@ bool setupPMU()
   return Wire.endTransmission() == 0;
 }
 
-void goToSleep(int seconds) {
+void goToSleep(unsigned long seconds) {
   turnOffPMU();
   disableSensors();
   Serial.print("Going to sleep for ");
@@ -26,7 +26,7 @@ void goToSleep(int seconds) {
 }
 
 
-void goToSleepMinutes(int minutes) {
+void goToSleepMinutes(unsigned long minutes) {
   goToSleep(minutes * 60);
 }
 

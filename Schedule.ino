@@ -107,7 +107,7 @@ int getHour() {
 int calculateWaitTime(int h, int m, int _startHour, int _interval) {
   int waitHours = 0;
   int waitMinutes = 0;
-  if (_interval >= 60)
+  if (_interval > 60)
     waitHours = (h - _startHour) % (_interval / 60);
   else
     waitHours = 0;
@@ -116,6 +116,11 @@ int calculateWaitTime(int h, int m, int _startHour, int _interval) {
     waitMinutes = _interval - (m % _interval);
   else
     waitMinutes = 0;
+
+  Serial.print("Wait hours: ");
+  Serial.println(waitHours);
+  Serial.print("Wait mins: ");
+  Serial.println(waitMinutes);
   
   waitMinutes += waitHours * 60;
   return waitMinutes;
@@ -124,5 +129,5 @@ int calculateWaitTime(int h, int m, int _startHour, int _interval) {
 void scheduleHandler() {
   testSampleAllSensors();
   postSensorsToAIO();
-  goToSleep(getSleepMinutes());
+  goToSleepMinutes(getSleepMinutes());
 }

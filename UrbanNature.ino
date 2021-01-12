@@ -82,7 +82,8 @@ void setup() {
   }
 
   checkButtonOnStartUp();
-  if (usingCaptivePortal || sensorFeeds.size() == 0)
+  if (sensorFeeds.size() == 0) usingCaptivePortal = true;
+  if (usingCaptivePortal)
     setupCaptivePortal();
   else
     connectAndCheckTime();
