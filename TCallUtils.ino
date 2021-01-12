@@ -16,6 +16,8 @@ bool setupPMU()
 }
 
 void goToSleep(int seconds) {
+  turnOffPMU();
+  disableSensors();
   Serial.print("Going to sleep for ");
   Serial.print(seconds);
   Serial.println(" seconds.");
