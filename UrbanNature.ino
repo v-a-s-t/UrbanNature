@@ -87,21 +87,15 @@ void setup() {
     setupCaptivePortal();
   else
     connectAndCheckTime();
+
+  enableSensors();
 }
 
 void loop() {
-  // setupModem();
-  // modemConnect();
-  //
-  // printAllSensors();
-  //
-  // postFloatToFeed(getTemp(), "test");
-  // modemDisconnect();
-  // modemPoweroff();
-  //
-  // goToSleep(10);
+  
   if (usingCaptivePortal)
     captivePortalHandler();
-  else
+  else {
     scheduleHandler();
+  }
 }

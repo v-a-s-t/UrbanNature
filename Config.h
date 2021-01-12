@@ -1,9 +1,9 @@
 #define LED 13
 #define BUTTON 15
 #define PMS_EN 33
-#define PMS_RST 2
-#define PMS_RX 19
-#define PMS_TX 18
+#define PMS_RST 15
+#define PMS_RX 18
+#define PMS_TX 19
 #define SENSOR_EN 25
 #define MIC_SENSE 34
 #define OX_SENSE 32 

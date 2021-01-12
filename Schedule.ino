@@ -48,6 +48,8 @@ int getSleepMinutes() {
   getTime();
   int waitTime = calculateWaitTime(getHour(), getMinute(), startHour, interval);
   if (waitTime == 0) waitTime = interval;
+  Serial.print("Minutes until next data collection: ");
+  Serial.println(waitTime);
   return waitTime;
 }
 
