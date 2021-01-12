@@ -92,7 +92,7 @@ void setup() {
 }
 
 void loop() {
-  
+
   if (usingCaptivePortal)
     captivePortalHandler();
   else {

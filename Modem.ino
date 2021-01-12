@@ -39,7 +39,7 @@ void setupModem() {
 
 bool modemConnect() {
   Serial.println("Initializing modem...");
-  modem.restart();
+  modem.init();
 
   // Turn off network status lights to reduce current consumption
   turnOffNetlight();

@@ -37,6 +37,10 @@ void connectAndCheckTime() {
   }
   getTime();
   int waitTime = calculateWaitTime(getHour(), getMinute(), startHour, interval);
+  if (waitTime >= interval - 1) {
+    waitTime = 0; // If we're late by a minute, just collect data! 
+    Serial.println("Late by 1m. Collecting anyway.");
+  }
   Serial.print("Minutes until data collection: ");
   Serial.println(waitTime);
   if (waitTime > 0) {
