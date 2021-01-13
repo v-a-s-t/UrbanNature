@@ -37,9 +37,11 @@ void connectAndCheckTime() {
   }
   getTime();
   int waitTime = calculateWaitTime(getHour(), getMinute(), startHour, interval);
-  if (waitTime >= interval - 1) {
-    waitTime = 0; // If we're late by a minute, just collect data! 
-    Serial.println("Late by 1m. Collecting anyway.");
+  if (waitTime >= interval - TIME_TOLERANCE_MINUTES) {
+    Serial.print("Late by ");
+    Serial.print(interval - waitTime);
+    Serial.println(". Collecting data anyway.");
+    waitTime = 0; // If we're late by a few mins, just collect data! 
   }
   Serial.print("Minutes until data collection: ");
   Serial.println(waitTime);
@@ -107,7 +109,7 @@ int getHour() {
 int calculateWaitTime(int h, int m, int _startHour, int _interval) {
   int waitHours = 0;
   int waitMinutes = 0;
-  if (_interval >= 60)
+  if (_interval > 60)
     waitHours = (h - _startHour) % (_interval / 60);
   else
     waitHours = 0;
@@ -116,12 +118,18 @@ int calculateWaitTime(int h, int m, int _startHour, int _interval) {
     waitMinutes = _interval - (m % _interval);
   else
     waitMinutes = 0;
+
+  Serial.print("Wait hours: ");
+  Serial.println(waitHours);
+  Serial.print("Wait mins: ");
+  Serial.println(waitMinutes);
   
   waitMinutes += waitHours * 60;
   return waitMinutes;
 }
 
 void scheduleHandler() {
-  // TODO Read sensors and post to aio here
-  goToSleep(getSleepMinutes());
+  testSampleAllSensors();
+  postSensorsToAIO();
+  goToSleepMinutes(getSleepMinutes());
 }

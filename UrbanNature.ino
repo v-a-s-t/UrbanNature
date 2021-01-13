@@ -63,7 +63,6 @@ float temperatureSample, humiditySample, pressureSample, altitudeSample;
 int luxSample;
 float micPPSample;
 
-
 void setup() {
   Wire.begin();
   Serial.begin(115200);
@@ -83,16 +82,14 @@ void setup() {
   }
 
   checkButtonOnStartUp();
-  if (usingCaptivePortal || sensorFeeds.size() == 0)
+  if (sensorFeeds.size() == 0) usingCaptivePortal = true;
+  if (usingCaptivePortal)
     setupCaptivePortal();
   else
     connectAndCheckTime();
-
-  enableSensors();
 }
 
 void loop() {
-  
   if (usingCaptivePortal)
     captivePortalHandler();
   else {
