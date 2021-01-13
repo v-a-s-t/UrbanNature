@@ -36,3 +36,22 @@ void turnOffPMU()
   Wire.write(0x36); // Set bit1: 1 enable 0 disable boost keep on
   Wire.endTransmission();
 }
+
+#define IP5306_REG_READ_0   0x70
+
+bool isPluggedIn() {
+  Wire.begin(I2C_SDA, I2C_SCL);
+  Wire.beginTransmission(IP5306_ADDR);
+  Wire.write(IP5306_REG_READ_0);
+  Wire.endTransmission();
+  Wire.requestFrom(IP5306_ADDR, 1);
+  while (Wire.available() < 1);
+  byte dataIn = Wire.read();
+  if (bitRead(dataIn, 3) == 1) {
+    Serial.println("Device powered by USB");
+    return true;
+  } else {
+    Serial.println("Device powered by BAT");
+    return false;
+  }
+}
