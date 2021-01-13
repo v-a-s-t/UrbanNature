@@ -1,25 +1,17 @@
 #define BATTERY_SAMPLE 10
 
 float readBatteryVoltage() {
-  float voltageIn;
-  float voltsPerStep = 3.3 / 4095.0;
+  double voltageIn;
   for (int i = 0; i < BATTERY_SAMPLE; i++) {
     voltageIn = voltageIn + analogRead(BATTERY_READ);
     delay(10);
   }
-  voltageIn = voltageIn / BATTERY_SAMPLE;
+  voltageIn = voltageIn / 10.0;
 
-  voltageIn = (voltageIn * voltsPerStep) * 2;
+  voltageIn = (voltageIn * 2) / 4095.0;
+  voltageIn = voltageIn * 3.3;
 
-  return voltageIn;
-}
-
-bool batteryDetected = false;
-
-void batteryCheck() {
-  if (readBatteryVoltage() < 3.65 && batteryDetected) {
-    Serial.println("Battery Low");
-  }
+  return (float)voltageIn;
 }
 
 void setupPins() {
@@ -27,8 +19,8 @@ void setupPins() {
   pinMode(BUTTON, INPUT_PULLUP);
 }
 
-bool checkButtonOnStartUp(){
-  if(digitalRead(BUTTON) == 0){
+bool checkButtonOnStartUp() {
+  if (digitalRead(BUTTON) == 0) {
     Serial.println("Opening Captive portal");
     usingCaptivePortal =  true;
   } else {
@@ -40,10 +32,10 @@ bool checkButtonOnStartUp(){
 unsigned long resetMillis;
 #define RESET_TIMEOUT 2000
 
-void reset(){
+void reset() {
   resetMillis = millis();
 
-  while(millis() - resetMillis < RESET_TIMEOUT){
+  while (millis() - resetMillis < RESET_TIMEOUT) {
     yield();
   }
   ESP.restart();

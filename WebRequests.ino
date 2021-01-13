@@ -98,9 +98,9 @@ void postSensorsToAIO() {
   }
   if (sensorFeeds.containsKey("sensor_noise")) {
     if (lat != "" && lon != "") {
-      postFloatToFeed(micPPSample, lat, lon, sensorFeeds["sensor_noise"]);
+      postIntToFeed(micPPSample, lat, lon, sensorFeeds["sensor_noise"]);
     } else {
-      postFloatToFeed(micPPSample, sensorFeeds["sensor_noise"]);
+      postIntToFeed(micPPSample, sensorFeeds["sensor_noise"]);
     }
   }
   if (sensorFeeds.containsKey("sensor_light")) {
@@ -195,6 +195,6 @@ void postSensorsToAIO() {
     }
   }
 
-  modemDisconnect();
-  modemPoweroff();
+  //modemDisconnect();
+  //modemPoweroff();
 }

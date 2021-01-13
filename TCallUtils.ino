@@ -1,5 +1,8 @@
 #define uS_TO_S_FACTOR 1000000ULL  /* Conversion factor for micro seconds to seconds */
 
+#define IP5306_REG_READ_0   0x70
+#define IP5306_REG_READ_1   0x71
+
 // setPowerBoostKeepOn
 bool setupPMU()
 {
@@ -39,8 +42,6 @@ void turnOffPMU()
   Wire.endTransmission();
 }
 
-#define IP5306_REG_READ_0   0x70
-
 bool isPluggedIn() {
   Wire.begin(I2C_SDA, I2C_SCL);
   Wire.beginTransmission(IP5306_ADDR);
@@ -56,4 +57,48 @@ bool isPluggedIn() {
     Serial.println("Device powered by BAT");
     return false;
   }
+}
+
+bool isBatteryFull() {
+  Wire.begin(I2C_SDA, I2C_SCL);
+  Wire.beginTransmission(IP5306_ADDR);
+  Wire.write(IP5306_REG_READ_1);
+  Wire.endTransmission();
+  Wire.requestFrom(IP5306_ADDR, 1);
+  while (Wire.available() < 1);
+  byte dataIn = Wire.read();
+  if (bitRead(dataIn, 3) == 1) {
+    Serial.println("Battery is fully charged");
+    return true;
+  } else {
+    Serial.println("Battery is charging or discharged");
+    return false;
+  }
+}
+
+unsigned long prevChargeMillis;
+#define CHARGECHECKINTERVAL 1000
+
+void chargeCheck() {
+  if (millis() - prevChargeMillis > CHARGECHECKINTERVAL) {
+    Serial.print("Battery Voltage: ");
+    Serial.println(readBatteryVoltage());
+    prevChargeMillis = millis();
+    isCharging = isPluggedIn();
+    if (isCharging) {
+      if (!DEBUG) {
+        if (isBatteryFull()) {
+          digitalWrite(LED, 1);
+        } else {
+          digitalWrite(LED, 1);
+          delay(10);
+          digitalWrite(LED, 0);
+        }
+      }
+    } else {
+      ESP.restart();
+    }
+  }
+
+
 }

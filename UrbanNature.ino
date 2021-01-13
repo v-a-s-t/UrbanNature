@@ -4,6 +4,9 @@
   - Test Gas Sensor Calculation
 */
 
+//Allows main loop to continue if plugged in
+#define DEBUG false
+
 #include "Config.h"
 #include <Wire.h>
 #include <WiFi.h>
@@ -56,43 +59,51 @@ enum Sensor {
 
 
 bool useCaptivePortal = false;
+bool isCharging = false;
 
 //global sensor average variables
 double redSample, oxSample, nh3Sample;
 float temperatureSample, humiditySample, pressureSample, altitudeSample;
 int luxSample;
-float micPPSample;
+int micPPSample;
 
 void setup() {
   Wire.begin();
   Serial.begin(115200);
   pinMode(LED, OUTPUT);
 
-  SPIFFS.begin();
+  isCharging = isPluggedIn();
 
-  loadPreferences();
+  if (!isCharging || DEBUG) {
+    for (int i = 0; i < 3; i++) {
+      digitalWrite(LED, HIGH);
+      delay(100);
+      digitalWrite(LED, LOW);
+      delay(100);
+    }
 
-  setupSensors();
+    setupSensors();
+    SPIFFS.begin();
+    loadPreferences();
+    checkButtonOnStartUp();
 
-  for (int i = 0; i < 3; i++) {
-    digitalWrite(LED, HIGH);
-    delay(100);
-    digitalWrite(LED, LOW);
-    delay(100);
+    if (sensorFeeds.size() == 0) usingCaptivePortal = true;
+    if (usingCaptivePortal)
+      setupCaptivePortal();
+    else {
+      connectAndCheckTime();
+    }
   }
-
-  checkButtonOnStartUp();
-  if (sensorFeeds.size() == 0) usingCaptivePortal = true;
-  if (usingCaptivePortal)
-    setupCaptivePortal();
-  else
-    connectAndCheckTime();
 }
 
 void loop() {
-  if (usingCaptivePortal)
-    captivePortalHandler();
-  else {
-    scheduleHandler();
+  if (!isCharging || DEBUG) {
+    if (usingCaptivePortal)
+      captivePortalHandler();
+    else {
+      scheduleHandler();
+    }
+  } else {
+    chargeCheck();
   }
 }

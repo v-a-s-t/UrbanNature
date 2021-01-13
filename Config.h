@@ -6,7 +6,7 @@
 #define PMS_TX 19
 #define SENSOR_EN 25
 #define MIC_SENSE 34
-#define OX_SENSE 32 
+#define OX_SENSE 32 // connected to SIM800L
 #define RED_SENSE 14
 #define NH3_SENSE 12
 #define BATTERY_READ 35

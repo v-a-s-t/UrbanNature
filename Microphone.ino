@@ -7,8 +7,8 @@ void sampleMicPP()
   unsigned int peakToPeak = 0;
   unsigned int signalMax = 0;
   unsigned int signalMin = 4096;
-  int sampleLength = 300; //30 seconds
-  float averageSample = 0;
+  int sampleLength = 30; //30 seconds
+  int averageSample = 0;
   
   for (int i = 0; i < sampleLength; i++) {
     peakToPeak = 0;
@@ -33,7 +33,7 @@ void sampleMicPP()
     }
     peakToPeak = signalMax - signalMin;  // max - min = peak-peak amplitude
     float volts = peakToPeak;  // convert to volts
-    delay(100);
+    delay(50);
     if(volts > averageSample){
       averageSample = volts;
     }
