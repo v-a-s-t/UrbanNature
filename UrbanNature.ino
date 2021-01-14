@@ -72,7 +72,12 @@ void setup() {
 
   loadPreferences();
 
+  setupPMU();
+  printIP5306Settings();
+
   setupSensors();
+
+  checkShortSleep();
 
   for (int i = 0; i < 3; i++) {
     digitalWrite(LED, HIGH);

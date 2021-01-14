@@ -28,11 +28,12 @@ void setupSensors() {
 
 void enableSensors() {
   digitalWrite(SENSOR_EN, HIGH);
+  digitalWrite(PMS_EN, HIGH);
 }
 
 void disableSensors() {
   digitalWrite(SENSOR_EN, LOW);
-  delay(2000);
+  digitalWrite(PMS_EN, HIGH);
 }
 
 float getTemp() {
