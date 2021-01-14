@@ -1,6 +1,6 @@
 /*
-Routine:
-1. Connect to internet
+  Routine:
+  1. Connect to internet
   if collecting sensor data,
     if sim is present,
       choose modem.
@@ -9,13 +9,14 @@ Routine:
         proceed.
       else,
         captive portal
-2. Get time
-3. Take measurement from each sensor
-4. Send sensor measurement to each feed
-5. Turn off peripherals
-6. Schedule sleep
-7. Sleep!
+  2. Get time
+  3. Take measurement from each sensor
+  4. Send sensor measurement to each feed
+  5. Turn off peripherals
+  6. Schedule sleep
+  7. Sleep!
 */
+RTC_DATA_ATTR int timeToSleepMinutes = 0;
 
 struct tm timeData;
 float timezone = 0.0;
@@ -25,28 +26,41 @@ void setupWifiTime() {
   configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);
 }
 
+void shortSleepMinutes(int mins) {
+  timeToSleepMinutes = mins;
+  goToSleepMinutes(1);
+}
+
 void connectAndCheckTime() {
-  usingWifi = wifiConnect();
-  if (!usingWifi) {
-    setupModem();
-    if (!modemConnect()) {
-      Serial.println("ERROR: Modem could not connect.");
+  timeToSleepMinutes--;
+  if (timeToSleepMinutes > 0) {
+    Serial.println("sleeping");
+    goToSleepMinutes(1);
+  }
+  else {
+    timeToSleepMinutes = 0;
+    usingWifi = wifiConnect();
+    if (!usingWifi) {
+      setupModem();
+      if (!modemConnect()) {
+        Serial.println("ERROR: Modem could not connect.");
+      }
+    } else {
+      Serial.println("Using wifi.");
     }
-  } else {
-    Serial.println("Using wifi.");
-  }
-  getTime();
-  int waitTime = calculateWaitTime(getHour(), getMinute(), startHour, interval);
-  if (waitTime >= interval - TIME_TOLERANCE_MINUTES) {
-    Serial.print("Late by ");
-    Serial.print(interval - waitTime);
-    Serial.println(". Collecting data anyway.");
-    waitTime = 0; // If we're late by a few mins, just collect data! 
-  }
-  Serial.print("Minutes until data collection: ");
-  Serial.println(waitTime);
-  if (waitTime > 0) {
-    goToSleepMinutes(waitTime);
+    getTime();
+    int waitTime = calculateWaitTime(getHour(), getMinute(), startHour, interval);
+    if (waitTime >= interval - TIME_TOLERANCE_MINUTES) {
+      Serial.print("Late by ");
+      Serial.print(interval - waitTime);
+      Serial.println(". Collecting data anyway.");
+      waitTime = 0; // If we're late by a few mins, just collect data!
+    }
+    Serial.print("Minutes until data collection: ");
+    Serial.println(waitTime);
+    if (waitTime > 0) {
+      shortSleepMinutes(waitTime);
+    }
   }
 }
 
@@ -123,7 +137,7 @@ int calculateWaitTime(int h, int m, int _startHour, int _interval) {
   Serial.println(waitHours);
   Serial.print("Wait mins: ");
   Serial.println(waitMinutes);
-  
+
   waitMinutes += waitHours * 60;
   return waitMinutes;
 }
@@ -131,5 +145,5 @@ int calculateWaitTime(int h, int m, int _startHour, int _interval) {
 void scheduleHandler() {
   testSampleAllSensors();
   postSensorsToAIO();
-  goToSleepMinutes(getSleepMinutes());
+  shortSleepMinutes(getSleepMinutes());
 }
