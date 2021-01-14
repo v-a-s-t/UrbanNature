@@ -31,36 +31,49 @@ void shortSleepMinutes(int mins) {
   goToSleepMinutes(1);
 }
 
-void connectAndCheckTime() {
-  timeToSleepMinutes--;
-  if (timeToSleepMinutes > 0) {
-    Serial.println("sleeping");
-    goToSleepMinutes(1);
+void checkShortSleep() {
+  esp_sleep_wakeup_cause_t wakeup_reason;
+  wakeup_reason = esp_sleep_get_wakeup_cause();
+  if (wakeup_reason == ESP_SLEEP_WAKEUP_TIMER) {
+    timeToSleepMinutes--;
+    if (timeToSleepMinutes > 0) {
+      Serial.print("Sleeping. Minutes left: ");
+      Serial.println(timeToSleepMinutes);
+      enableSensors();
+      digitalWrite(LED, HIGH);
+      delay(LIGHT_LOAD_ON_S * 1000);
+      disableSensors();
+      digitalWrite(LED, LOW);
+      goToSleep(60 - LIGHT_LOAD_ON_S);
+    }
+    else {
+      timeToSleepMinutes = 0;
+    }
   }
-  else {
-    timeToSleepMinutes = 0;
-    usingWifi = wifiConnect();
-    if (!usingWifi) {
-      setupModem();
-      if (!modemConnect()) {
-        Serial.println("ERROR: Modem could not connect.");
-      }
-    } else {
-      Serial.println("Using wifi.");
+}
+
+void connectAndCheckTime() {
+  usingWifi = wifiConnect();
+  if (!usingWifi) {
+    setupModem();
+    if (!modemConnect()) {
+      Serial.println("ERROR: Modem could not connect.");
     }
-    getTime();
-    int waitTime = calculateWaitTime(getHour(), getMinute(), startHour, interval);
-    if (waitTime >= interval - TIME_TOLERANCE_MINUTES) {
-      Serial.print("Late by ");
-      Serial.print(interval - waitTime);
-      Serial.println(". Collecting data anyway.");
-      waitTime = 0; // If we're late by a few mins, just collect data!
-    }
-    Serial.print("Minutes until data collection: ");
-    Serial.println(waitTime);
-    if (waitTime > 0) {
-      shortSleepMinutes(waitTime);
-    }
+  } else {
+    Serial.println("Using wifi.");
+  }
+  getTime();
+  int waitTime = calculateWaitTime(getHour(), getMinute(), startHour, interval);
+  if (waitTime >= interval - TIME_TOLERANCE_MINUTES) {
+    Serial.print("Late by ");
+    Serial.print(interval - waitTime);
+    Serial.println(". Collecting data anyway.");
+    waitTime = 0; // If we're late by a few mins, just collect data!
+  }
+  Serial.print("Minutes until data collection: ");
+  Serial.println(waitTime);
+  if (waitTime > 0) {
+    shortSleepMinutes(waitTime);
   }
 }
 
