@@ -66,7 +66,7 @@ float micPPSample;
 void setup() {
   Wire.begin();
   Serial.begin(115200);
-  pinMode(LED, OUTPUT);
+  setupPins();
 
   SPIFFS.begin();
 

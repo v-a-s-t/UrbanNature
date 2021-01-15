@@ -27,7 +27,7 @@ void setupPins() {
   pinMode(BUTTON, INPUT_PULLUP);
 }
 
-bool checkButtonOnStartUp(){
+void checkButtonOnStartUp(){
   if(digitalRead(BUTTON) == 0){
     Serial.println("Opening Captive portal");
     usingCaptivePortal =  true;
@@ -35,6 +35,7 @@ bool checkButtonOnStartUp(){
     usingCaptivePortal = false;
   }
   pinMode(PMS_RST,OUTPUT);
+  digitalWrite(PMS_RST,LOW);
 }
 
 
