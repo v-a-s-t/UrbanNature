@@ -77,6 +77,7 @@ void setup() {
 
   setupSensors();
 
+  debugSensors();
   checkShortSleep();
 
   for (int i = 0; i < 3; i++) {

@@ -18,7 +18,7 @@ enum concentrationTypes {
 void setupSensors() {
   pinMode(SENSOR_EN, OUTPUT);
   digitalWrite(SENSOR_EN, LOW);
-  pinMode(PMS_EN,OUTPUT);
+  pinMode(PMS_EN, OUTPUT);
 
   // LTR559 requires at least 100ms before initialising
   delay(300);
@@ -36,7 +36,7 @@ void enableSensors() {
 void disableSensors() {
   digitalWrite(SENSOR_EN, LOW);
   digitalWrite(PMS_EN, LOW);
-    digitalWrite(PMS_RST, LOW);
+  digitalWrite(PMS_RST, LOW);
 }
 
 float getTemp() {
@@ -303,23 +303,26 @@ void SampleCycle1() {
 
 void testSampleAllSensors() {
   setupPMU();
-  
+
   if ((sensorFeeds.containsKey("sensor_temp")) || (sensorFeeds.containsKey("sensor_humidity")) || (sensorFeeds.containsKey("sensor_pressure")) || (sensorFeeds.containsKey("sensor_altitude"))) {
     sampleBME280();
   }
   if (sensorFeeds.containsKey("sensor_light")) {
     sampleLux();
   }
-  
+
   enableSensors();
   delay(2000);
-  
+
   if (sensorFeeds.containsKey("sensor_noise")) {
     sampleMicPP();
   }
   if ((sensorFeeds.containsKey("sensor_p03um")) || (sensorFeeds.containsKey("sensor_p05um")) || (sensorFeeds.containsKey("sensor_p10um")) || (sensorFeeds.containsKey("sensor_p25um")) || (sensorFeeds.containsKey("sensor_p50um")) || (sensorFeeds.containsKey("sensor_p100um")) || (sensorFeeds.containsKey("sensor_pm10")) || (sensorFeeds.containsKey("sensor_pm25")) || (sensorFeeds.containsKey("sensor_pm100"))) {
     if (readPMS5003()) {
-
+      for (int i = 0; i < 30; i ++) {
+        readPMS5003();
+        delay(1000);
+      }
     } else {
       Serial.println("PMS FAILED");
     }
@@ -359,4 +362,66 @@ void testSampleAllSensors() {
   Serial.print("Particles > 5.0um / 0.1L air:"); Serial.println(getParticle(p50um));
   Serial.print("Particles > 10.0 um / 0.1L air:"); Serial.println(getParticle(p100um));
   Serial.println("---------------------------------------");
+}
+
+void debugSensors() {
+#ifdef DEBUG_PMS
+  pinMode(PMS_RST, OUTPUT);
+  setupSensors();
+  enableSensors();
+  Serial.println("The PMS will need to warm up before data is valid");
+  delay(2000);
+  while (1) {
+    printPmsData();
+    delay(1000);
+  }
+#endif
+#ifdef DEBUG_LTR559
+  setupSensors();
+  enableSensors();
+  while (1) {
+    Serial.println(getLux());
+    delay(1000);
+  }
+#endif
+#ifdef DEBUG_MICS6814
+  setupSensors();
+  enableSensors();
+  Serial.println("The Gas sensor will need to heat up at least 30s before data is valid");
+  delay(2000);
+  while (1) {
+    Serial.print("RED: ");
+    Serial.println(mics6814_readRed());
+    Serial.print("OX: ");
+    Serial.println(mics6814_readOx());
+    Serial.print("NH3: ");
+    Serial.println(mics6814_readNH3());
+    Serial.println();
+    delay(1000);
+  }
+#endif
+#ifdef DEBUG_MICROPHONE
+  setupSensors();
+  enableSensors();
+  while (1) {
+    Serial.println(getMicPeak());
+    delay(10);
+  }
+#endif
+#ifdef DEBUG_BME280
+  setupSensors();
+  enableSensors();
+  while (1) {
+    Serial.print("Temp: ");
+    Serial.println(getTemp());
+    Serial.print("Humidity: ");
+    Serial.println(getHumidity());
+    Serial.print("Pressure: ");
+    Serial.println(getPressure());
+    Serial.print("Altitude: ");
+    Serial.println(getAltitude());
+    Serial.println();
+    delay(1000);
+  }
+#endif
 }
