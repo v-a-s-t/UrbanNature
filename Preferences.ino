@@ -1,9 +1,9 @@
 #include <Preferences.h>
 
 /*
- * Example of the sensorFeeds json object:
+   Example of the sensorFeeds json object:
 
-{
+  {
   "sensor_p03um": "myfeedforthissensor",
   "sensor_p05um": "myfeedforthissensor",
   "sensor_p10um": "myfeedforthissensor",
@@ -22,7 +22,7 @@
   "sensor_reducing": "myfeedforthissensor",
   "sensor_nh3": "myfeedforthissensor",
   "sensor_light": "myfeedforthissensor"
- }
+  }
 
   Things stored here:
   - WiFi station
@@ -47,6 +47,9 @@ void loadPreferences() {
   aio_key = prefs.getString("aio_key", "");
   startHour = prefs.getInt("startHour", 0);
   interval = prefs.getInt("interval", 60);
+#ifdef DEBUG_INTERVAL
+  interval = DEBUG_INTERVAL;
+#endif
   lat = prefs.getString("lat", "");
   lon = prefs.getString("lon", "");
   String sensorFeedsBuffer = prefs.getString("sensorFeeds", "");

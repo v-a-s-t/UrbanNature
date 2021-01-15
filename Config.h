@@ -1,3 +1,5 @@
+#define DEBUG_INTERVAL 10
+
 #define LED 13
 #define BUTTON 15
 #define PMS_EN 33
