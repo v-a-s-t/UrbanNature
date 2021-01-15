@@ -75,6 +75,11 @@ void setup() {
   isCharging = isPluggedIn();
 
   if (!isCharging || DEBUG) {
+    setupPMU();
+    printIP5306Settings();
+    setupSensors();
+    checkShortSleep();
+
     for (int i = 0; i < 3; i++) {
       digitalWrite(LED, HIGH);
       delay(100);
@@ -82,7 +87,6 @@ void setup() {
       delay(100);
     }
 
-    setupSensors();
     SPIFFS.begin();
     loadPreferences();
     checkButtonOnStartUp();

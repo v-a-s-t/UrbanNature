@@ -23,7 +23,6 @@
 #define LTR559_ADDR         0x23
 #define BME280_ADDR          0x76
 #define IP5306_ADDR          0x75
-#define IP5306_REG_SYS_CTL0  0x00
 
 // Set serial for AT commands (to the module)
 #define SerialAT  Serial1
@@ -44,6 +43,7 @@ const char* ntpServer = "pool.ntp.org";
 const long  gmtOffset_sec = 0;
 const int   daylightOffset_sec = 3600;
 #define TIME_TOLERANCE_MINUTES 5
+#define LIGHT_LOAD_ON_S 2
 
 // location 
 float latGSM = 0;
