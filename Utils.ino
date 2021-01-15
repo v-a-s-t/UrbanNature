@@ -60,3 +60,7 @@ String generateID() {
   String out = String(low);
   return  out;
 }
+
+bool isCharging(){
+  return(IP5306_GetPowerSource());
+}

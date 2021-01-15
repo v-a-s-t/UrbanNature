@@ -76,8 +76,21 @@ void setup() {
   printIP5306Settings();
 
   setupSensors();
-
   debugSensors();
+
+#ifndef DEBUG_OUTPUT
+  if (isCharging()) {
+    while (1) {
+      digitalWrite(LED, 1);
+      delay(100);
+      digitalWrite(LED, 0);
+      delay(1100);
+      if (!isCharging()) {
+        ESP.restart();
+      }
+    }
+  }
+#endif
   checkShortSleep();
 
   for (int i = 0; i < 3; i++) {
