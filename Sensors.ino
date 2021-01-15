@@ -33,7 +33,8 @@ void enableSensors() {
 
 void disableSensors() {
   digitalWrite(SENSOR_EN, LOW);
-  digitalWrite(PMS_EN, HIGH);
+  digitalWrite(PMS_EN, LOW);
+    digitalWrite(PMS_RST, LOW);
 }
 
 float getTemp() {
@@ -309,6 +310,7 @@ void testSampleAllSensors() {
   }
   
   enableSensors();
+  delay(2000);
   
   if (sensorFeeds.containsKey("sensor_noise")) {
     sampleMicPP();
