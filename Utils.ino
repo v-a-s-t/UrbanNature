@@ -34,6 +34,7 @@ bool checkButtonOnStartUp(){
   } else {
     usingCaptivePortal = false;
   }
+  pinMode(PMS_RST,OUTPUT);
 }
 
 

@@ -12,9 +12,7 @@ struct pms5003data particulateData;
 void PMS5003_begin() {
   Serial2.begin(9600, SERIAL_8N1, PMS_RX, PMS_TX);
   pinMode(PMS_EN, OUTPUT);
-  pinMode(PMS_RST, OUTPUT);
   digitalWrite(PMS_EN, HIGH);
-  digitalWrite(PMS_RST, HIGH);
 }
 
 // Code for calculating the sensor readings

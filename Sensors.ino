@@ -18,6 +18,7 @@ enum concentrationTypes {
 void setupSensors() {
   pinMode(SENSOR_EN, OUTPUT);
   digitalWrite(SENSOR_EN, LOW);
+  pinMode(PMS_EN,OUTPUT);
 
   // LTR559 requires at least 100ms before initialising
   delay(300);
@@ -29,6 +30,7 @@ void setupSensors() {
 void enableSensors() {
   digitalWrite(SENSOR_EN, HIGH);
   digitalWrite(PMS_EN, HIGH);
+  digitalWrite(PMS_RST, HIGH);
 }
 
 void disableSensors() {
