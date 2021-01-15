@@ -152,6 +152,7 @@ bool setupPMU()
 //  return Wire.endTransmission() == 0;
   IP5306_SetLightLoadShutdownTime(3);
   IP5306_SetBoostOutputEnabled(1);
+  IP5306_SetPowerOnLoadEnabled(1);
 }
 
 void printIP5306Settings(){
@@ -179,7 +180,7 @@ void printIP5306Settings(){
 }
 
 void goToSleep(unsigned long seconds) {
-  turnOffPMU();
+ // turnOffPMU();
   disableSensors();
   Serial.print("Going to sleep for ");
   Serial.print(seconds);
