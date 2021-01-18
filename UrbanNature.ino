@@ -97,14 +97,19 @@ void setup() {
     delay(100);
   }
 
+
   checkButtonOnStartUp();
   if (sensorFeeds.size() == 0) usingCaptivePortal = true;
   if (usingCaptivePortal) {
     setupCaptivePortal();
   } else {
+#ifndef DEBUG_OUTPUT
     if (!isCharging()) {
       connectAndCheckTime();
     }
+#else
+    connectAndCheckTime();
+#endif
   }
 }
 
@@ -114,8 +119,8 @@ void loop() {
   if (isDeviceCharging) {
     chargingBlink();
     hasBeenOnCharge = true;
-  }else{
-    if(hasBeenOnCharge){
+  } else {
+    if (hasBeenOnCharge) {
       ESP.restart();
     }
   }

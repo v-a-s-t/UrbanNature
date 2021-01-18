@@ -34,7 +34,7 @@ void setupModem() {
   delay(1000);
   digitalWrite(MODEM_PWRKEY, HIGH);
 
-  SerialAT.begin(38400, SERIAL_8N1, MODEM_RX, MODEM_TX);
+  SerialAT.begin(19200, SERIAL_8N1, MODEM_RX, MODEM_TX);
 }
 
 bool modemConnect() {
