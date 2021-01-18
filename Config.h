@@ -1,5 +1,5 @@
 //#define DEBUG_OUTPUT
-#define DEBUG_INTERVAL 10
+//#define DEBUG_INTERVAL 10
 //#define DEBUG_PMS
 //#define DEBUG_LTR559
 //#define DEBUG_MICS6814
