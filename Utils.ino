@@ -27,25 +27,25 @@ void setupPins() {
   pinMode(BUTTON, INPUT_PULLUP);
 }
 
-void checkButtonOnStartUp(){
-  if(digitalRead(BUTTON) == 0){
+void checkButtonOnStartUp() {
+  if (digitalRead(BUTTON) == 0) {
     Serial.println("Opening Captive portal");
     usingCaptivePortal =  true;
   } else {
     usingCaptivePortal = false;
   }
-  pinMode(PMS_RST,OUTPUT);
-  digitalWrite(PMS_RST,LOW);
+  pinMode(PMS_RST, OUTPUT);
+  digitalWrite(PMS_RST, LOW);
 }
 
 
 unsigned long resetMillis;
 #define RESET_TIMEOUT 2000
 
-void reset(){
+void reset() {
   resetMillis = millis();
 
-  while(millis() - resetMillis < RESET_TIMEOUT){
+  while (millis() - resetMillis < RESET_TIMEOUT) {
     yield();
   }
   ESP.restart();
@@ -61,6 +61,26 @@ String generateID() {
   return  out;
 }
 
-bool isCharging(){
-  return(IP5306_GetPowerSource());
+bool isCharging() {
+  return (IP5306_GetPowerSource());
+}
+
+#define CHARGEBLINKTIME 1000
+unsigned long chargeBlinkMillis;
+bool blinkState = false;
+#define CHARGEMINIBLINKTIME 800
+
+void chargingBlink() {
+  if (millis() - chargeBlinkMillis > CHARGEBLINKTIME) {
+    if (!blinkState) {
+      blinkState = true;
+      digitalWrite(LED, blinkState);
+    }
+    if (millis() - chargeBlinkMillis > (CHARGEMINIBLINKTIME + CHARGEMINIBLINKTIME)) {
+      blinkState = false;
+      chargeBlinkMillis = millis();
+      digitalWrite(LED, blinkState);
+    }
+  }
+
 }

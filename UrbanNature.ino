@@ -79,19 +79,12 @@ void setup() {
   debugSensors();
 
 #ifndef DEBUG_OUTPUT
-  if (isCharging()) {
-    while (1) {
-      digitalWrite(LED, 1);
-      delay(100);
-      digitalWrite(LED, 0);
-      delay(1100);
-      if (!isCharging()) {
-        ESP.restart();
-      }
-    }
+  if (!isCharging()) {
+    checkShortSleep();
   }
-#endif
+#else
   checkShortSleep();
+#endif
 
   for (int i = 0; i < 3; i++) {
     digitalWrite(LED, HIGH);
@@ -102,16 +95,33 @@ void setup() {
 
   checkButtonOnStartUp();
   if (sensorFeeds.size() == 0) usingCaptivePortal = true;
-  if (usingCaptivePortal)
+  if (usingCaptivePortal) {
     setupCaptivePortal();
-  else
-    connectAndCheckTime();
+  } else {
+    if (!isCharging()) {
+      connectAndCheckTime();
+    }
+  }
 }
 
 void loop() {
+#ifndef DEBUG_OUTPUT
+  bool isDeviceCharging = isCharging();
+  if (isDeviceCharging) {
+    chargingBlink();
+  } else {
+    ESP.restart();
+  }
+#endif
   if (usingCaptivePortal)
     captivePortalHandler();
   else {
+#ifndef DEBUG_OUTPUT
+    if (!isDeviceCharging) {
+      scheduleHandler();
+    }
+#else
     scheduleHandler();
+#endif
   }
 }
