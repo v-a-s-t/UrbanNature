@@ -61,8 +61,17 @@ String generateID() {
   return  out;
 }
 
+
+#define CHARGECHECKMILLIS 1000
+unsigned long chargeCheckMillis;
+bool chargeStatus = false;
+
 bool isCharging() {
-  return (IP5306_GetPowerSource());
+   if (millis() - chargeCheckMillis > CHARGECHECKMILLIS) {
+      chargeCheckMillis = millis();
+      chargeStatus = IP5306_GetPowerSource();
+   }
+  return (chargeStatus);
 }
 
 #define CHARGEBLINKTIME 1000

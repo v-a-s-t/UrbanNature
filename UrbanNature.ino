@@ -56,6 +56,7 @@ enum Sensor {
 
 
 bool useCaptivePortal = false;
+bool hasBeenOnCharge = false;
 
 //global sensor average variables
 double redSample, oxSample, nh3Sample;
@@ -73,7 +74,10 @@ void setup() {
   loadPreferences();
 
   setupPMU();
+
+#ifdef DEBUG_OUTPUT
   printIP5306Settings();
+#endif
 
   setupSensors();
   debugSensors();
@@ -109,8 +113,11 @@ void loop() {
   bool isDeviceCharging = isCharging();
   if (isDeviceCharging) {
     chargingBlink();
-  } else {
-    ESP.restart();
+    hasBeenOnCharge = true;
+  }else{
+    if(hasBeenOnCharge){
+      ESP.restart();
+    }
   }
 #endif
   if (usingCaptivePortal)
