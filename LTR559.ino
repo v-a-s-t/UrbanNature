@@ -175,17 +175,23 @@ void LTR559_getSensorStatus() {
   switch (interruptData) {
     case 8:
       //ALS interrupt
+#ifdef DEBUG_OUTPUT
       Serial.println("ALS interrupt");
+#endif
       LTR559_isALSReady = true;
       break;
     case 2:
       //PS interrupt
+#ifdef DEBUG_OUTPUT
       Serial.println("PS interrupt");
+#endif
       LTR559_isPSReady = true;
       break;
     case 10:
       //Both interrupt
+#ifdef DEBUG_OUTPUT
       Serial.println("Both interrupt");
+#endif
       LTR559_isALSReady = true;
       LTR559_isPSReady = true;
       break;
@@ -195,17 +201,23 @@ void LTR559_getSensorStatus() {
   switch (interruptData) {
     case 4:
       //ALS interrupt
+#ifdef DEBUG_OUTPUT
       Serial.println("ALS new data");
+#endif
       LTR559_isALSReady = true;
       break;
     case 1:
       //PS interrupt
+#ifdef DEBUG_OUTPUT
       Serial.println("PS new data");
+#endif
       LTR559_isPSReady = true;
       break;
     case 5:
       //Both interrupt
+#ifdef DEBUG_OUTPUT
       Serial.println("Both new data");
+#endif
       LTR559_isALSReady = true;
       LTR559_isPSReady = true;
       break;
@@ -344,7 +356,7 @@ void LTR559_begin() {
 }
 
 
-void sampleLux(){
+void sampleLux() {
   double luxOut;
   for (int i = 0; i < 30; i ++) {
     luxOut = luxOut + getLux();
