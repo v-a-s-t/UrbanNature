@@ -318,15 +318,16 @@ void testSampleAllSensors() {
     sampleMicPP();
   }
   if ((sensorFeeds.containsKey("sensor_p03um")) || (sensorFeeds.containsKey("sensor_p05um")) || (sensorFeeds.containsKey("sensor_p10um")) || (sensorFeeds.containsKey("sensor_p25um")) || (sensorFeeds.containsKey("sensor_p50um")) || (sensorFeeds.containsKey("sensor_p100um")) || (sensorFeeds.containsKey("sensor_pm10")) || (sensorFeeds.containsKey("sensor_pm25")) || (sensorFeeds.containsKey("sensor_pm100"))) {
-      for (int i = 0; i < 50; i ++) {
-        readPMS5003();
-        delay(100);
+    for (int i = 0; i < 50; i ++) {
+      readPMS5003();
+      delay(100);
     }
   }
   if ((sensorFeeds.containsKey("sensor_oxidising")) || (sensorFeeds.containsKey("sensor_reducing")) || (sensorFeeds.containsKey("sensor_nh3"))) {
     sampleMICS6814();
   }
 
+#ifdef DEBUG_OUTPUT
   Serial.println("Sensor Sampling Complete!");
   Serial.print("Temp: ");
   Serial.println(temperatureSample);
@@ -358,6 +359,7 @@ void testSampleAllSensors() {
   Serial.print("Particles > 5.0um / 0.1L air:"); Serial.println(getParticle(p50um));
   Serial.print("Particles > 10.0 um / 0.1L air:"); Serial.println(getParticle(p100um));
   Serial.println("---------------------------------------");
+#endif
 }
 
 void debugSensors() {
