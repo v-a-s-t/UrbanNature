@@ -118,12 +118,7 @@ void loop() {
   bool isDeviceCharging = isCharging();
   if (isDeviceCharging) {
     chargingBlink();
-    hasBeenOnCharge = true;
-  } else {
-    if (hasBeenOnCharge) {
-      ESP.restart();
-    }
-  }
+  } 
 #endif
   if (usingCaptivePortal)
     captivePortalHandler();
