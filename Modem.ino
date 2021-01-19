@@ -24,6 +24,8 @@ void setupModem() {
   pinMode(MODEM_RST, OUTPUT);
   digitalWrite(MODEM_PWRKEY, LOW);
   digitalWrite(MODEM_RST, HIGH);
+  digitalWrite(MODEM_POWER_ON, LOW);
+  delay(100);
 #endif
 
   // Turn on the Modem power first
@@ -42,7 +44,7 @@ void setupModem() {
 
 bool modemConnect() {
   Serial.println("Initializing modem...");
-  while(SerialAT.available() > 0){
+  while (SerialAT.available() > 0) {
     SerialAT.read();
   }
   //modem.init();
@@ -73,7 +75,7 @@ bool modemConnect() {
   }
 
   Serial.print("Waiting for network...");
-  if (!modem.waitForNetwork(600000L)) {
+  if (!modem.waitForNetwork(240000L)) {
     Serial.println(" fail");
     delay(10000);
     return false;
@@ -95,10 +97,10 @@ bool modemConnect() {
   }
   Serial.println(" OK");
 
- int csq = modem.getSignalQuality();
- Serial.print("SIGNAL QUALITY: ");
- Serial.println(csq);
-  
+  int csq = modem.getSignalQuality();
+  Serial.print("SIGNAL QUALITY: ");
+  Serial.println(csq);
+
   return true;
 }
 

@@ -25,7 +25,7 @@ bool modemPost(String requestData, String url) {
   client.println(requestData);
 
   unsigned long timeout = millis();
-  while (client.connected() && millis() - timeout < 10000L) {
+  while (client.connected() && millis() - timeout < 20000L) {
     // Print available data (HTTP response from server)
     while (client.available()) {
       char c = client.read();
@@ -56,8 +56,10 @@ void postIntToFeed(int data, String feed) {
     success = modemPost(payload, url);
     if (success) break;
     else {
-      setupModem();
-      modemConnect();
+      if (!modem.isNetworkConnected()) {
+        setupModem();
+        modemConnect();
+      }
       Serial.print("Retrying");
     }
   }
@@ -72,8 +74,10 @@ void postFloatToFeed(float data, String feed) {
     success = modemPost(payload, url);
     if (success) break;
     else {
-      setupModem();
-      modemConnect();
+      if (!modem.isNetworkConnected()) {
+        setupModem();
+        modemConnect();
+      }
       Serial.print("Retrying");
     }
   }
@@ -88,8 +92,10 @@ void postFloatToFeed(float data, String lat, String lon, String feed) {
     success = modemPost(payload, url);
     if (success) break;
     else {
-      setupModem();
-      modemConnect();
+      if (!modem.isNetworkConnected()) {
+        setupModem();
+        modemConnect();
+      }
       Serial.print("Retrying");
     }
   }
@@ -104,15 +110,16 @@ void postIntToFeed(int data, String lat, String lon, String feed) {
     success = modemPost(payload, url);
     if (success) break;
     else {
-      setupModem();
-      modemConnect();
+      if (!modem.isNetworkConnected()) {
+        setupModem();
+        modemConnect();
+      }
       Serial.print("Retrying");
     }
   }
 }
 
 void postSensorsToAIO() {
-
   if (sensorFeeds.containsKey("sensor_temp")) {
     if (lat != "" && lon != "") {
       postFloatToFeed(temperatureSample, lat, lon, sensorFeeds["sensor_temp"]);
