@@ -1,11 +1,13 @@
 TinyGsmClient client(modem);
 
 // Posts a payload to a url on adafruit.io
-void modemPost(String requestData, String url) {
+bool modemPost(String requestData, String url) {
+  bool success = false;
   Serial.print("Connecting to ");
   Serial.print(server);
   if (!client.connect(server, port)) {
     Serial.println(" fail");
+    return success;
   }
   else {
     Serial.println(" OK");
@@ -28,40 +30,62 @@ void modemPost(String requestData, String url) {
       char c = client.read();
       Serial.print(c);
       timeout = millis();
+      success = true;
     }
     // TODO handle HTTP errors and return false.
   }
 
   client.stop();
   Serial.println(F("Server disconnected"));
+  return success;
 }
 
 // Posts an integer to an adafruit.io feed
 void postIntToFeed(int data, String feed) {
   String payload = "{\"value\": " + String(data) + "}";
   String url = "/api/v2/" + user + "/feeds/" + feed + "/data";
-  modemPost(payload, url);
+  bool success = false;
+  for (int i = 0; i < POST_MAX_RETRIES; i++) {
+    success = modemPost(payload, url);
+    if (success) break;
+    else delay(POST_RETRY_DELAY);
+  }
 }
 
 // Posts a float to an adafruit.io feed
 void postFloatToFeed(float data, String feed) {
   String payload = "{\"value\": " + String(data) + "}";
   String url = "/api/v2/" + user + "/feeds/" + feed + "/data";
-  modemPost(payload, url);
+  bool success = false;
+  for (int i = 0; i < POST_MAX_RETRIES; i++) {
+    modemPost(payload, url);
+    if (success) break;
+    else delay(POST_RETRY_DELAY);
+  }
 }
 
 // Posts a float to an adafruit.io feed with the location
 void postFloatToFeed(float data, String lat, String lon, String feed) {
   String payload = "{\"value\": " + String(data)  +  ",\"lat\": " + lat + ",\"lon\": " + lon + "}";
   String url = "/api/v2/" + user + "/feeds/" + feed + "/data";
-  modemPost(payload, url);
+  bool success = false;
+  for (int i = 0; i < POST_MAX_RETRIES; i++) {
+    modemPost(payload, url);
+    if (success) break;
+    else delay(POST_RETRY_DELAY);
+  }
 }
 
 // Posts an integer to an adafruit.io feed with the location
 void postIntToFeed(int data, String lat, String lon, String feed) {
   String payload = "{\"value\": " + String(data)  + ",\"lat\": " + lat + ",\"lon\": " + lon + "}";
   String url = "/api/v2/" + user + "/feeds/" + feed + "/data";
-  modemPost(payload, url);
+  bool success = false;
+  for (int i = 0; i < POST_MAX_RETRIES; i++) {
+    modemPost(payload, url);
+    if (success) break;
+    else delay(POST_RETRY_DELAY);
+  }
 }
 
 void postSensorsToAIO() {
@@ -213,8 +237,8 @@ void postSensorsToAIO() {
   }
   delay(10);
 
-//  modemDisconnect();
- // modemPoweroff();
+  //  modemDisconnect();
+  // modemPoweroff();
 }
 
 
