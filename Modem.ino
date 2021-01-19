@@ -7,6 +7,10 @@ TinyGsm modem(debugger);
 TinyGsm modem(SerialAT);
 #endif
 
+#define TINY_GSM_YIELD() { delay(2); }
+
+
+
 // GPRS credentials (leave empty, if missing)
 const char apn[]      = ""; // APN
 const char gprsUser[] = ""; // User
