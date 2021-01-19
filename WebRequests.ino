@@ -56,10 +56,9 @@ void postIntToFeed(int data, String feed) {
     success = modemPost(payload, url);
     if (success) break;
     else {
-      Serial.print("Retrying in ");
-      Serial.print(POST_RETRY_DELAY);
-      Serial.println(" ms...");
-      delay(POST_RETRY_DELAY);
+      setupModem();
+      modemConnect();
+      Serial.print("Retrying");
     }
   }
 }
@@ -73,10 +72,9 @@ void postFloatToFeed(float data, String feed) {
     success = modemPost(payload, url);
     if (success) break;
     else {
-      Serial.print("Retrying in ");
-      Serial.print(POST_RETRY_DELAY);
-      Serial.println(" ms...");
-      delay(POST_RETRY_DELAY);
+      setupModem();
+      modemConnect();
+      Serial.print("Retrying");
     }
   }
 }
@@ -87,13 +85,12 @@ void postFloatToFeed(float data, String lat, String lon, String feed) {
   String url = "/api/v2/" + user + "/feeds/" + feed + "/data";
   bool success = false;
   for (int i = 0; i < POST_MAX_RETRIES; i++) {
-   success = modemPost(payload, url);
+    success = modemPost(payload, url);
     if (success) break;
     else {
-      Serial.print("Retrying in ");
-      Serial.print(POST_RETRY_DELAY);
-      Serial.println(" ms...");
-      delay(POST_RETRY_DELAY);
+      setupModem();
+      modemConnect();
+      Serial.print("Retrying");
     }
   }
 }
@@ -104,20 +101,17 @@ void postIntToFeed(int data, String lat, String lon, String feed) {
   String url = "/api/v2/" + user + "/feeds/" + feed + "/data";
   bool success = false;
   for (int i = 0; i < POST_MAX_RETRIES; i++) {
-   success = modemPost(payload, url);
+    success = modemPost(payload, url);
     if (success) break;
     else {
-      Serial.print("Retrying in ");
-      Serial.print(POST_RETRY_DELAY);
-      Serial.println(" ms...");
-      delay(POST_RETRY_DELAY);
+      setupModem();
+      modemConnect();
+      Serial.print("Retrying");
     }
   }
 }
 
 void postSensorsToAIO() {
-  setupModem();
-  modemConnect();
 
   if (sensorFeeds.containsKey("sensor_temp")) {
     if (lat != "" && lon != "") {
@@ -263,15 +257,10 @@ void postSensorsToAIO() {
     }
   }
   delay(10);
-
-  //  modemDisconnect();
-  // modemPoweroff();
 }
 
 
 void sendBatterylevel() {
-  setupModem();
-  modemConnect();
   if (sensorFeeds.containsKey("battery_percentage")) {
     if (lat != "" && lon != "") {
       postIntToFeed(getBatteryPercentage(), lat, lon, sensorFeeds["battery_percentage"]);
@@ -279,5 +268,4 @@ void sendBatterylevel() {
       postIntToFeed(getBatteryPercentage(), sensorFeeds["battery_percentage"]);
     }
   }
-  modemDisconnect();
 }

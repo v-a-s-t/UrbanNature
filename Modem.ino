@@ -1,4 +1,5 @@
 #include <TinyGsmClient.h>
+//#define DUMP_AT_COMMANDS
 #ifdef DUMP_AT_COMMANDS
 #include <StreamDebugger.h>
 StreamDebugger debugger(SerialAT, Serial);
@@ -6,10 +7,6 @@ TinyGsm modem(debugger);
 #else
 TinyGsm modem(SerialAT);
 #endif
-
-#define TINY_GSM_YIELD() { delay(2); }
-
-
 
 // GPRS credentials (leave empty, if missing)
 const char apn[]      = ""; // APN
@@ -45,6 +42,9 @@ void setupModem() {
 
 bool modemConnect() {
   Serial.println("Initializing modem...");
+  while(SerialAT.available() > 0){
+    SerialAT.read();
+  }
   //modem.init();
   modem.restart();
 
@@ -73,7 +73,7 @@ bool modemConnect() {
   }
 
   Serial.print("Waiting for network...");
-  if (!modem.waitForNetwork(240000L)) {
+  if (!modem.waitForNetwork(600000L)) {
     Serial.println(" fail");
     delay(10000);
     return false;
@@ -94,6 +94,11 @@ bool modemConnect() {
     return false;
   }
   Serial.println(" OK");
+
+ int csq = modem.getSignalQuality();
+ Serial.print("SIGNAL QUALITY: ");
+ Serial.println(csq);
+  
   return true;
 }
 
