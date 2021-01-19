@@ -213,8 +213,8 @@ void postSensorsToAIO() {
   }
   delay(10);
 
-  modemDisconnect();
-  modemPoweroff();
+//  modemDisconnect();
+ // modemPoweroff();
 }
 
 

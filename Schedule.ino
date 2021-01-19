@@ -28,7 +28,7 @@ void setupWifiTime() {
 
 void shortSleepMinutes(int mins) {
   timeToSleepMinutes = mins;
-  goToSleepMinutes(1);
+  // goToSleepMinutes(1);
 }
 
 void checkShortSleep() {
@@ -161,4 +161,7 @@ void scheduleHandler() {
   testSampleAllSensors();
   postSensorsToAIO();
   shortSleepMinutes(getSleepMinutes());
+  modemDisconnect();
+  modemPoweroff();
+  goToSleepMinutes(1);
 }
