@@ -7,6 +7,7 @@ bool modemPost(String requestData, String url) {
   Serial.print(server);
   if (!client.connect(server, port)) {
     Serial.println(" fail");
+    Serial.println("Error: Could not connect to server.");
     return success;
   }
   else {
@@ -37,6 +38,12 @@ bool modemPost(String requestData, String url) {
 
   client.stop();
   Serial.println(F("Server disconnected"));
+  if (success) {
+    Serial.println("Success!");
+  }
+  else {
+    Serial.println("Error: No reply from server.");
+  }
   return success;
 }
 
