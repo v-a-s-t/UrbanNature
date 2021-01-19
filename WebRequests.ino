@@ -70,7 +70,7 @@ void postFloatToFeed(float data, String feed) {
   String url = "/api/v2/" + user + "/feeds/" + feed + "/data";
   bool success = false;
   for (int i = 0; i < POST_MAX_RETRIES; i++) {
-    modemPost(payload, url);
+    success = modemPost(payload, url);
     if (success) break;
     else {
       Serial.print("Retrying in ");
@@ -87,7 +87,7 @@ void postFloatToFeed(float data, String lat, String lon, String feed) {
   String url = "/api/v2/" + user + "/feeds/" + feed + "/data";
   bool success = false;
   for (int i = 0; i < POST_MAX_RETRIES; i++) {
-    modemPost(payload, url);
+   success = modemPost(payload, url);
     if (success) break;
     else {
       Serial.print("Retrying in ");
@@ -104,7 +104,7 @@ void postIntToFeed(int data, String lat, String lon, String feed) {
   String url = "/api/v2/" + user + "/feeds/" + feed + "/data";
   bool success = false;
   for (int i = 0; i < POST_MAX_RETRIES; i++) {
-    modemPost(payload, url);
+   success = modemPost(payload, url);
     if (success) break;
     else {
       Serial.print("Retrying in ");
