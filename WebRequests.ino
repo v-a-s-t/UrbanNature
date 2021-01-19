@@ -48,7 +48,12 @@ void postIntToFeed(int data, String feed) {
   for (int i = 0; i < POST_MAX_RETRIES; i++) {
     success = modemPost(payload, url);
     if (success) break;
-    else delay(POST_RETRY_DELAY);
+    else {
+      Serial.print("Retrying in ");
+      Serial.print(POST_RETRY_DELAY);
+      Serial.println(" ms...");
+      delay(POST_RETRY_DELAY);
+    }
   }
 }
 
@@ -60,7 +65,12 @@ void postFloatToFeed(float data, String feed) {
   for (int i = 0; i < POST_MAX_RETRIES; i++) {
     modemPost(payload, url);
     if (success) break;
-    else delay(POST_RETRY_DELAY);
+    else {
+      Serial.print("Retrying in ");
+      Serial.print(POST_RETRY_DELAY);
+      Serial.println(" ms...");
+      delay(POST_RETRY_DELAY);
+    }
   }
 }
 
@@ -72,7 +82,12 @@ void postFloatToFeed(float data, String lat, String lon, String feed) {
   for (int i = 0; i < POST_MAX_RETRIES; i++) {
     modemPost(payload, url);
     if (success) break;
-    else delay(POST_RETRY_DELAY);
+    else {
+      Serial.print("Retrying in ");
+      Serial.print(POST_RETRY_DELAY);
+      Serial.println(" ms...");
+      delay(POST_RETRY_DELAY);
+    }
   }
 }
 
@@ -84,7 +99,12 @@ void postIntToFeed(int data, String lat, String lon, String feed) {
   for (int i = 0; i < POST_MAX_RETRIES; i++) {
     modemPost(payload, url);
     if (success) break;
-    else delay(POST_RETRY_DELAY);
+    else {
+      Serial.print("Retrying in ");
+      Serial.print(POST_RETRY_DELAY);
+      Serial.println(" ms...");
+      delay(POST_RETRY_DELAY);
+    }
   }
 }
 
