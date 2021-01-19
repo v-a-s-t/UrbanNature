@@ -72,6 +72,7 @@ void connectAndCheckTime() {
   }
   Serial.print("Minutes until data collection: ");
   Serial.println(waitTime);
+  modemDisconnect();
   if (waitTime > 0) {
     shortSleepMinutes(waitTime);
   }
@@ -156,6 +157,7 @@ int calculateWaitTime(int h, int m, int _startHour, int _interval) {
 }
 
 void scheduleHandler() {
+  sendBatterylevel();
   testSampleAllSensors();
   postSensorsToAIO();
   shortSleepMinutes(getSleepMinutes());

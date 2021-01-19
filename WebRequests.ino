@@ -212,6 +212,15 @@ void postSensorsToAIO() {
     }
   }
   delay(10);
+
+  modemDisconnect();
+  modemPoweroff();
+}
+
+
+void sendBatterylevel() {
+  setupModem();
+  modemConnect();
   if (sensorFeeds.containsKey("battery_percentage")) {
     if (lat != "" && lon != "") {
       postIntToFeed(getBatteryPercentage(), lat, lon, sensorFeeds["battery_percentage"]);
@@ -219,8 +228,5 @@ void postSensorsToAIO() {
       postIntToFeed(getBatteryPercentage(), sensorFeeds["battery_percentage"]);
     }
   }
-  delay(10);
-
   modemDisconnect();
-  modemPoweroff();
 }

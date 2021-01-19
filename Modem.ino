@@ -1,5 +1,4 @@
 #include <TinyGsmClient.h>
-
 #ifdef DUMP_AT_COMMANDS
 #include <StreamDebugger.h>
 StreamDebugger debugger(SerialAT, Serial);
@@ -15,14 +14,16 @@ const char gprsPass[] = ""; // Password
 const char simPIN[]   = ""; // SIM card PIN code, if any
 
 void setupModem() {
-#ifdef MODEM_RST
-  // Keep reset high
-  pinMode(MODEM_RST, OUTPUT);
-  digitalWrite(MODEM_RST, HIGH);
-#endif
 
   pinMode(MODEM_PWRKEY, OUTPUT);
   pinMode(MODEM_POWER_ON, OUTPUT);
+
+#ifdef MODEM_RST
+  // Keep reset high
+  pinMode(MODEM_RST, OUTPUT);
+  digitalWrite(MODEM_PWRKEY, LOW);
+  digitalWrite(MODEM_RST, HIGH);
+#endif
 
   // Turn on the Modem power first
   digitalWrite(MODEM_POWER_ON, HIGH);
@@ -34,12 +35,14 @@ void setupModem() {
   delay(1000);
   digitalWrite(MODEM_PWRKEY, HIGH);
 
-  SerialAT.begin(19200, SERIAL_8N1, MODEM_RX, MODEM_TX);
+  SerialAT.begin(9600, SERIAL_8N1, MODEM_RX, MODEM_TX);
+  delay(1000);
 }
 
 bool modemConnect() {
   Serial.println("Initializing modem...");
-  modem.init();
+  //modem.init();
+  modem.restart();
 
   // Turn off network status lights to reduce current consumption
   turnOffNetlight();
