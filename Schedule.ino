@@ -64,17 +64,20 @@ void connectAndCheckTime() {
   }
   getTime();
   int waitTime = calculateWaitTime(getHour(), getMinute(), startHour, interval);
-  if (waitTime >= interval - TIME_TOLERANCE_MINUTES) {
-    Serial.print("Late by ");
-    Serial.print(interval - waitTime);
-    Serial.println(". Collecting data anyway.");
-    waitTime = 0; // If we're late by a few mins, just collect data!
-  }
+  // if (waitTime >= interval - TIME_TOLERANCE_MINUTES) {
+  //  Serial.print("Late by ");
+  //  Serial.print(interval - waitTime);
+  //  Serial.println(". Collecting data anyway.");
+  //  waitTime = 0; // If we're late by a few mins, just collect data!
+  //}
   Serial.print("Minutes until data collection: ");
   Serial.println(waitTime);
   //  modemDisconnect();
   // modemPoweroff();
   if (waitTime > 0) {
+    shortSleepMinutes(waitTime);
+  } else {
+    waitTime = interval + waitTime;
     shortSleepMinutes(waitTime);
   }
 }
@@ -158,17 +161,18 @@ int calculateWaitTime(int h, int m, int _startHour, int _interval) {
 }
 
 void scheduleHandler() {
-  sendBatterylevel();
-  modemDisconnect();
-  modemPoweroff();
+  //modemDisconnect();
+  //modemPoweroff();
   testSampleAllSensors();
   setupModem();
   if (!modemConnect()) {
     Serial.println("ERROR: Modem could not connect.");
   }
+  sendBatterylevel();
   postSensorsToAIO();
-  shortSleepMinutes(getSleepMinutes());
-  modemDisconnect();
-  modemPoweroff();
+  //shortSleepMinutes(getSleepMinutes());
+  //  modemDisconnect();
+  // modemPoweroff();
+  connectAndCheckTime();
   goToSleepMinutes(1);
 }

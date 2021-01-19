@@ -105,10 +105,10 @@ void setup() {
   } else {
 #ifndef DEBUG_OUTPUT
     if (!isCharging()) {
-      connectAndCheckTime();
+     // connectAndCheckTime();
     }
 #else
-    connectAndCheckTime();
+    //connectAndCheckTime();
 #endif
   }
 }
