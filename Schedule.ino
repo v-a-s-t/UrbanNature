@@ -55,10 +55,10 @@ void checkShortSleep() {
 void connectAndCheckTime() {
   usingWifi = wifiConnect();
   if (!usingWifi) {
-    setupModem();
-    if (!modemConnect()) {
-      Serial.println("ERROR: Modem could not connect.");
-    }
+   // setupModem();
+   // if (!modemConnect()) {
+   //   Serial.println("ERROR: Modem could not connect.");
+   // }
   } else {
     Serial.println("Using wifi.");
   }
@@ -77,7 +77,7 @@ void connectAndCheckTime() {
   if (waitTime > 0) {
     shortSleepMinutes(waitTime);
   } else {
-    waitTime = interval + waitTime;
+    waitTime = interval;
     shortSleepMinutes(waitTime);
   }
 }
