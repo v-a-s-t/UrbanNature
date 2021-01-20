@@ -302,7 +302,6 @@ void SampleCycle1() {
 }
 
 void testSampleAllSensors() {
-  //setupPMU();
 
   if ((sensorFeeds.containsKey("sensor_temp")) || (sensorFeeds.containsKey("sensor_humidity")) || (sensorFeeds.containsKey("sensor_pressure")) || (sensorFeeds.containsKey("sensor_altitude"))) {
     sampleBME280();

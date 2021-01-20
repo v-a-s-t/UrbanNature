@@ -161,8 +161,6 @@ int calculateWaitTime(int h, int m, int _startHour, int _interval) {
 }
 
 void scheduleHandler() {
-  //modemDisconnect();
-  //modemPoweroff();
   testSampleAllSensors();
   setupModem();
   if (!modemConnect()) {
@@ -170,9 +168,6 @@ void scheduleHandler() {
   }
   sendBatterylevel();
   postSensorsToAIO();
-  //shortSleepMinutes(getSleepMinutes());
-  //  modemDisconnect();
-  // modemPoweroff();
   connectAndCheckTime();
   goToSleepMinutes(1);
 }
