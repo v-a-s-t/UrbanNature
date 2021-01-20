@@ -276,3 +276,13 @@ void sendBatterylevel() {
     }
   }
 }
+
+void sendSignalStrength() {
+ if (sensorFeeds.containsKey("signal_strength")) {
+    if (lat != "" && lon != "") {
+      postIntToFeed(getModemSignalStrength(), lat, lon, sensorFeeds["signal_strength"]);
+    } else {
+      postIntToFeed(getModemSignalStrength(), sensorFeeds["signal_strength"]);
+    }
+  }
+}

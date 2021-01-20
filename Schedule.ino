@@ -156,6 +156,7 @@ void scheduleHandler() {
   sendBatterylevel();
   postSensorsToAIO();
   connectAndCheckTime();
+  sendSignalStrength();
   modemDisconnect();
   modemPoweroff();
   goToSleepMinutes(1);

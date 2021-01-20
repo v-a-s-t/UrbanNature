@@ -432,9 +432,8 @@ void debugSensors() {
     Serial.println("Anything lower than consistent 10 readings should be repositioned until values improve");
   }
   while (1) {
-    int csq = modem.getSignalQuality();
     Serial.print("SIGNAL QUALITY: ");
-    Serial.println(csq);
+    Serial.println(getModemSignalStrength());
     delay(5000);
   }
 #endif

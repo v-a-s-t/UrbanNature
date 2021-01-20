@@ -97,9 +97,8 @@ bool modemConnect() {
   }
   Serial.println(" OK");
 
-  int csq = modem.getSignalQuality();
   Serial.print("SIGNAL QUALITY: ");
-  Serial.println(csq);
+  Serial.println(getModemSignalStrength());
 
   return true;
 }
@@ -174,4 +173,8 @@ void getGSMLocation() {
     */
 
   }
+}
+
+int getModemSignalStrength(){
+  return modem.getSignalQuality();
 }
