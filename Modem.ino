@@ -112,6 +112,7 @@ void modemDisconnect() {
 void modemPoweroff() {
   modem.poweroff();
   Serial.println(F("Modem power off"));
+    digitalWrite(MODEM_POWER_ON, LOW);
 }
 
 void turnOffNetlight() {

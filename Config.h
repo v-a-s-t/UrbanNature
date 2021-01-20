@@ -45,7 +45,7 @@ const int port = 80;
 #define WIFI_CONNECTION_TIMEOUT 30000
 #define NUM_OF_SENSORS 18
 #define SSID_MAX_LENGTH 31
-#define POST_MAX_RETRIES 3
+#define POST_MAX_RETRIES 5
 #define POST_RETRY_DELAY 1000
 
 // time

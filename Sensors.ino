@@ -302,7 +302,6 @@ void SampleCycle1() {
 }
 
 void testSampleAllSensors() {
-  setupPMU();
 
   if ((sensorFeeds.containsKey("sensor_temp")) || (sensorFeeds.containsKey("sensor_humidity")) || (sensorFeeds.containsKey("sensor_pressure")) || (sensorFeeds.containsKey("sensor_altitude"))) {
     sampleBME280();
@@ -326,6 +325,7 @@ void testSampleAllSensors() {
   if ((sensorFeeds.containsKey("sensor_oxidising")) || (sensorFeeds.containsKey("sensor_reducing")) || (sensorFeeds.containsKey("sensor_nh3"))) {
     sampleMICS6814();
   }
+  disableSensors();
 
 #ifdef DEBUG_OUTPUT
   Serial.println("Sensor Sampling Complete!");

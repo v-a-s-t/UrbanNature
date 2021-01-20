@@ -54,27 +54,17 @@ void checkShortSleep() {
 
 void connectAndCheckTime() {
   usingWifi = wifiConnect();
-  if (!usingWifi) {
-    setupModem();
-    if (!modemConnect()) {
-      Serial.println("ERROR: Modem could not connect.");
-    }
-  } else {
+  if (usingWifi) {
     Serial.println("Using wifi.");
   }
   getTime();
   int waitTime = calculateWaitTime(getHour(), getMinute(), startHour, interval);
-  if (waitTime >= interval - TIME_TOLERANCE_MINUTES) {
-    Serial.print("Late by ");
-    Serial.print(interval - waitTime);
-    Serial.println(". Collecting data anyway.");
-    waitTime = 0; // If we're late by a few mins, just collect data!
-  }
   Serial.print("Minutes until data collection: ");
   Serial.println(waitTime);
-  //  modemDisconnect();
-  // modemPoweroff();
   if (waitTime > 0) {
+    shortSleepMinutes(waitTime);
+  } else {
+    waitTime = interval;
     shortSleepMinutes(waitTime);
   }
 }
@@ -158,16 +148,14 @@ int calculateWaitTime(int h, int m, int _startHour, int _interval) {
 }
 
 void scheduleHandler() {
-  sendBatterylevel();
-  modemDisconnect();
-  modemPoweroff();
   testSampleAllSensors();
   setupModem();
   if (!modemConnect()) {
     Serial.println("ERROR: Modem could not connect.");
   }
+  sendBatterylevel();
   postSensorsToAIO();
-  shortSleepMinutes(getSleepMinutes());
+  connectAndCheckTime();
   modemDisconnect();
   modemPoweroff();
   goToSleepMinutes(1);

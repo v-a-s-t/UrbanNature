@@ -102,14 +102,6 @@ void setup() {
   if (sensorFeeds.size() == 0) usingCaptivePortal = true;
   if (usingCaptivePortal) {
     setupCaptivePortal();
-  } else {
-#ifndef DEBUG_OUTPUT
-    if (!isCharging()) {
-      connectAndCheckTime();
-    }
-#else
-    connectAndCheckTime();
-#endif
   }
 }
 
