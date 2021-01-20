@@ -221,3 +221,26 @@ int getBatteryPercentage() {
   uint8_t leds = IP5306_GetLevelLeds();
   return (IP5306_LEDS2PCT(leds));
 }
+
+
+int getSampledBatteryPercentage() {
+  float ledPCT;
+  for (int i = 0; i < 10; i++) {
+    ledPCT = ledPCT + IP5306_GetLevelLeds();
+    delay(100);
+  }
+  ledPCT = ledPCT / 10.0;
+
+  if (ledPCT < 12.5) {
+    //0%
+    return 0;
+  } else if (ledPCT < 37.5) {
+    return 25;
+  } else if (ledPCT < 62.5) {
+    return 50;
+  } else if (ledPCT < 87.5) {
+    return 75;
+  } else {
+    return 100;
+  }
+}

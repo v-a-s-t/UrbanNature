@@ -438,4 +438,10 @@ void debugSensors() {
     delay(5000);
   }
 #endif
+#ifdef DEBUG_BATTERY_PCT
+  Serial.print("BATTERY: ");
+  Serial.print(getSampledBatteryPercentage());
+  Serial.println("%");
+  delay(1000);
+#endif
 }
