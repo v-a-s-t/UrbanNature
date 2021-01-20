@@ -422,4 +422,20 @@ void debugSensors() {
     delay(1000);
   }
 #endif
+#ifdef DEBUG_SIGNAL_STRENGTH
+  setupModem();
+  if (!modemConnect()) {
+    Serial.println("ERROR: Modem could not connect.");
+  } else {
+    Serial.println("Checking signal quality");
+    Serial.println("Values 0-30, disconnected to excellent signal.");
+    Serial.println("Anything lower than consistent 10 readings should be repositioned until values improve");
+  }
+  while (1) {
+    int csq = modem.getSignalQuality();
+    Serial.print("SIGNAL QUALITY: ");
+    Serial.println(csq);
+    delay(5000);
+  }
+#endif
 }
