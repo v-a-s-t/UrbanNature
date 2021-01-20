@@ -10,21 +10,21 @@ float nh3_bar_comp_factor = 0.003254;
 
 float comp_oxi_RS, comp_red_RS, comp_nh3_RS;
 
-double mics6814_readOx() {
-  double oxIn = analogRead(OX_SENSE);
-  oxIn = 56000 / ((4095 / oxIn) - 1);
+float mics6814_readOx() {
+  float oxIn = analogRead(OX_SENSE);
+  //oxIn = (56000*oxIn)/(4095-oxIn);
   return oxIn;
 }
 
-double mics6814_readRed() {
-  double redIn = analogRead(RED_SENSE);
-  redIn = 56000 / ((4095 / redIn) - 1);
+float mics6814_readRed() {
+  float redIn = analogRead(RED_SENSE);
+ //redIn = (56000*redIn)/(4095-redIn);
   return redIn;
 }
 
-double mics6814_readNH3() {
-  double nh3In = analogRead(NH3_SENSE);
-  nh3In = 56000 / ((4095 / nh3In) - 1);
+float mics6814_readNH3() {
+  float nh3In = analogRead(NH3_SENSE);
+ //nh3In = (56000*nh3In)/(4095-nh3In);
   return nh3In;
 }
 
@@ -161,14 +161,14 @@ void mics6814_setup() {
 }
 
 void sampleMICS6814() {
-  double redOut, oxOut, nh3Out;
+  float redOut, oxOut, nh3Out;
   for (int i = 0; i < 30; i ++) {
     redOut = redOut + mics6814_readRed();
     oxOut = oxOut + mics6814_readOx();
     nh3Out =  nh3Out + mics6814_readNH3();
     delay(1000);
   }
-  redSample = redOut / 30;
-  oxSample = oxOut / 30;
-  nh3Sample = nh3Out / 30;
+  redSample = (float)redOut / 30;
+  oxSample = (float)oxOut / 30;
+  nh3Sample = (float)nh3Out / 30;
 }
