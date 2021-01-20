@@ -270,9 +270,9 @@ void postSensorsToAIO() {
 void sendBatterylevel() {
   if (sensorFeeds.containsKey("battery_percentage")) {
     if (lat != "" && lon != "") {
-      postIntToFeed(getBatteryPercentage(), lat, lon, sensorFeeds["battery_percentage"]);
+      postIntToFeed(getSampledBatteryPercentage(), lat, lon, sensorFeeds["battery_percentage"]);
     } else {
-      postIntToFeed(getBatteryPercentage(), sensorFeeds["battery_percentage"]);
+      postIntToFeed(getSampledBatteryPercentage(), sensorFeeds["battery_percentage"]);
     }
   }
 }
