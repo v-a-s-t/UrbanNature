@@ -428,7 +428,7 @@ void debugSensors() {
     Serial.println("ERROR: Modem could not connect.");
   } else {
     Serial.println("Checking signal quality");
-    Serial.println("Values 0-30, disconnected to excellent signal.");
+    Serial.println("Values 0-31, disconnected to excellent signal.");
     Serial.println("Anything lower than consistent 10 readings should be repositioned until values improve");
   }
   while (1) {
