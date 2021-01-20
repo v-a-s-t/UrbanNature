@@ -56,7 +56,7 @@ enum Sensor {
 
 
 bool useCaptivePortal = false;
-bool hasBeenOnCharge = false;
+bool isPluggedInOnStartUp = false;
 
 //global sensor average variables
 double redSample, oxSample, nh3Sample;
@@ -83,7 +83,8 @@ void setup() {
   debugSensors();
 
 #ifndef DEBUG_OUTPUT
-  if (!isCharging()) {
+isPluggedInOnStartUp = isCharging();
+  if (!isPluggedInOnStartUp) {
     checkShortSleep();
   }
 #else
@@ -107,8 +108,7 @@ void setup() {
 
 void loop() {
 #ifndef DEBUG_OUTPUT
-  bool isDeviceCharging = isCharging();
-  if (isDeviceCharging) {
+  if (isPluggedInOnStartUp) {
     chargingBlink();
   } 
 #endif
@@ -116,7 +116,7 @@ void loop() {
     captivePortalHandler();
   else {
 #ifndef DEBUG_OUTPUT
-    if (!isDeviceCharging) {
+    if (!isPluggedInOnStartUp) {
       scheduleHandler();
     }
 #else

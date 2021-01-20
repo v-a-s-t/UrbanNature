@@ -63,7 +63,7 @@ String generateID() {
 
 
 #define CHARGECHECKMILLIS 1000
-unsigned long chargeCheckMillis;
+unsigned long chargeCheckMillis = 10000;
 bool chargeStatus = false;
 
 bool isCharging() {
