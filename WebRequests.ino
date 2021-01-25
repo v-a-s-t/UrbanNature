@@ -88,15 +88,22 @@ void postFloatToFeed(float data, String lat, String lon, String feed) {
   String payload = "{\"value\": " + String(data)  +  ",\"lat\": " + lat + ",\"lon\": " + lon + "}";
   String url = "/api/v2/" + user + "/feeds/" + feed + "/data";
   bool success = false;
+  bool usingWiFi = wifiConnect();
   for (int i = 0; i < POST_MAX_RETRIES; i++) {
-    success = modemPost(payload, url);
-    if (success) break;
-    else {
-      if (!modem.isNetworkConnected()) {
-        setupModem();
-        modemConnect();
+    if (!usingWiFi) {
+      success = modemPost(payload, url);
+      if (success) break;
+      else {
+        if (!modem.isNetworkConnected()) {
+          setupModem();
+          modemConnect();
+        }
+        Serial.print("Retrying");
       }
-      Serial.print("Retrying");
+    } else {
+      success = wifiPost(payload, url);
+      if (success) break;
+      Serial.println("Retrying");
     }
   }
 }
@@ -106,15 +113,22 @@ void postIntToFeed(int data, String lat, String lon, String feed) {
   String payload = "{\"value\": " + String(data)  + ",\"lat\": " + lat + ",\"lon\": " + lon + "}";
   String url = "/api/v2/" + user + "/feeds/" + feed + "/data";
   bool success = false;
+  bool usingWiFi = wifiConnect();
   for (int i = 0; i < POST_MAX_RETRIES; i++) {
-    success = modemPost(payload, url);
-    if (success) break;
-    else {
-      if (!modem.isNetworkConnected()) {
-        setupModem();
-        modemConnect();
+    if (!usingWiFi) {
+      success = modemPost(payload, url);
+      if (success) break;
+      else {
+        if (!modem.isNetworkConnected()) {
+          setupModem();
+          modemConnect();
+        }
+        Serial.println("Retrying");
       }
-      Serial.print("Retrying");
+    } else {
+      success = wifiPost(payload, url);
+      if (success) break;
+      Serial.println("Retrying");
     }
   }
 }
@@ -278,7 +292,7 @@ void sendBatterylevel() {
 }
 
 void sendSignalStrength() {
- if (sensorFeeds.containsKey("signal_strength")) {
+  if (sensorFeeds.containsKey("signal_strength")) {
     if (lat != "" && lon != "") {
       postIntToFeed(getModemSignalStrength(), lat, lon, sensorFeeds["signal_strength"]);
     } else {
