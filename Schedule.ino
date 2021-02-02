@@ -149,15 +149,20 @@ int calculateWaitTime(int h, int m, int _startHour, int _interval) {
 
 void scheduleHandler() {
   testSampleAllSensors();
-  setupModem();
-  if (!modemConnect()) {
-    Serial.println("ERROR: Modem could not connect.");
+  bool usingWifi = wifiConnect();
+  if (!usingWifi) {
+    setupModem();
+    if (!modemConnect()) {
+      Serial.println("ERROR: Modem could not connect.");
+    }
   }
   sendBatterylevel();
   postSensorsToAIO();
   connectAndCheckTime();
   sendSignalStrength();
-  modemDisconnect();
-  modemPoweroff();
+  if (!usingWifi) {
+    modemDisconnect();
+    modemPoweroff();
+  }
   goToSleepMinutes(1);
 }
