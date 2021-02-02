@@ -16,7 +16,6 @@
 #include <ArduinoJson.h>
 
 String ssid, pass;
-bool usingWifi = false;
 bool usingCaptivePortal = false;
 String aio_key = "";
 String user = "";

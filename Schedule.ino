@@ -53,11 +53,11 @@ void checkShortSleep() {
 }
 
 void connectAndCheckTime() {
-  usingWifi = wifiConnect();
+  bool usingWifi = wifiConnect();
   if (usingWifi) {
     Serial.println("Using wifi.");
   }
-  getTime();
+  getTime(usingWifi);
   int waitTime = calculateWaitTime(getHour(), getMinute(), startHour, interval);
   Serial.print("Minutes until data collection: ");
   Serial.println(waitTime);
@@ -69,16 +69,16 @@ void connectAndCheckTime() {
   }
 }
 
-int getSleepMinutes() {
-  getTime();
-  int waitTime = calculateWaitTime(getHour(), getMinute(), startHour, interval);
-  if (waitTime == 0) waitTime = interval;
-  Serial.print("Minutes until next data collection: ");
-  Serial.println(waitTime);
-  return waitTime;
-}
+//int getSleepMinutes() {
+//  getTime();
+//  int waitTime = calculateWaitTime(getHour(), getMinute(), startHour, interval);
+//  if (waitTime == 0) waitTime = interval;
+//  Serial.print("Minutes until next data collection: ");
+//  Serial.println(waitTime);
+//  return waitTime;
+//}
 
-void getTime() {
+void getTime(bool usingWifi) {
   if (usingWifi) {
     setupWifiTime();
     getWifiTime();
@@ -159,10 +159,13 @@ void scheduleHandler() {
   sendBatterylevel();
   postSensorsToAIO();
   connectAndCheckTime();
-  sendSignalStrength();
+  sendSignalStrength(usingWifi);
   if (!usingWifi) {
     modemDisconnect();
     modemPoweroff();
   }
+#ifdef DEBUG_OUTPUT
+  Serial.println("SLEEP");
+#endif
   goToSleepMinutes(1);
 }

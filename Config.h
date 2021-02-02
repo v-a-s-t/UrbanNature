@@ -14,9 +14,9 @@
 #define PMS_RST 15
 #define PMS_RX 18
 #define PMS_TX 19
-#define SENSOR_EN 25
+#define SENSOR_EN 32
 #define MIC_SENSE 34
-#define OX_SENSE 32 //TO BE UPDATED
+#define OX_SENSE 25
 #define RED_SENSE 14
 #define NH3_SENSE 12
 #define BATTERY_READ 35

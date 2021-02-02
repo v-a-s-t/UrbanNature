@@ -1,4 +1,5 @@
 TinyGsmClient client(modem);
+WiFiClient wifiClient;
 
 // Posts a payload to a url on adafruit.io
 bool modemPost(String requestData, String url) {
@@ -37,6 +38,52 @@ bool modemPost(String requestData, String url) {
   }
 
   client.stop();
+  Serial.println(F("Server disconnected"));
+  if (success) {
+    Serial.println("Success!");
+  }
+  else {
+    Serial.println("Error: No reply from server.");
+  }
+  return success;
+}
+
+bool wifiPost(String requestData, String url) {
+  bool success = false;
+  Serial.print("Connecting to ");
+  Serial.print(server);
+  if (!wifiClient.connect(server, port)) {
+    Serial.println(" fail");
+    Serial.println("Error: Could not connect to server.");
+    return success;
+  }
+  else {
+    Serial.println(" OK");
+  }
+  wifiClient.print(String("POST ") + url + " HTTP/1.1\r\n");
+  wifiClient.print(String("Host: ") + server + "\r\n");
+  wifiClient.println("Connection: close");
+  wifiClient.println("Content-Type: application/json");
+  wifiClient.print("Content-Length: ");
+  wifiClient.println(requestData.length());
+  wifiClient.print("X-AIO-Key: ");
+  wifiClient.println(aio_key);
+  wifiClient.println();
+  wifiClient.println(requestData);
+
+  unsigned long timeout = millis();
+  while (wifiClient.connected() && millis() - timeout < 20000L) {
+    // Print available data (HTTP response from server)
+    while (wifiClient.available()) {
+      char c = wifiClient.read();
+      Serial.print(c);
+      timeout = millis();
+      success = true;
+    }
+    // TODO handle HTTP errors and return false.
+  }
+
+  wifiClient.stop();
   Serial.println(F("Server disconnected"));
   if (success) {
     Serial.println("Success!");
@@ -291,12 +338,16 @@ void sendBatterylevel() {
   }
 }
 
-void sendSignalStrength() {
+void sendSignalStrength(bool usingWifi) {
   if (sensorFeeds.containsKey("signal_strength")) {
+    int signalStrength;
+    if (usingWifi) signalStrength = WiFi.RSSI();
+    else signalStrength = getModemSignalStrength();
+    
     if (lat != "" && lon != "") {
-      postIntToFeed(getModemSignalStrength(), lat, lon, sensorFeeds["signal_strength"]);
+      postIntToFeed(signalStrength, lat, lon, sensorFeeds["signal_strength"]);
     } else {
-      postIntToFeed(getModemSignalStrength(), sensorFeeds["signal_strength"]);
+      postIntToFeed(signalStrength, sensorFeeds["signal_strength"]);
     }
   }
 }
