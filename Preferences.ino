@@ -85,7 +85,7 @@ void savePreferences() {
   prefs.putInt("startHour", startHour);
   prefs.putInt("interval", interval);
   prevLat = prefs.getString("lat", "");
-  prevLong  prefs.getString("lon", "");
+  prevLon = prefs.getString("lon", "");
   prefs.putString("lat", lat);
   prefs.putString("lon", lon);
   if (prevLat != lat && prevLon != lon) {
@@ -107,6 +107,11 @@ bool isNewLocation() {
   newLocation = prefs.getString("hasUpdatedLatLon", "");
   prefs.putBool("hasUpdatedLatLon", false);
   prefs.end();
+  if (newLocation) {
+    Serial.println("Monitoring in new setup location!");
+  } else {
+    Serial.println("Monitoring in the same Location as previously. If you has moved your sensor to a new location, please update the Longitude and Latitude on the captive portal");
+  }
   return newLocation;
 }
 
