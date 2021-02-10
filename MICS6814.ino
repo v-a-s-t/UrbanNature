@@ -177,15 +177,15 @@ void sampleMICS6814() {
   nh3Sample = (float)nh3Out / 30;
 }
 
-void setTemperatureCompensation() {
-  float gas_temp_diff, gas_press_diff, gas_hum_diff;
-  //Make sure it has been 6 seconds before calibrating
+void setStartTemperatureCompensation() {
+  //Make sure it has been 10 seconds before calibrating
   float gas_temp_av = prefsGetFloat("tempR0");
   float gas_press_av = prefsGetFloat("pressR0");
   float gas_hum_av = prefsGetFloat("humR0");
   float curr_gas_temp = BME280_getTemp();
   float curr_gas_press = BME280_getPressure();
   float curr_gas_hum = BME280_getHumidity();
+#ifndef DEBUG_MICS6814_COMPENSATED
   if (isNewLocation()) {
     prefsSetFloat("tempR0", curr_gas_temp);
     prefsSetFloat("pressR0", curr_gas_press);
@@ -201,16 +201,28 @@ void setTemperatureCompensation() {
     prefsSetFloat("pressR0", gas_press_av);
     prefsSetFloat("humR0", gas_hum_av);
   }
+#else
+  prefsSetFloat("tempR0", curr_gas_temp);
+  prefsSetFloat("pressR0", curr_gas_press);
+  prefsSetFloat("humR0", curr_gas_hum);
+  gas_temp_av = curr_gas_temp;
+  gas_press_av = curr_gas_press;
+  gas_hum_av = curr_gas_hum;
+#endif
+  startCalibrationMillis = millis();
+}
+
+void setCurrTemperatureCompensation() {
+  float gas_temp_diff, gas_press_diff, gas_hum_diff;
   gas_temp_diff = BME280_getTemp();
-  gas_temp_diff = gas_temp_diff - gas_temp_av;
+  gas_temp_diff = gas_temp_diff - prefsGetFloat("tempR0");
   gas_hum_diff = BME280_getHumidity();
-  gas_hum_diff = gas_hum_diff - gas_hum_av;
+  gas_hum_diff = gas_hum_diff - prefsGetFloat("humR0");;
   gas_press_diff = BME280_getPressure();
-  gas_press_diff = gas_press_diff - gas_press_av;
+  gas_press_diff = gas_press_diff - prefsGetFloat("pressR0");
   prefsSetFloat("tempGasDiff", gas_temp_diff);
   prefsSetFloat("pressGasDiff", gas_press_diff);
   prefsSetFloat("humGasDiff", gas_hum_diff);
-  startCalibrationMillis = millis();
 }
 
 float compensateGas(float gasSensor) {
@@ -225,6 +237,8 @@ float compensateGas(float gasSensor) {
 void sampleCompensatedMICS6814() {
   while (startCalibrationMillis - millis() < GAS_CALIBRATION_PERIOD_MS) {
   }
+  //After 2 minutes have Gas Calibration Period is complete...
+  setCurrTemperatureCompensation();
   float redOut, oxOut, nh3Out;
   for (int i = 0; i < 30; i ++) {
     redOut = redOut + compensateGas(mics6814_readRed());
@@ -235,4 +249,9 @@ void sampleCompensatedMICS6814() {
   redSample = (float)redOut / 30;
   oxSample = (float)oxOut / 30;
   nh3Sample = (float)nh3Out / 30;
+  
+  #ifdef DEBUG_MICS6814_COMPENSATED
+  gasSampleReady = true;
+  startCalibrationMillis = millis();
+  #endif
 }

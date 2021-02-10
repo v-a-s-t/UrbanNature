@@ -314,7 +314,7 @@ void testSampleAllSensors() {
   if ((sensorFeeds.containsKey("sensor_oxidising")) || (sensorFeeds.containsKey("sensor_reducing")) || (sensorFeeds.containsKey("sensor_nh3"))) {
     delay(8000);
     //wait longer to heat up the gas sensor
-    setTemperatureCompensation();
+    setStartTemperatureCompensation();
   }
   if (sensorFeeds.containsKey("sensor_noise")) {
     sampleMicPP();
@@ -401,6 +401,27 @@ void debugSensors() {
     Serial.print("NH3: ");
     Serial.println(mics6814_readNH3());
     delay(1000);
+  }
+#endif
+#ifdef DEBUG_MICS6814_COMPENSATED
+  setupSensors();
+  enableSensors();
+  Serial.println("The Gas sensor will need to heat up at least 10s before data is valid");
+  delay(10000);
+  setStartTemperatureCompensation();
+  while (1) {
+    sampleCompensatedMICS6814();
+    if (gasSampleReady) {
+      Serial.print("RED: ");
+      Serial.print(redSample);
+      Serial.print(",");
+      Serial.print("OX: ");
+      Serial.print(oxSample);
+      Serial.print(",");
+      Serial.print("NH3: ");
+      Serial.println(nh3Sample);
+      gasSampleReady = false;
+    }
   }
 #endif
 #ifdef DEBUG_MICROPHONE

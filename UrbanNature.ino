@@ -15,6 +15,8 @@
 #include "SPIFFS.h"
 #include <ArduinoJson.h>
 
+bool gasSampleReady = false;
+
 String ssid, pass;
 bool usingCaptivePortal = false;
 String aio_key = "";

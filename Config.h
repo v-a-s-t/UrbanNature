@@ -2,7 +2,8 @@
 //#define DEBUG_INTERVAL 10
 //#define DEBUG_PMS
 //#define DEBUG_LTR559
-#define DEBUG_MICS6814
+//#define DEBUG_MICS6814
+//#define DEBUG_MICS6814_COMPENSATED
 //#define DEBUG_MICROPHONE
 //#define DEBUG_BME280
 //#define DEBUG_SIGNAL_STRENGTH
@@ -57,7 +58,7 @@ const int   daylightOffset_sec = 3600;
 #define TIME_TOLERANCE_MINUTES 5
 #define LIGHT_LOAD_ON_S 2
 
-// location 
+// location
 float latGSM = 0;
 float lonGSM = 0;
 float latUser = 0;
