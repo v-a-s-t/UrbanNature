@@ -88,10 +88,10 @@ void savePreferences() {
   prevLon = prefs.getString("lon", "");
   prefs.putString("lat", lat);
   prefs.putString("lon", lon);
-  if (prevLat != lat && prevLon != lon) {
-    prefs.putBool("hasUpdatedLatLon", true);
+  if (prevLat == lat && prevLon == lon) {
+    prefs.putUInt("hasUpdated", 0);
   } else {
-    prefs.putBool("hasUpdatedLatLon", false);
+    prefs.putUInt("hasUpdated", 1);
   }
   String sensorFeedsBuffer;
   serializeJson(sensorFeeds, sensorFeedsBuffer);
@@ -102,12 +102,12 @@ void savePreferences() {
 
 bool isNewLocation() {
   //Only returns true once if updated location
-  bool newLocation;
+  uint8_t newLocation = false;
   prefs.begin("urban-nature");
-  newLocation = prefs.getString("hasUpdatedLatLon", "");
-  prefs.putBool("hasUpdatedLatLon", false);
+  newLocation = prefs.getUInt("hasUpdated", 0);
+  prefs.putUInt("hasUpdated", 0);
   prefs.end();
-  if (newLocation) {
+  if (newLocation == 1) {
     Serial.println("Monitoring in new setup location!");
   } else {
     Serial.println("Monitoring in the same Location as previously. If you has moved your sensor to a new location, please update the Longitude and Latitude on the captive portal");

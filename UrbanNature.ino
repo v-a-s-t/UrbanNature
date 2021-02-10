@@ -73,7 +73,6 @@ void setup() {
   SPIFFS.begin();
 
   loadPreferences();
-
   setupPMU();
 
 #ifdef DEBUG_OUTPUT
