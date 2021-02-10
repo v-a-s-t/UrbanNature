@@ -317,7 +317,8 @@ void testSampleAllSensors() {
     setStartTemperatureCompensation();
   }
   if (sensorFeeds.containsKey("sensor_noise")) {
-    sampleMicPP();
+    //sampleMicPP();
+    sampleMicLoudness();
   }
   if ((sensorFeeds.containsKey("sensor_p03um")) || (sensorFeeds.containsKey("sensor_p05um")) || (sensorFeeds.containsKey("sensor_p10um")) || (sensorFeeds.containsKey("sensor_p25um")) || (sensorFeeds.containsKey("sensor_p50um")) || (sensorFeeds.containsKey("sensor_p100um")) || (sensorFeeds.containsKey("sensor_pm10")) || (sensorFeeds.containsKey("sensor_pm25")) || (sensorFeeds.containsKey("sensor_pm100"))) {
     for (int i = 0; i < 100; i ++) {
