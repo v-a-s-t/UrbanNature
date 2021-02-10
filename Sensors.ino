@@ -321,7 +321,21 @@ void testSampleAllSensors() {
   }
   if ((sensorFeeds.containsKey("sensor_p03um")) || (sensorFeeds.containsKey("sensor_p05um")) || (sensorFeeds.containsKey("sensor_p10um")) || (sensorFeeds.containsKey("sensor_p25um")) || (sensorFeeds.containsKey("sensor_p50um")) || (sensorFeeds.containsKey("sensor_p100um")) || (sensorFeeds.containsKey("sensor_pm10")) || (sensorFeeds.containsKey("sensor_pm25")) || (sensorFeeds.containsKey("sensor_pm100"))) {
     for (int i = 0; i < 100; i ++) {
-      readPMS5003();
+      if (!readPMS5003()) {
+        particulateData.particles_03um = prev_particles_03um;
+        particulateData.particles_05um = prev_particles_05um;
+        particulateData.particles_10um = prev_particles_10um;
+        particulateData.particles_25um = prev_particles_25um;
+        particulateData.particles_50um = prev_particles_50um;
+        particulateData.particles_100um = prev_particles_100um;
+      } else {
+        prev_particles_03um = particulateData.particles_03um;
+        prev_particles_05um = particulateData.particles_05um ;
+        prev_particles_10um = particulateData.particles_10um ;
+        prev_particles_25um = particulateData.particles_25um ;
+        prev_particles_50um = particulateData.particles_50um ;
+        prev_particles_100um = particulateData.particles_100um;
+      }
       delay(1000);
     }
   }

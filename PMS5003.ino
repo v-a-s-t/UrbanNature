@@ -7,6 +7,9 @@ struct pms5003data {
   uint16_t checksum;
 };
 
+  uint16_t prev_pm10_env, prev_pm25_env, prev_pm100_env;
+  uint16_t prev_particles_03um, prev_particles_05um, prev_particles_10um, prev_particles_25um, prev_particles_50um, prev_particles_100um;
+
 struct pms5003data particulateData;
 
 void PMS5003_begin() {
