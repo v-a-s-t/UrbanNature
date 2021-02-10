@@ -76,6 +76,7 @@ void loadPreferences() {
 }
 
 void savePreferences() {
+  String prevLat, prevLon;
   prefs.begin("urban-nature");
   prefs.putString("ssid", ssid);
   prefs.putString("pass", pass);
@@ -83,13 +84,30 @@ void savePreferences() {
   prefs.putString("aio_key", aio_key);
   prefs.putInt("startHour", startHour);
   prefs.putInt("interval", interval);
+  prevLat = prefs.getString("lat", "");
+  prevLong  prefs.getString("lon", "");
   prefs.putString("lat", lat);
   prefs.putString("lon", lon);
+  if (prevLat != lat && prevLon != lon) {
+    prefs.putBool("hasUpdatedLatLon", true);
+  } else {
+    prefs.putBool("hasUpdatedLatLon", false);
+  }
   String sensorFeedsBuffer;
   serializeJson(sensorFeeds, sensorFeedsBuffer);
   prefs.putString("sensorFeeds", sensorFeedsBuffer);
   prefs.end();
   Serial.println("Saved preferences.");
+}
+
+bool isNewLocation() {
+  //Only returns true once if updated location
+  bool newLocation;
+  prefs.begin("urban-nature");
+  newLocation = prefs.getString("hasUpdatedLatLon", "");
+  prefs.putBool("hasUpdatedLatLon", false);
+  prefs.end();
+  return newLocation;
 }
 
 // void saveFeeds(String * feeds) {
