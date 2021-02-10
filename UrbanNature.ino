@@ -21,7 +21,7 @@ String ssid, pass;
 bool usingCaptivePortal = false;
 String aio_key = "";
 String user = "";
-StaticJsonDocument<1024> sensorFeeds;
+StaticJsonDocument<1536> sensorFeeds;
 int startHour;
 String lat, lon;
 int interval; // In minutes!
