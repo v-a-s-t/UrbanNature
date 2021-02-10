@@ -2,7 +2,7 @@
 //#define DEBUG_INTERVAL 10
 //#define DEBUG_PMS
 //#define DEBUG_LTR559
-//#define DEBUG_MICS6814
+#define DEBUG_MICS6814
 //#define DEBUG_MICROPHONE
 //#define DEBUG_BME280
 //#define DEBUG_SIGNAL_STRENGTH

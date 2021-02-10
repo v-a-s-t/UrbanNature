@@ -388,12 +388,13 @@ void debugSensors() {
   delay(2000);
   while (1) {
     Serial.print("RED: ");
-    Serial.println(mics6814_readRed());
+    Serial.print(mics6814_readRed());
+    Serial.print(",");
     Serial.print("OX: ");
-    Serial.println(mics6814_readOx());
+    Serial.print(mics6814_readOx());
+    Serial.print(",");
     Serial.print("NH3: ");
     Serial.println(mics6814_readNH3());
-    Serial.println();
     delay(1000);
   }
 #endif
