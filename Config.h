@@ -8,6 +8,7 @@
 //#define DEBUG_BME280
 //#define DEBUG_SIGNAL_STRENGTH
 //#define DEBUG_BATTERY_PCT
+//#define DEBUG_BATTERY_VOLTAGE
 
 #define LED 13
 #define BUTTON 15

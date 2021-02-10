@@ -1,8 +1,8 @@
 #define BATTERY_SAMPLE 10
 
-float readBatteryVoltage() {
-  float voltageIn;
-  float voltsPerStep = 3.3 / 4095.0;
+double readBatteryVoltage() {
+  double voltageIn;
+  double voltsPerStep = 3.3 / 4095.0;
   for (int i = 0; i < BATTERY_SAMPLE; i++) {
     voltageIn = voltageIn + analogRead(BATTERY_READ);
     delay(10);

@@ -485,4 +485,12 @@ void debugSensors() {
     delay(1000);
   }
 #endif
+#ifdef DEBUG_BATTERY_VOLTAGE
+  while (1) {
+    Serial.print("BATTERY Voltage: ");
+    Serial.print(readBatteryVoltage());
+    Serial.println("v");
+    delay(1000);
+  }
+#endif
 }
