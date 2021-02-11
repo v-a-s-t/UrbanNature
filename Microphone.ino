@@ -1,4 +1,4 @@
-const int sampleWindow = 50;
+const int sampleWindow = 100;
 unsigned int sample;
 
 void sampleMicPP()
@@ -46,7 +46,7 @@ void sampleMicLoudness() {
   unsigned int peakToPeak = 0;
   unsigned int signalMax = 0;
   unsigned int signalMin = 4096;
-  unsigned int loudness = 0;
+  float loudness = 0;
   int sampleLength = 300; //30 seconds
 
   for (int i = 0; i < sampleLength; i++) {
@@ -74,7 +74,7 @@ void sampleMicLoudness() {
     loudness = loudness + peakToPeak;  // convert to volts
     delay(100);
   }
-  loudness = loudness/sampleLength;
+  loudness = (float)loudness/sampleLength;
   micPPSample = loudness;
 }
 

@@ -8,7 +8,7 @@ float nh3_temp_comp_factor = -0.02695;
 float nh3_hum_comp_factor = 0.0094;
 float nh3_bar_comp_factor = 0.003254;
 unsigned long startCalibrationMillis;
-#define GAS_CALIBRATION_PERIOD_MS 1000*60*5
+#define GAS_CALIBRATION_PERIOD_MS 300000
 
 float comp_oxi_RS, comp_red_RS, comp_nh3_RS;
 
