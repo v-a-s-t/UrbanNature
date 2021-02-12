@@ -47,7 +47,6 @@ jobs:
         run: |
           mv ESPAsyncWebServer /home/runner/Arduino/libraries/ESPAsyncWebServer
           mv AsyncTCP /home/runner/Arduino/libraries/AsyncTCP
-          mv SocketIoClient /home/runner/Arduino/libraries/SocketIoClient
       - name: Compile
         run: |
           mkdir build
