@@ -51,7 +51,7 @@ jobs:
         run: |
           mkdir build
           echo "Compiling ${{github.repository}}..."
-          arduino-cli compile -v -b esp32:esp32:esp32 --build-properties build.partitions=minimal,upload.maximum_size=1966080 --output-dir build ESP32-SOCKETIO
+          arduino-cli compile -v -b esp32:esp32:esp32 --build-properties build.partitions=minimal,upload.maximum_size=1966080 --output-dir build UrbanNature
       - name: Create spiffs binary
         run: |
           /home/runner/.arduino15/packages/esp32/tools/mkspiffs/0.2.3/mkspiffs -c UrbanNature/data -b 4096 -p 256 -s 0xB0000 build/spiffs.bin
