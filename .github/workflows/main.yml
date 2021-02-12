@@ -84,7 +84,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ github.ref }}
-          release_name: Yo-Yo Machines Firmware ${{ github.ref }}
+          release_name: UNP Firmware ${{ github.ref }}
           draft: true
           prerelease: false
 
