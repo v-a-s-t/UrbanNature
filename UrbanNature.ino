@@ -83,13 +83,10 @@ void setup() {
   debugSensors();
 
 #ifndef DEBUG_OUTPUT
-isPluggedInOnStartUp = isCharging();
-  if (!isPluggedInOnStartUp) {
-    checkShortSleep();
-  }
-#else
-  checkShortSleep();
+  isPluggedInOnStartUp = isCharging();
 #endif
+
+  checkShortSleep();
 
   for (int i = 0; i < 3; i++) {
     digitalWrite(LED, HIGH);
@@ -109,16 +106,16 @@ isPluggedInOnStartUp = isCharging();
 void loop() {
 #ifndef DEBUG_OUTPUT
   if (isPluggedInOnStartUp) {
-    chargingBlink();
-  } 
+    //  chargingBlink();
+  }
 #endif
   if (usingCaptivePortal)
     captivePortalHandler();
   else {
 #ifndef DEBUG_OUTPUT
-    if (!isPluggedInOnStartUp) {
-      scheduleHandler();
-    }
+    //  if (!isPluggedInOnStartUp) {
+    scheduleHandler();
+    // }
 #else
     scheduleHandler();
 #endif

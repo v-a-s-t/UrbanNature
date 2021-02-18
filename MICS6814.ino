@@ -1,3 +1,6 @@
+//comp factor values taken from Roscoe81's Regression analysis
+//https://github.com/roscoe81/enviro-monitor/blob/master/Northcliff_AQI_Monitor_Gen.py
+
 float red_temp_comp_factor = -0.015;
 float red_hum_comp_factor = 0.0125;
 float red_bar_comp_factor = -0.0053;
