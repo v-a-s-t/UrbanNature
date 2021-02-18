@@ -1,5 +1,5 @@
-//#define DEBUG_OUTPUT
-//#define DEBUG_INTERVAL 10
+#define DEBUG_OUTPUT
+#define DEBUG_INTERVAL 10
 //#define DEBUG_PMS
 //#define DEBUG_LTR559
 //#define DEBUG_MICS6814
@@ -9,6 +9,7 @@
 //#define DEBUG_SIGNAL_STRENGTH
 //#define DEBUG_BATTERY_PCT
 //#define DEBUG_BATTERY_VOLTAGE
+#define DEBUG_POST
 
 #define LED 13
 #define BUTTON 15

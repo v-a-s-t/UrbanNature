@@ -99,15 +99,22 @@ void postIntToFeed(int data, String feed) {
   String payload = "{\"value\": " + String(data) + "}";
   String url = "/api/v2/" + user + "/feeds/" + feed + "/data";
   bool success = false;
+  bool usingWiFi = wifiConnect();
   for (int i = 0; i < POST_MAX_RETRIES; i++) {
-    success = modemPost(payload, url);
-    if (success) break;
-    else {
-      if (!modem.isNetworkConnected()) {
-        setupModem();
-        modemConnect();
+    if (!usingWiFi) {
+      success = modemPost(payload, url);
+      if (success) break;
+      else {
+        if (!modem.isNetworkConnected()) {
+          setupModem();
+          modemConnect();
+        }
+        Serial.println("Retrying");
       }
-      Serial.print("Retrying");
+    } else {
+      success = wifiPost(payload, url);
+      if (success) break;
+      Serial.println("Retrying");
     }
   }
 }
@@ -117,15 +124,22 @@ void postFloatToFeed(float data, String feed) {
   String payload = "{\"value\": " + String(data) + "}";
   String url = "/api/v2/" + user + "/feeds/" + feed + "/data";
   bool success = false;
+  bool usingWiFi = wifiConnect();
   for (int i = 0; i < POST_MAX_RETRIES; i++) {
-    success = modemPost(payload, url);
-    if (success) break;
-    else {
-      if (!modem.isNetworkConnected()) {
-        setupModem();
-        modemConnect();
+    if (!usingWiFi) {
+      success = modemPost(payload, url);
+      if (success) break;
+      else {
+        if (!modem.isNetworkConnected()) {
+          setupModem();
+          modemConnect();
+        }
+        Serial.print("Retrying");
       }
-      Serial.print("Retrying");
+    } else {
+      success = wifiPost(payload, url);
+      if (success) break;
+      Serial.println("Retrying");
     }
   }
 }
@@ -179,6 +193,155 @@ void postIntToFeed(int data, String lat, String lon, String feed) {
     }
   }
 }
+
+#ifdef DEBUG_POST
+void postRandomToAIO() {
+  if (sensorFeeds.containsKey("sensor_temp")) {
+    if (lat != "" && lon != "") {
+      postFloatToFeed(random(0, 100), lat, lon, sensorFeeds["sensor_temp"]);
+    } else {
+      postFloatToFeed(random(0, 100), sensorFeeds["sensor_temp"]);
+    }
+  }
+  delay(10);
+  if (sensorFeeds.containsKey("sensor_humidity")) {
+    if (lat != "" && lon != "") {
+      postFloatToFeed(random(0, 100), lat, lon, sensorFeeds["sensor_humidity"]);
+    } else {
+      postFloatToFeed(random(0, 100), sensorFeeds["sensor_humidity"]);
+    }
+  }
+  delay(10);
+  if (sensorFeeds.containsKey("sensor_pressure")) {
+    if (lat != "" && lon != "") {
+      postFloatToFeed(random(0, 100), lat, lon, sensorFeeds["sensor_pressure"]);
+    } else {
+      postFloatToFeed(random(0, 100), sensorFeeds["sensor_pressure"]);
+    }
+  }
+  delay(10);
+  if (sensorFeeds.containsKey("sensor_altitude")) {
+    if (lat != "" && lon != "") {
+      postFloatToFeed(random(0, 100), lat, lon, sensorFeeds["sensor_altitude"]);
+    } else {
+      postFloatToFeed(random(0, 100), sensorFeeds["sensor_pressure"]);
+    }
+  }
+  delay(10);
+  if (sensorFeeds.containsKey("sensor_noise")) {
+    if (lat != "" && lon != "") {
+      postFloatToFeed(random(0, 100), lat, lon, sensorFeeds["sensor_noise"]);
+    } else {
+      postFloatToFeed(random(0, 100), sensorFeeds["sensor_noise"]);
+    }
+  }
+  delay(10);
+  if (sensorFeeds.containsKey("sensor_light")) {
+    if (lat != "" && lon != "") {
+      postIntToFeed(random(0, 100), lat, lon, sensorFeeds["sensor_light"]);
+    } else {
+      postIntToFeed(random(0, 100), sensorFeeds["sensor_light"]);
+    }
+  }
+  delay(10);
+  if (sensorFeeds.containsKey("sensor_oxidising")) {
+    if (lat != "" && lon != "") {
+      postFloatToFeed((float)random(0, 100), lat, lon, sensorFeeds["sensor_oxidising"]);
+    } else {
+      postFloatToFeed((float)random(0, 100), sensorFeeds["sensor_oxidising"]);
+    }
+  }
+  delay(10);
+  if (sensorFeeds.containsKey("sensor_reducing")) {
+    if (lat != "" && lon != "") {
+      postFloatToFeed((float)random(0, 100), lat, lon, sensorFeeds["sensor_reducing"]);
+    } else {
+      postFloatToFeed((float)random(0, 100), sensorFeeds["sensor_reducing"]);
+    }
+  }
+  delay(10);
+  if (sensorFeeds.containsKey("sensor_nh3")) {
+    if (lat != "" && lon != "") {
+      postFloatToFeed((float)random(0, 100), lat, lon, sensorFeeds["sensor_nh3"]);
+    } else {
+      postFloatToFeed((float)random(0, 100), sensorFeeds["sensor_nh3"]);
+    }
+  }
+  delay(10);
+  if (sensorFeeds.containsKey("sensor_p03um")) {
+    if (lat != "" && lon != "") {
+      postFloatToFeed(random(0, 100), lat, lon, sensorFeeds["sensor_p03um"]);
+    } else {
+      postFloatToFeed(random(0, 100), sensorFeeds["sensor_p03um"]);
+    }
+  }
+  delay(10);
+  if (sensorFeeds.containsKey("sensor_p05um")) {
+    if (lat != "" && lon != "") {
+      postFloatToFeed(random(0, 100), lat, lon, sensorFeeds["sensor_p05um"]);
+    } else {
+      postFloatToFeed(random(0, 100), sensorFeeds["sensor_p05um"]);
+    }
+  }
+  delay(10);
+  if (sensorFeeds.containsKey("sensor_p10um")) {
+    if (lat != "" && lon != "") {
+      postFloatToFeed(random(0, 100), lat, lon, sensorFeeds["sensor_p10um"]);
+    } else {
+      postFloatToFeed(random(0, 100), sensorFeeds["sensor_p10um"]);
+    }
+  }
+  delay(10);
+  if (sensorFeeds.containsKey("sensor_p25um")) {
+    if (lat != "" && lon != "") {
+      postFloatToFeed(random(0, 100), lat, lon, sensorFeeds["sensor_p25um"]);
+    } else {
+      postFloatToFeed(random(0, 100), sensorFeeds["sensor_p25um"]);
+    }
+  }
+  delay(10);
+  if (sensorFeeds.containsKey("sensor_p50um")) {
+    if (lat != "" && lon != "") {
+      postFloatToFeed(random(0, 100), lat, lon, sensorFeeds["sensor_p50um"]);
+    } else {
+      postFloatToFeed(random(0, 100), sensorFeeds["sensor_p50um"]);
+    }
+  }
+  delay(10);
+  if (sensorFeeds.containsKey("sensor_p100um")) {
+    if (lat != "" && lon != "") {
+      postFloatToFeed(random(0, 100), lat, lon, sensorFeeds["sensor_p100um"]);
+    } else {
+      postFloatToFeed(random(0, 100), sensorFeeds["sensor_p100um"]);
+    }
+  }
+  delay(10);
+  if (sensorFeeds.containsKey("sensor_pm10")) {
+    if (lat != "" && lon != "") {
+      postFloatToFeed(random(0, 100), lat, lon, sensorFeeds["sensor_pm10"]);
+    } else {
+      postFloatToFeed(random(0, 100), sensorFeeds["sensor_pm10"]);
+    }
+  }
+  delay(10);
+  if (sensorFeeds.containsKey("sensor_pm25")) {
+    if (lat != "" && lon != "") {
+      postFloatToFeed(random(0, 100), lat, lon, sensorFeeds["sensor_pm25"]);
+    } else {
+      postFloatToFeed(random(0, 100), sensorFeeds["sensor_pm25"]);
+    }
+  }
+  delay(10);
+  if (sensorFeeds.containsKey("sensor_pm100")) {
+    if (lat != "" && lon != "") {
+      postFloatToFeed(random(0, 100), lat, lon, sensorFeeds["sensor_pm100"]);
+    } else {
+      postFloatToFeed(random(0, 100), sensorFeeds["sensor_pm100"]);
+    }
+  }
+  delay(10);
+}
+#endif
 
 void postSensorsToAIO() {
   if (sensorFeeds.containsKey("sensor_temp")) {
@@ -343,7 +506,7 @@ void sendSignalStrength(bool usingWifi) {
     int signalStrength;
     if (usingWifi) signalStrength = WiFi.RSSI();
     else signalStrength = getModemSignalStrength();
-    
+
     if (lat != "" && lon != "") {
       postIntToFeed(signalStrength, lat, lon, sensorFeeds["signal_strength"]);
     } else {

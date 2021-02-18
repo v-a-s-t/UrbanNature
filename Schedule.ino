@@ -148,7 +148,9 @@ int calculateWaitTime(int h, int m, int _startHour, int _interval) {
 }
 
 void scheduleHandler() {
+#ifndef DEBUG_POST
   testSampleAllSensors();
+#endif
   bool usingWifi = wifiConnect();
   if (!usingWifi) {
     setupModem();
@@ -157,9 +159,13 @@ void scheduleHandler() {
     }
   }
   sendBatterylevel();
-  postSensorsToAIO();
-  connectAndCheckTime();
   sendSignalStrength(usingWifi);
+#ifdef DEBUG_POST
+  postRandomToAIO();
+#else
+  postSensorsToAIO();
+#endif
+  connectAndCheckTime();
   if (!usingWifi) {
     modemDisconnect();
     modemPoweroff();

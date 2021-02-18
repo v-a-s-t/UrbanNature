@@ -1,4 +1,7 @@
 bool wifiConnect() {
+  if (WiFi.status() == WL_CONNECTED) 
+    return true;
+    
   if (ssid.length() && pass.length()) {
     WiFi.begin(ssid.c_str(), pass.c_str());
 
