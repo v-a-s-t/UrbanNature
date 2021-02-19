@@ -309,6 +309,7 @@ void testSampleAllSensors() {
     sampleLux();
   }
 
+  setupSensors();
   enableSensors();
   delay(2000);
   if ((sensorFeeds.containsKey("sensor_oxidising")) || (sensorFeeds.containsKey("sensor_reducing")) || (sensorFeeds.containsKey("sensor_nh3"))) {
