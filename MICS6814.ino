@@ -168,16 +168,16 @@ void mics6814_setup() {
 }
 
 void sampleMICS6814() {
-  float redOut, oxOut, nh3Out;
+  double redOut, oxOut, nh3Out;
   for (int i = 0; i < 30; i ++) {
     redOut = redOut + mics6814_readRed();
     oxOut = oxOut + mics6814_readOx();
     nh3Out =  nh3Out + mics6814_readNH3();
     delay(1000);
   }
-  redSample = (float)redOut / 30;
-  oxSample = (float)oxOut / 30;
-  nh3Sample = (float)nh3Out / 30;
+  redSample = redOut / 30.0;
+  oxSample = oxOut / 30.0;
+  nh3Sample = nh3Out / 30.0;
 }
 
 void setStartTemperatureCompensation() {
@@ -242,16 +242,16 @@ void sampleCompensatedMICS6814() {
   }
   //After 2 minutes have Gas Calibration Period is complete...
   setCurrTemperatureCompensation();
-  float redOut, oxOut, nh3Out;
+  double redOut, oxOut, nh3Out;
   for (int i = 0; i < 30; i ++) {
     redOut = redOut + compensateGas(mics6814_readRed());
     oxOut = oxOut + compensateGas(mics6814_readOx());
     nh3Out =  nh3Out + compensateGas(mics6814_readNH3());
     delay(1000);
   }
-  redSample = (float)redOut / 30;
-  oxSample = (float)oxOut / 30;
-  nh3Sample = (float)nh3Out / 30;
+  redSample = redOut / 30.0;
+  oxSample = oxOut / 30.0;
+  nh3Sample = nh3Out / 30.0;
   
   #ifdef DEBUG_MICS6814_COMPENSATED
   gasSampleReady = true;

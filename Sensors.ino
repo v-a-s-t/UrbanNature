@@ -342,8 +342,8 @@ void testSampleAllSensors() {
     }
   }
   if ((sensorFeeds.containsKey("sensor_oxidising")) || (sensorFeeds.containsKey("sensor_reducing")) || (sensorFeeds.containsKey("sensor_nh3"))) {
-    //sampleMICS6814();
-    sampleCompensatedMICS6814();
+    sampleMICS6814();
+    //sampleCompensatedMICS6814();
   }
   disableSensors();
 
