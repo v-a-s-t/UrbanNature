@@ -3,6 +3,7 @@
   - Convert Sound level to Decibel
   - Test Gas Sensor Calculation
 */
+#define CONFIG_ASYNC_TCP_USE_WDT
 
 #include "Config.h"
 #include <Wire.h>
