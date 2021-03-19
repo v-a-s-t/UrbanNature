@@ -120,4 +120,5 @@ void loop() {
     scheduleHandler();
 #endif
   }
+  yield();
 }
