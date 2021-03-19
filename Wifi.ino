@@ -1,3 +1,5 @@
+#define MAX_WIFI_NETWORKS 10
+
 bool wifiConnect() {
   if (WiFi.status() == WL_CONNECTED) 
     return true;
@@ -45,7 +47,8 @@ void getScanAsJson(JsonDocument& jsonDoc) {
   JsonArray networks = jsonDoc.createNestedArray();
 
   int n = WiFi.scanNetworks();
-
+  if(n > MAX_WIFI_NETWORKS)
+    n = MAX_WIFI_NETWORKS;
   //Array is ordered by signal strength - strongest first
   for (int i = 0; i < n; ++i) {
     String networkSSID = WiFi.SSID(i);
