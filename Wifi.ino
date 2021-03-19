@@ -33,13 +33,18 @@ void wifiDisconnect() {
   WiFi.mode(WIFI_OFF);
 }
 
-String getScanAsJsonString() {
-  String jsonString;
+String jsonString;
 
+
+void getScanAsJsonString() {
+  
   StaticJsonDocument<1000> jsonDoc;
   getScanAsJson(jsonDoc);
   serializeJson(jsonDoc[0], jsonString);
 
+}
+
+String returnScan(){
   return (jsonString);
 }
 

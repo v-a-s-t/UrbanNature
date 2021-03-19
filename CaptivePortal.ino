@@ -101,7 +101,7 @@ class CaptiveRequestHandler : public AsyncWebHandler {
 
     void getScan(AsyncWebServerRequest * request) {
       AsyncResponseStream *response = request->beginResponseStream("application/json");
-      response->print(getScanAsJsonString());
+      response->print(returnScan());
       request->send(response);
     }
 

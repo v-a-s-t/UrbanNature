@@ -99,6 +99,7 @@ void setup() {
   checkButtonOnStartUp();
   if (sensorFeeds.size() == 0) usingCaptivePortal = true;
   if (usingCaptivePortal) {
+    getScanAsJsonString();
     setupCaptivePortal();
   }
 }
@@ -120,6 +121,5 @@ void loop() {
     scheduleHandler();
 #endif
   }
-  delay(10);
   yield();
 }
