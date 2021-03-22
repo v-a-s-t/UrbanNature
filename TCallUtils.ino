@@ -227,7 +227,7 @@ int getSampledBatteryPercentage() {
   float ledPCT;
   for (int i = 0; i < 10; i++) {
     ledPCT = ledPCT + IP5306_LEDS2PCT(IP5306_GetLevelLeds());
-    delay(100);
+    delay(500);
   }
   ledPCT = ledPCT / 10.0;
 
