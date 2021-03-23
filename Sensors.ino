@@ -312,7 +312,7 @@ void testSampleAllSensors() {
   setupSensors();
   enableSensors();
   delay(2000);
-  
+
   if (sensorFeeds.containsKey("sensor_noise")) {
     sampleMicPP();
     //sampleMicLoudness();
@@ -379,86 +379,12 @@ void testSampleAllSensors() {
 }
 
 void debugSensors() {
-#ifdef DEBUG_PMS
   pinMode(PMS_RST, OUTPUT);
   setupSensors();
   enableSensors();
+#ifdef DEBUG_PMS
   Serial.println("The PMS will need to warm up before data is valid");
   delay(2000);
-  while (1) {
-    printPmsData();
-    delay(1000);
-  }
-#endif
-#ifdef DEBUG_LTR559
-  setupSensors();
-  enableSensors();
-  while (1) {
-    Serial.println(getLux());
-    delay(1000);
-  }
-#endif
-#ifdef DEBUG_MICS6814
-  setupSensors();
-  enableSensors();
-  Serial.println("The Gas sensor will need to heat up at least 30s before data is valid");
-  delay(2000);
-  while (1) {
-    Serial.print("RED: ");
-    Serial.print(mics6814_readRed());
-    Serial.print(",");
-    Serial.print("OX: ");
-    Serial.print(mics6814_readOx());
-    Serial.print(",");
-    Serial.print("NH3: ");
-    Serial.println(mics6814_readNH3());
-    delay(1000);
-  }
-#endif
-#ifdef DEBUG_MICS6814_COMPENSATED
-  setupSensors();
-  enableSensors();
-  Serial.println("The Gas sensor will need to heat up at least 10s before data is valid");
-  delay(10000);
-  setStartTemperatureCompensation();
-  while (1) {
-    sampleCompensatedMICS6814();
-    if (gasSampleReady) {
-      Serial.print("RED: ");
-      Serial.print(redSample);
-      Serial.print(",");
-      Serial.print("OX: ");
-      Serial.print(oxSample);
-      Serial.print(",");
-      Serial.print("NH3: ");
-      Serial.println(nh3Sample);
-      gasSampleReady = false;
-    }
-  }
-#endif
-#ifdef DEBUG_MICROPHONE
-  setupSensors();
-  enableSensors();
-  while (1) {
-    Serial.println(getMicPeak());
-    delay(10);
-  }
-#endif
-#ifdef DEBUG_BME280
-  setupSensors();
-  enableSensors();
-  while (1) {
-    Serial.print("Temp: ");
-    Serial.println(getTemp());
-    Serial.print("Humidity: ");
-    Serial.println(getHumidity());
-    Serial.print("Pressure: ");
-    Serial.println(getPressure());
-    Serial.print("Altitude: ");
-    Serial.println(getAltitude());
-    Serial.println();
-    delay(1000);
-  }
 #endif
 #ifdef DEBUG_SIGNAL_STRENGTH
   setupModem();
@@ -469,26 +395,54 @@ void debugSensors() {
     Serial.println("Values 0-31, disconnected to excellent signal.");
     Serial.println("Anything lower than consistent 10 readings should be repositioned until values improve");
   }
+#endif
+
   while (1) {
-    Serial.print("SIGNAL QUALITY: ");
-    Serial.println(getModemSignalStrength());
-    delay(5000);
-  }
+#ifdef DEBUG_PMS
+    printPmsData();
+#endif
+#ifdef DEBUG_LTR559
+    Serial.println(getLux());
+#endif
+#ifdef DEBUG_MICS6814
+    Serial.print("RED: ");
+    Serial.print(mics6814_readRed());
+    Serial.print(",");
+    Serial.print("OX: ");
+    Serial.print(mics6814_readOx());
+    Serial.print(",");
+    Serial.print("NH3: ");
+    Serial.println(mics6814_readNH3());
+#endif
+#ifdef DEBUG_MICROPHONE
+    Serial.println(getMicPeak());
+#endif
+#ifdef DEBUG_BME280
+    Serial.print("Temp: ");
+    Serial.println(getTemp());
+    Serial.print("Humidity: ");
+    Serial.println(getHumidity());
+    Serial.print("Pressure: ");
+    Serial.println(getPressure());
+    Serial.print("Altitude: ");
+    Serial.println(getAltitude());
+    Serial.println();
 #endif
 #ifdef DEBUG_BATTERY_PCT
-  while (1) {
     Serial.print("BATTERY: ");
     Serial.print(getSampledBatteryPercentage());
     Serial.println("%");
-    delay(1000);
-  }
 #endif
 #ifdef DEBUG_BATTERY_VOLTAGE
-  while (1) {
     Serial.print("BATTERY Voltage: ");
     Serial.print(readBatteryVoltage());
     Serial.println("v");
+#endif
+#ifdef DEBUG_SIGNAL_STRENGTH
+    Serial.print("SIGNAL QUALITY: ");
+    Serial.println(getModemSignalStrength());
+#endif
+
     delay(1000);
   }
-#endif
 }
