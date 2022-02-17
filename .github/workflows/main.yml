@@ -64,10 +64,10 @@ jobs:
 
       - name: Merge binaries
         run: |
-          ls /home/runner/.arduino15/packages/esp32/hardware/esp32/ \
-          ls /home/runner/.arduino15/packages/esp32/hardware/esp32/tools/ \
-          ls /home/runner/.arduino15/packages/esp32/hardware/esp32/sdk/ \
-          ls /home/runner/.arduino15/packages/esp32/hardware/esp32/sdk/bin/ \
+          ls ./home/runner/.arduino15/packages/esp32/hardware/esp32/* \
+          ls ./home/runner/.arduino15/packages/esp32/hardware/esp32/tools/* \
+          ls ./home/runner/.arduino15/packages/esp32/hardware/esp32/tools/sdk/* \
+          ls ./home/runner/.arduino15/packages/esp32/hardware/esp32/tools/sdk/bin/* \
           python esp32_binary_merger/merge_bin_esp.py --output_name app-combined.bin --bin_path /home/runner/.arduino15/packages/esp32/hardware/esp32/tools/sdk/bin/bootloader_dio_80m.bin build/UrbanNature.ino.partitions.bin build/UrbanNature.ino.bin build/spiffs.bin --bin_address 0x1000 0x8000 0x10000 0x150000
           mv output/app-combined.bin build/app-combined.bin
           mv build/UrbanNature.ino.bin build/app.bin
